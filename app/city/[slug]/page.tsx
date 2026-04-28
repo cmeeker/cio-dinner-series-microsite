@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER } from "@/data/events";
 import EventTimeline from "@/components/EventTimeline";
 import CityPageClient from "@/components/CityPageClient";
-import InvitationBanner from "@/components/InvitationBanner";
 import WelcomeModal from "@/components/WelcomeModal";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -110,16 +109,6 @@ export default async function CityPage({ params, searchParams }: PageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
-          {isPersonalized && (
-            <InvitationBanner
-              guestName={guestName}
-              guestCompany={guestCompany}
-              repName={repName}
-              repCompany={repCompany}
-              cityName={city.city}
-              eventMonth={featured.month}
-            />
-          )}
           <div className="grid lg:grid-cols-[1fr_380px] gap-10">
             {/* Main featured card */}
             <div>
