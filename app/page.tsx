@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <section className="pt-2">
+      <section id="markets" className="pt-2">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-8">
           <div className="flex items-center gap-4">
             <span

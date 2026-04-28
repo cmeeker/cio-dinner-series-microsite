@@ -279,7 +279,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 </h2>
               </div>
               <Link
-                href="/"
+                href="/#markets"
                 className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1 transition-colors duration-200"
                 style={{
                   color: "var(--text-muted)",
