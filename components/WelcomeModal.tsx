@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import WorkatoLogo from "./WorkatoLogo";
 
 interface WelcomeModalProps {
   guestName?: string;
@@ -85,8 +84,6 @@ export default function WelcomeModal({
               />
 
               <div className="px-10 py-12">
-                <WorkatoLogo className="w-10 h-10 mx-auto mb-8" />
-
                 <p
                   className="text-[10px] tracking-[0.28em] uppercase mb-4"
                   style={{ color: "var(--teal)" }}
