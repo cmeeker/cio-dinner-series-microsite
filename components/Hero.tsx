@@ -154,6 +154,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Theme pill */}
+        <br />
         <motion.div
           className="inline-block mb-6 px-6 py-2.5 rounded-full text-[clamp(14px,1.6vw,18px)] italic font-normal"
           style={{
