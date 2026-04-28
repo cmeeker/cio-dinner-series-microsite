@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "Workato CIO Dinner Series — North America FY27",
   description:
     "An intimate gathering of enterprise leaders across North America's most dynamic markets. By invitation only. May 2026 – January 2027.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
   openGraph: {
     title: "Workato CIO Dinner Series — North America FY27",
     description:
