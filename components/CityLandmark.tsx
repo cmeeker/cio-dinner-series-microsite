@@ -67,24 +67,29 @@ export function NewYorkLandmark({ className }: LandmarkProps) {
   );
 }
 
-// Chicago — Willis Tower
+// Chicago — Willis Tower (bundled tube stepped silhouette)
 export function ChicagoLandmark({ className }: LandmarkProps) {
   return (
-    <svg viewBox="0 0 80 110" className={className} {...sharedProps}>
-      {/* Main tower body */}
-      <rect x="16" y="20" width="48" height="82" />
-      {/* Left setback (steps down at ~60%) */}
-      <rect x="16" y="38" width="20" height="64" />
-      {/* Right setback */}
-      <rect x="44" y="38" width="20" height="64" />
-      {/* Mid setbacks */}
-      <line x1="36" y1="38" x2="36" y2="102" strokeOpacity="0.4" />
-      <line x1="44" y1="38" x2="44" y2="102" strokeOpacity="0.4" />
+    <svg viewBox="0 0 100 118" className={className} {...sharedProps}>
+      {/* Step 1 — full base: all 6 tubes (x 8–92) */}
+      <rect x="8" y="60" width="84" height="50" />
+      {/* Step 1 internal tube dividers */}
+      <line x1="22" y1="60" x2="22" y2="110" strokeOpacity="0.28" />
+      <line x1="36" y1="60" x2="36" y2="110" strokeOpacity="0.28" />
+      <line x1="50" y1="60" x2="50" y2="110" strokeOpacity="0.28" />
+      <line x1="64" y1="60" x2="64" y2="110" strokeOpacity="0.28" />
+      <line x1="78" y1="60" x2="78" y2="110" strokeOpacity="0.28" />
+      {/* Step 2 — 4 inner tubes (22–78) */}
+      <rect x="22" y="36" width="56" height="26" />
+      <line x1="36" y1="36" x2="36" y2="62" strokeOpacity="0.28" />
+      <line x1="50" y1="36" x2="50" y2="62" strokeOpacity="0.28" />
+      <line x1="64" y1="36" x2="64" y2="62" strokeOpacity="0.28" />
+      {/* Step 3 — 2 center tubes (36–64) */}
+      <rect x="36" y="14" width="28" height="24" />
+      <line x1="50" y1="14" x2="50" y2="38" strokeOpacity="0.28" />
       {/* Twin antennas */}
-      <line x1="28" y1="20" x2="28" y2="6" />
-      <line x1="52" y1="20" x2="52" y2="6" />
-      {/* Window grid hint */}
-      <line x1="40" y1="20" x2="40" y2="102" strokeOpacity="0.25" />
+      <line x1="43" y1="14" x2="41" y2="4" />
+      <line x1="57" y1="14" x2="59" y2="4" />
     </svg>
   );
 }
@@ -169,20 +174,30 @@ export function SeattleLandmark({ className }: LandmarkProps) {
   );
 }
 
-// Atlanta — Peach
+// Atlanta — Bank of America Plaza (stepped tower + trident crown)
 export function AtlantaLandmark({ className }: LandmarkProps) {
   return (
-    <svg viewBox="0 0 80 100" className={className} {...sharedProps}>
-      {/* Peach body — left lobe */}
-      <path d="M40,85 Q12,72 14,48 Q16,24 40,20" />
-      {/* Peach body — right lobe */}
-      <path d="M40,85 Q68,72 66,48 Q64,24 40,20" />
-      {/* Center crease line */}
-      <path d="M40,20 Q36,52 40,85" strokeOpacity="0.5" />
-      {/* Stem */}
-      <path d="M40,20 Q42,12 38,6" />
-      {/* Leaf */}
-      <path d="M38,14 Q52,8 58,18 Q48,22 38,14" />
+    <svg viewBox="0 0 80 118" className={className} {...sharedProps}>
+      {/* Base tower */}
+      <rect x="16" y="66" width="48" height="44" />
+      <line x1="28" y1="66" x2="28" y2="110" strokeOpacity="0.25" />
+      <line x1="40" y1="66" x2="40" y2="110" strokeOpacity="0.25" />
+      <line x1="52" y1="66" x2="52" y2="110" strokeOpacity="0.25" />
+      {/* Mid setback */}
+      <rect x="22" y="44" width="36" height="24" />
+      <line x1="40" y1="44" x2="40" y2="68" strokeOpacity="0.25" />
+      {/* Upper shaft */}
+      <rect x="28" y="28" width="24" height="18" />
+      {/* Pointed neo-Gothic crown */}
+      <path d="M28,28 L40,14 L52,28" />
+      {/* Trident spires — the distinctive illuminated crown */}
+      <line x1="40" y1="14" x2="40" y2="4" />
+      <line x1="34" y1="18" x2="32" y2="6" />
+      <line x1="46" y1="18" x2="48" y2="6" />
+      {/* Crown cross-bars */}
+      <line x1="37" y1="10" x2="43" y2="10" strokeOpacity="0.5" />
+      <line x1="32" y1="12" x2="30" y2="12" strokeOpacity="0.5" />
+      <line x1="48" y1="12" x2="50" y2="12" strokeOpacity="0.5" />
     </svg>
   );
 }

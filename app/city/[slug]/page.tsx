@@ -76,15 +76,6 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             aria-hidden
           />
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-10">
-            {/* Landmark — decorative, right-aligned */}
-            <div
-              className="absolute right-6 lg:right-12 top-4 pointer-events-none select-none hidden lg:block"
-              style={{ color: "var(--teal)", opacity: 0.18, width: "200px" }}
-              aria-hidden
-            >
-              <CityLandmark cityKey={slug} className="w-full h-auto" />
-            </div>
-
             <h1
               className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
               style={{ fontFamily: "var(--font-cormorant)" }}
@@ -231,8 +222,16 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* Sidebar — timeline only */}
+            {/* Sidebar — landmark + timeline */}
             <div>
+              {/* Landmark centered above the timeline card */}
+              <div
+                className="flex justify-center mb-3 pointer-events-none select-none"
+                style={{ color: "var(--teal)", opacity: 0.2 }}
+                aria-hidden
+              >
+                <CityLandmark cityKey={slug} className="h-36 w-auto" />
+              </div>
               <div
                 className="rounded-xl p-6"
                 style={{
