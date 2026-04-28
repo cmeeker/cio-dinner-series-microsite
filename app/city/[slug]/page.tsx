@@ -235,9 +235,8 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-10">
-              {/* Timeline */}
+            {/* Sidebar — timeline only */}
+            <div>
               <div
                 className="rounded-xl p-6"
                 style={{
@@ -247,46 +246,129 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               >
                 <EventTimeline events={city.events} cityName={city.city} />
               </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Other cities */}
-              <div
-                className="rounded-xl p-6"
+        {/* ── Full-width Other Cities band ── */}
+        <div
+          className="relative overflow-hidden mt-10"
+          style={{ background: "var(--bg2)", borderTop: "1px solid var(--teal-line-dark)" }}
+        >
+          {/* Background glow */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(103,234,221,0.04) 0%, transparent 65%)",
+            }}
+          />
+          <div className="absolute inset-0 grid-bg pointer-events-none opacity-50" />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-16">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+              <div>
+                <p
+                  className="text-[10px] tracking-[0.28em] uppercase mb-3"
+                  style={{ color: "var(--teal)" }}
+                >
+                  Also running across North America
+                </p>
+                <h2
+                  className="text-[clamp(28px,4vw,44px)] font-light leading-tight"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  {otherCities.length} more{" "}
+                  <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                    markets
+                  </em>{" "}
+                  this season.
+                </h2>
+              </div>
+              <Link
+                href="/"
+                className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1 transition-colors duration-200"
                 style={{
-                  background: "var(--card)",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  color: "var(--text-muted)",
+                  borderBottom: "1px solid rgba(255,255,255,0.12)",
                 }}
               >
-                <p
-                  className="text-[10px] tracking-[0.22em] uppercase mb-5"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Other cities
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {otherCities.map((c) => (
-                    <Link
-                      key={c.key}
-                      href={`/city/${c.key}`}
-                      className="px-3 py-2.5 rounded-lg transition-all duration-200 group"
+                View all cities →
+              </Link>
+            </div>
+
+            {/* City grid */}
+            <div
+              className="grid gap-3"
+              style={{
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              }}
+            >
+              {otherCities.map((c) => {
+                const first = c.events[0];
+                const last  = c.events[c.events.length - 1];
+                return (
+                  <Link
+                    key={c.key}
+                    href={`/city/${c.key}`}
+                    className="group relative flex flex-col justify-between p-5 rounded-xl overflow-hidden transition-all duration-250"
+                    style={{
+                      background: "var(--card)",
+                      border: "1px solid rgba(255,255,255,0.06)",
+                      minHeight: "120px",
+                    }}
+                  >
+                    {/* Hover top accent */}
+                    <div
+                      className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       style={{
-                        background: "var(--surface)",
-                        border: "1px solid rgba(255,255,255,0.05)",
+                        background:
+                          "linear-gradient(to right, transparent, var(--teal), transparent)",
                       }}
-                    >
-                      <span
-                        className="block text-[12px] leading-tight transition-colors duration-200 group-hover:text-[var(--teal)]"
-                        style={{ color: "var(--text-sec)" }}
+                    />
+                    {/* Hover glow */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-xl"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(103,234,221,0.06) 0%, transparent 70%)",
+                      }}
+                    />
+
+                    <div className="relative z-10">
+                      <p
+                        className="text-[15px] font-medium mb-0.5 transition-colors duration-200 group-hover:text-[var(--teal)]"
+                        style={{ color: "var(--text)" }}
                       >
                         {c.city}
+                      </p>
+                      <p className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                        {c.state}{c.country === "CA" ? " · Canada" : ""}
+                      </p>
+                    </div>
+
+                    <div className="relative z-10 flex items-end justify-between mt-4">
+                      <div>
+                        <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>
+                          {first.month.split(" ")[0]}
+                          {first.month !== last.month ? ` – ${last.month.split(" ")[0]} ${last.month.split(" ")[1]}` : ` ${first.month.split(" ")[1]}`}
+                        </p>
+                      </div>
+                      <span
+                        className="text-[11px] px-2 py-0.5 rounded-md"
+                        style={{
+                          background: "var(--teal-dim)",
+                          color: "var(--teal)",
+                          border: "1px solid var(--teal-line-dark)",
+                        }}
+                      >
+                        {c.events.length}×
                       </span>
-                      <span className="block text-[10px]" style={{ color: "var(--text-muted)" }}>
-                        {c.state}
-                        {c.country === "CA" ? " · CA" : ""}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
