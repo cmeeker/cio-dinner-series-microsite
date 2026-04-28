@@ -24,12 +24,6 @@ export default function Footer() {
           />
         </svg>
       </a>
-      <span
-        className="text-[11px] tracking-[0.08em]"
-        style={{ color: "rgba(255,255,255,0.18)" }}
-      >
-        By invitation only · May 2026 – January 2027
-      </span>
     </footer>
   );
 }
