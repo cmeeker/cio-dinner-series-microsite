@@ -107,18 +107,27 @@ export default async function CityPage({ params, searchParams }: PageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-          <div className="grid lg:grid-cols-[1fr_380px] gap-10">
-            {/* Main featured card */}
-            <div>
-              <p
-                className="text-[10px] tracking-[0.22em] uppercase mb-5"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Next upcoming dinner
-              </p>
+          <div className="grid lg:grid-cols-[1fr_380px] lg:grid-rows-[auto_1fr] gap-x-10 gap-y-0">
+            {/* Row 1 left — section label */}
+            <p
+              className="text-[10px] tracking-[0.22em] uppercase mb-4"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Next upcoming dinner
+            </p>
 
-              <div
-                className="relative rounded-2xl overflow-hidden"
+            {/* Row 1 right — landmark centered, hidden on mobile */}
+            <div
+              className="hidden lg:flex justify-center items-end pb-4 pointer-events-none select-none"
+              style={{ color: "var(--teal)", opacity: 0.2 }}
+              aria-hidden
+            >
+              <CityLandmark cityKey={slug} className="h-36 w-auto" />
+            </div>
+
+            {/* Row 2 left — featured card */}
+            <div
+              className="relative rounded-2xl overflow-hidden"
                 style={{
                   background: "var(--card)",
                   border: "1px solid rgba(255,255,255,0.07)",
@@ -220,27 +229,16 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   />
                 </div>
               </div>
-            </div>
 
-            {/* Sidebar — landmark + timeline */}
-            <div>
-              {/* Landmark centered above the timeline card */}
-              <div
-                className="flex justify-center mb-3 pointer-events-none select-none"
-                style={{ color: "var(--teal)", opacity: 0.2 }}
-                aria-hidden
-              >
-                <CityLandmark cityKey={slug} className="h-36 w-auto" />
-              </div>
-              <div
-                className="rounded-xl p-6"
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <EventTimeline events={city.events} cityName={city.city} />
-              </div>
+            {/* Row 2 right — timeline card */}
+            <div
+              className="rounded-xl p-6"
+              style={{
+                background: "var(--card)",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <EventTimeline events={city.events} cityName={city.city} />
             </div>
           </div>
         </div>
