@@ -124,23 +124,6 @@ export default function Hero() {
           North America&apos;s most dynamic markets
         </p>
 
-        {/* Theme pill */}
-        <motion.div
-          className="inline-block mb-6 px-6 py-2.5 rounded-full text-[clamp(14px,1.6vw,18px)] italic font-normal"
-          style={{
-            fontFamily: "var(--font-cormorant)",
-            color: "var(--teal-mid)",
-            border: "1px solid var(--teal-line)",
-            background: "var(--teal-dim)",
-            letterSpacing: "0.01em",
-          }}
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.35, duration: 0.5 }}
-        >
-          Claw back your control.
-        </motion.div>
-
         {/* Stats strip */}
         <motion.div
           className="inline-flex overflow-hidden mb-5 rounded-lg"
@@ -168,6 +151,23 @@ export default function Hero() {
               Months
             </span>
           </div>
+        </motion.div>
+
+        {/* Theme pill */}
+        <motion.div
+          className="inline-block mb-6 px-6 py-2.5 rounded-full text-[clamp(14px,1.6vw,18px)] italic font-normal"
+          style={{
+            fontFamily: "var(--font-cormorant)",
+            color: "var(--teal-mid)",
+            border: "1px solid var(--teal-line)",
+            background: "var(--teal-dim)",
+            letterSpacing: "0.01em",
+          }}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          Claw back your control.
         </motion.div>
 
         {/* Period */}
