@@ -134,7 +134,6 @@ export function AustinLandmark({ className }: LandmarkProps) {
       <rect x="54" y="22" width="12" height="10" />
       {/* Finial */}
       <line x1="60" y1="22" x2="60" y2="10" />
-      <line x1="57" y1="13" x2="63" y2="13" />
       {/* Column hints */}
       <line x1="48" y1="54" x2="48" y2="86" strokeOpacity="0.4" />
       <line x1="60" y1="54" x2="60" y2="86" strokeOpacity="0.4" />
