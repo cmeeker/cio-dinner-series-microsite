@@ -11,6 +11,8 @@ export default function Nav() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const isHome = pathname === "/";
 
+  if (pathname === "/login") return null;
+
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
