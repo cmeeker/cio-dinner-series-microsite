@@ -4,6 +4,7 @@ import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER } from "@/data/events";
 import EventTimeline from "@/components/EventTimeline";
 import CityPageClient from "@/components/CityPageClient";
 import InvitationBanner from "@/components/InvitationBanner";
+import WelcomeModal from "@/components/WelcomeModal";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
@@ -48,6 +49,15 @@ export default async function CityPage({ params, searchParams }: PageProps) {
 
   return (
     <>
+      {isPersonalized && guestName && (
+        <WelcomeModal
+          guestName={guestName}
+          guestCompany={guestCompany}
+          repName={repName}
+          cityName={city.city}
+          eventMonth={featured.month}
+        />
+      )}
       <div className="pt-16 min-h-screen">
         {/* City hero */}
         <div
@@ -73,7 +83,19 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
               style={{ fontFamily: "var(--font-cormorant)" }}
             >
-              {city.city}
+              {isPersonalized && guestName ? (
+                <>
+                  <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
+                    Your invitation — {city.city}
+                  </span>
+                  <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                    {guestName.split(" ")[0]},
+                  </em>{" "}
+                  you&apos;re invited.
+                </>
+              ) : (
+                city.city
+              )}
             </h1>
             <p
               className="text-[13px] tracking-[0.06em]"
