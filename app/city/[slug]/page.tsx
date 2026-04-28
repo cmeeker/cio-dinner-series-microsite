@@ -4,6 +4,7 @@ import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER } from "@/data/events";
 import EventTimeline from "@/components/EventTimeline";
 import CityPageClient from "@/components/CityPageClient";
 import WelcomeModal from "@/components/WelcomeModal";
+import CityLandmark from "@/components/CityLandmark";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
@@ -71,6 +72,15 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             aria-hidden
           />
           <div className="relative z-10 max-w-7xl mx-auto">
+            {/* Landmark — decorative, right-aligned */}
+            <div
+              className="absolute right-0 top-0 pointer-events-none select-none hidden lg:block"
+              style={{ color: "var(--teal)", opacity: 0.18, width: "220px" }}
+              aria-hidden
+            >
+              <CityLandmark cityKey={slug} className="w-full h-auto" />
+            </div>
+
             <Link
               href="/"
               className="inline-flex items-center gap-2 mb-8 text-[12px] tracking-[0.1em] uppercase transition-colors duration-200"
