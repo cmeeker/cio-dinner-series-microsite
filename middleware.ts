@@ -1,25 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const USERNAME = "cio";
-const PASSWORD = "dinner";
+const AUTH_COOKIE = "cio-auth";
+const AUTH_VALUE = "authenticated";
 
 export function middleware(req: NextRequest) {
-  const auth = req.headers.get("authorization");
+  const { pathname } = req.nextUrl;
 
-  if (auth?.startsWith("Basic ")) {
-    const decoded = Buffer.from(auth.slice(6), "base64").toString("utf-8");
-    const [user, pass] = decoded.split(":");
-    if (user === USERNAME && pass === PASSWORD) {
-      return NextResponse.next();
-    }
+  // Always allow login page and API auth route
+  if (pathname.startsWith("/login") || pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
   }
 
-  return new NextResponse("Unauthorized", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="CIO Dinner Series"',
-    },
-  });
+  const cookie = req.cookies.get(AUTH_COOKIE);
+  if (cookie?.value === AUTH_VALUE) {
+    return NextResponse.next();
+  }
+
+  const loginUrl = new URL("/login", req.url);
+  loginUrl.searchParams.set("from", pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
