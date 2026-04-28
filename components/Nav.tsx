@@ -52,7 +52,6 @@ export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const isHome = pathname === "/";
   const isCityPage = pathname.startsWith("/city/");
 
   if (pathname === "/login") return null;
@@ -101,16 +100,6 @@ export default function Nav() {
         </Link>
 
         <div className="flex items-center gap-5">
-          {!isHome && (
-            <Link
-              href="/"
-              className="hidden sm:flex items-center gap-2 text-[11px] tracking-[0.1em] uppercase transition-colors duration-200"
-              style={{ color: "var(--text-muted)" }}
-            >
-              ← All Cities
-            </Link>
-          )}
-
           {isCityPage ? (
             <Suspense>
               <NavCTA />

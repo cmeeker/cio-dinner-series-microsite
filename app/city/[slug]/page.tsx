@@ -61,7 +61,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
       <div className="pt-16 min-h-screen">
         {/* City hero */}
         <div
-          className="relative px-6 lg:px-12 pt-16 pb-12 overflow-hidden"
+          className="relative overflow-hidden"
           style={{
             background:
               "radial-gradient(ellipse 70% 80% at 50% 0%, rgba(103,234,221,0.045) 0%, transparent 60%)",
@@ -71,23 +71,16 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             className="absolute inset-0 pointer-events-none grid-bg"
             aria-hidden
           />
-          <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-10">
             {/* Landmark — decorative, right-aligned */}
             <div
-              className="absolute right-0 top-0 pointer-events-none select-none hidden lg:block"
-              style={{ color: "var(--teal)", opacity: 0.18, width: "220px" }}
+              className="absolute right-6 lg:right-12 top-4 pointer-events-none select-none hidden lg:block"
+              style={{ color: "var(--teal)", opacity: 0.18, width: "200px" }}
               aria-hidden
             >
               <CityLandmark cityKey={slug} className="w-full h-auto" />
             </div>
 
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 mb-8 text-[12px] tracking-[0.1em] uppercase transition-colors duration-200"
-              style={{ color: "var(--text-muted)" }}
-            >
-              ← All cities
-            </Link>
             <h1
               className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
               style={{ fontFamily: "var(--font-cormorant)" }}
@@ -118,7 +111,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
           <div className="grid lg:grid-cols-[1fr_380px] gap-10">
             {/* Main featured card */}
             <div>
