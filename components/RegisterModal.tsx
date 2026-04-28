@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import WorkatoLogo from "./WorkatoLogo";
 
 interface RegisterModalProps {
   cityKey: string;
@@ -34,6 +33,7 @@ export default function RegisterModal({
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const prefillFirst = prefill?.name?.split(" ")[0] ?? "";
   const prefillLast  = prefill?.name?.split(" ").slice(1).join(" ") ?? "";
@@ -125,29 +125,81 @@ export default function RegisterModal({
           <div className="px-7 pt-6 pb-8">
             {submitted ? (
               <motion.div
-                className="text-center py-8"
+                className="py-8"
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
               >
-                <WorkatoLogo className="w-12 h-12 mx-auto mb-5" />
-                <h2
-                  className="text-[28px] font-light mb-3"
-                  style={{ fontFamily: "var(--font-cormorant)", color: "var(--teal)" }}
+                <div className="text-center mb-8">
+                  <h2
+                    className="text-[28px] font-light mb-3"
+                    style={{ fontFamily: "var(--font-cormorant)", color: "var(--teal)" }}
+                  >
+                    Request received.
+                  </h2>
+                  <p className="text-[14px] leading-relaxed" style={{ color: "var(--text-ter)" }}>
+                    Thank you, {form.firstName}. We&apos;ll be in touch with details about the{" "}
+                    <span style={{ color: "var(--text-sec)" }}>{cityName}</span> dinner in{" "}
+                    <span style={{ color: "var(--text-sec)" }}>{eventMonth}</span>.
+                  </p>
+                </div>
+
+                {/* Share with a colleague */}
+                <div
+                  className="rounded-xl p-5 mb-6"
+                  style={{ background: "var(--teal-dim)", border: "1px solid var(--teal-line-dark)" }}
                 >
-                  Request received.
-                </h2>
-                <p className="text-[14px] leading-relaxed mb-6" style={{ color: "var(--text-ter)" }}>
-                  Thank you, {form.firstName}. We&apos;ll be in touch with details about the{" "}
-                  <span style={{ color: "var(--text-sec)" }}>{cityName}</span> dinner in{" "}
-                  <span style={{ color: "var(--text-sec)" }}>{eventMonth}</span>.
-                </p>
-                <button
-                  onClick={onClose}
-                  className="text-[12px] tracking-[0.1em] uppercase transition-colors duration-200"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Close
-                </button>
+                  <p
+                    className="text-[10px] tracking-[0.18em] uppercase mb-1"
+                    style={{ color: "var(--teal)" }}
+                  >
+                    Know someone who should join?
+                  </p>
+                  <p className="text-[13px] mb-4" style={{ color: "var(--text-ter)" }}>
+                    Share a personalised invitation — your name will appear as the one who invited them.
+                  </p>
+                  <button
+                    onClick={() => {
+                      const base = `${window.location.origin}/city/${cityKey}`;
+                      const params = new URLSearchParams({
+                        rep_name: `${form.firstName} ${form.lastName}`.trim(),
+                        ...(form.company ? { rep_company: form.company } : {}),
+                      });
+                      navigator.clipboard.writeText(`${base}?${params.toString()}`).then(() => {
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2500);
+                      });
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 active:scale-[0.98]"
+                    style={{ background: copied ? "rgba(103,234,221,0.15)" : "var(--teal)", color: copied ? "var(--teal)" : "#111010", border: copied ? "1px solid var(--teal-line)" : "1px solid transparent" }}
+                  >
+                    {copied ? (
+                      <>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        Link copied!
+                      </>
+                    ) : (
+                      <>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <rect x="1" y="4" width="8" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+                          <path d="M5 1h7a1 1 0 0 1 1 1v8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                        </svg>
+                        Copy invitation link
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    onClick={onClose}
+                    className="text-[12px] tracking-[0.1em] uppercase transition-colors duration-200"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Close
+                  </button>
+                </div>
               </motion.div>
             ) : (
               <>

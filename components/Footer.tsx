@@ -4,7 +4,12 @@ export default function Footer() {
       className="mt-auto px-6 lg:px-12 py-8 flex flex-wrap items-center justify-between gap-4"
       style={{ borderTop: "1px solid var(--teal-line-dark)" }}
     >
-      <div className="flex items-center gap-3">
+      <a
+        href="https://workato.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center transition-opacity duration-200 hover:opacity-70"
+      >
         <svg
           viewBox="0 0 351 74"
           xmlns="http://www.w3.org/2000/svg"
@@ -18,13 +23,7 @@ export default function Footer() {
             fillRule="nonzero"
           />
         </svg>
-        <span
-          className="text-[12px] tracking-[0.06em]"
-          style={{ color: "var(--text-muted)" }}
-        >
-          CIO Dinner Series · North America
-        </span>
-      </div>
+      </a>
       <span
         className="text-[11px] tracking-[0.08em]"
         style={{ color: "rgba(255,255,255,0.18)" }}
