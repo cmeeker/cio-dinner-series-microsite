@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import WorkatoLogo from "./WorkatoLogo";
 
 interface WelcomeModalProps {
-  guestName: string;
+  guestName?: string;
   guestCompany?: string;
   repName?: string;
+  referredBy?: string;
+  referredByCompany?: string;
   cityName: string;
   eventMonth: string;
 }
@@ -16,11 +18,14 @@ export default function WelcomeModal({
   guestName,
   guestCompany,
   repName,
+  referredBy,
+  referredByCompany,
   cityName,
   eventMonth,
 }: WelcomeModalProps) {
   const [visible, setVisible] = useState(false);
-  const firstName = guestName.split(" ")[0];
+  const firstName = guestName?.split(" ")[0];
+  const isReferral = !!referredBy && !repName;
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 200);
@@ -86,18 +91,26 @@ export default function WelcomeModal({
                   className="text-[10px] tracking-[0.28em] uppercase mb-4"
                   style={{ color: "var(--teal)" }}
                 >
-                  Personal Invitation
+                  {isReferral ? "A colleague thought of you" : "Personal Invitation"}
                 </p>
 
                 <h2
                   className="text-[clamp(36px,6vw,52px)] font-light leading-tight mb-2"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
-                  Welcome,
-                  <br />
-                  <em className="italic" style={{ color: "var(--teal-mid)" }}>
-                    {firstName}.
-                  </em>
+                  {firstName ? (
+                    <>
+                      Welcome,
+                      <br />
+                      <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                        {firstName}.
+                      </em>
+                    </>
+                  ) : (
+                    <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                      You&apos;re invited.
+                    </em>
+                  )}
                 </h2>
 
                 {guestCompany && (
@@ -110,29 +123,40 @@ export default function WelcomeModal({
                 )}
 
                 <p
-                  className="text-[15px] leading-relaxed mb-8"
+                  className="text-[15px] leading-relaxed mb-6"
                   style={{
                     color: "var(--text-ter)",
                     fontFamily: "var(--font-cormorant)",
                     fontSize: "18px",
                   }}
                 >
-                  You&apos;ve been invited to an intimate dinner
-                  <br />
-                  with enterprise leaders in{" "}
+                  {isReferral
+                    ? "Someone in your network shared this dinner for enterprise leaders in"
+                    : "You've been invited to an intimate dinner with enterprise leaders in"}{" "}
                   <span style={{ color: "var(--text-sec)" }}>{cityName}</span>{" "}
                   this{" "}
                   <span style={{ color: "var(--text-sec)" }}>{eventMonth}</span>.
                 </p>
 
-                {repName && (
-                  <p
-                    className="text-[12px] mb-8"
-                    style={{ color: "var(--text-muted)" }}
+                {(repName || referredBy) && (
+                  <div
+                    className="rounded-lg px-4 py-3 mb-8 text-[12px]"
+                    style={{
+                      background: "var(--teal-dim)",
+                      border: "1px solid var(--teal-line-dark)",
+                      color: "var(--text-muted)",
+                    }}
                   >
-                    Invited by{" "}
-                    <span style={{ color: "var(--text-ter)" }}>{repName}</span>
-                  </p>
+                    {isReferral ? "Referred by" : "Invited by"}{" "}
+                    <span style={{ color: "var(--text-ter)" }}>
+                      {isReferral ? referredBy : repName}
+                    </span>
+                    {isReferral && referredByCompany && (
+                      <span style={{ color: "var(--text-muted)" }}>
+                        {" "}· {referredByCompany}
+                      </span>
+                    )}
+                  </div>
                 )}
 
                 <button

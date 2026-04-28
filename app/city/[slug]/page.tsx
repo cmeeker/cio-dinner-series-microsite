@@ -36,11 +36,13 @@ export default async function CityPage({ params, searchParams }: PageProps) {
   const str = (v: string | string[] | undefined) =>
     Array.isArray(v) ? v[0] : v;
 
-  const guestName    = str(sp.guest_name ?? sp.gn);
-  const guestCompany = str(sp.guest_company ?? sp.gc);
-  const repName      = str(sp.rep_name ?? sp.rn);
-  const repCompany   = str(sp.rep_company ?? sp.rc);
-  const isPersonalized = !!(guestName || repName);
+  const guestName          = str(sp.guest_name ?? sp.gn);
+  const guestCompany       = str(sp.guest_company ?? sp.gc);
+  const repName            = str(sp.rep_name ?? sp.rn);
+  const repCompany         = str(sp.rep_company ?? sp.rc);
+  const referredBy         = str(sp.referred_by ?? sp.rb);
+  const referredByCompany  = str(sp.referred_by_company ?? sp.rbc);
+  const isPersonalized = !!(guestName || repName || referredBy);
 
   const featured = city.events[0];
   const copy = CITY_COPY[slug] ?? DEFAULT_COPY;
@@ -49,11 +51,13 @@ export default async function CityPage({ params, searchParams }: PageProps) {
 
   return (
     <>
-      {isPersonalized && guestName && (
+      {isPersonalized && (
         <WelcomeModal
           guestName={guestName}
           guestCompany={guestCompany}
           repName={repName}
+          referredBy={referredBy}
+          referredByCompany={referredByCompany}
           cityName={city.city}
           eventMonth={featured.month}
         />

@@ -20,7 +20,7 @@ interface FormData {
   message: string;
 }
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2;
 
 export default function RegisterModal({
   cityKey,
@@ -155,14 +155,14 @@ export default function RegisterModal({
                     Know someone who should join?
                   </p>
                   <p className="text-[13px] mb-4" style={{ color: "var(--text-ter)" }}>
-                    Share a personalised invitation — your name will appear as the one who invited them.
+                    Share this dinner with a colleague — they&apos;ll see you referred them when they open the link.
                   </p>
                   <button
                     onClick={() => {
                       const base = `${window.location.origin}/city/${cityKey}`;
                       const params = new URLSearchParams({
-                        rep_name: `${form.firstName} ${form.lastName}`.trim(),
-                        ...(form.company ? { rep_company: form.company } : {}),
+                        referred_by: `${form.firstName} ${form.lastName}`.trim(),
+                        ...(form.company ? { referred_by_company: form.company } : {}),
                       });
                       navigator.clipboard.writeText(`${base}?${params.toString()}`).then(() => {
                         setCopied(true);
@@ -230,7 +230,7 @@ export default function RegisterModal({
 
                 {/* Step indicator */}
                 <div className="flex items-center gap-2 mb-7">
-                  {([1, 2, 3] as Step[]).map((s) => (
+                  {([1, 2] as Step[]).map((s) => (
                     <div
                       key={s}
                       className="h-[2px] flex-1 rounded-full transition-all duration-300"
@@ -313,45 +313,6 @@ export default function RegisterModal({
                     </motion.div>
                   )}
 
-                  {step === 3 && (
-                    <motion.div
-                      key="step3"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.22 }}
-                      className="space-y-4"
-                    >
-                      <p
-                        className="text-[12px] uppercase tracking-[0.12em] mb-4"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        Anything to share?
-                      </p>
-                      <textarea
-                        className={`${inputClass} resize-none`}
-                        placeholder="Optional note — topics you'd like to discuss, dietary restrictions, etc."
-                        rows={4}
-                        value={form.message}
-                        onChange={update("message")}
-                      />
-                      <div
-                        className="rounded-lg p-4 text-[12px] leading-relaxed"
-                        style={{
-                          background: "var(--teal-dim)",
-                          border: "1px solid var(--teal-line-dark)",
-                          color: "var(--text-ter)",
-                        }}
-                      >
-                        <strong style={{ color: "var(--text-sec)" }}>
-                          {form.firstName} {form.lastName}
-                        </strong>{" "}
-                        · {form.title}, {form.company}
-                        <br />
-                        <span style={{ color: "var(--text-muted)" }}>{form.email}</span>
-                      </div>
-                    </motion.div>
-                  )}
                 </AnimatePresence>
 
                 {error && (
@@ -364,7 +325,7 @@ export default function RegisterModal({
                 <div className="flex justify-between items-center mt-7">
                   {step > 1 ? (
                     <button
-                      onClick={() => setStep((s) => (s - 1) as Step)}
+                      onClick={() => setStep(1)}
                       className="text-[13px] transition-colors duration-200"
                       style={{ color: "var(--text-muted)" }}
                     >
@@ -373,27 +334,21 @@ export default function RegisterModal({
                   ) : (
                     <span />
                   )}
-                  {step < 3 ? (
+                  {step < 2 ? (
                     <button
-                      onClick={() => setStep((s) => (s + 1) as Step)}
-                      disabled={step === 1 ? !canProceed1 : !canProceed2}
+                      onClick={() => setStep(2)}
+                      disabled={!canProceed1}
                       className="px-7 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-40"
-                      style={{
-                        background: "var(--teal)",
-                        color: "#111010",
-                      }}
+                      style={{ background: "var(--teal)", color: "#111010" }}
                     >
                       Continue →
                     </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      disabled={loading}
+                      disabled={loading || !canProceed2}
                       className="px-7 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-60"
-                      style={{
-                        background: "var(--teal)",
-                        color: "#111010",
-                      }}
+                      style={{ background: "var(--teal)", color: "#111010" }}
                     >
                       {loading ? "Sending…" : "Submit Request"}
                     </button>
