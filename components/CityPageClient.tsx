@@ -23,6 +23,7 @@ export default function CityPageClient({
   return (
     <>
       <button
+        id="city-register-btn"
         onClick={() => setShowModal(true)}
         className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
         style={{

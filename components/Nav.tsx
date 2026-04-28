@@ -3,48 +3,29 @@
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CITIES } from "@/data/events";
-
-const RegisterModal = dynamic(() => import("./RegisterModal"), { ssr: false });
 
 function NavCTA() {
   const pathname = usePathname();
   const params = useSearchParams();
-  const [showModal, setShowModal] = useState(false);
 
   const slug = pathname.startsWith("/city/") ? pathname.replace("/city/", "") : null;
   const city = slug ? CITIES[slug] : null;
   if (!city) return null;
 
-  const featured = city.events[0];
-
-  const guestName    = params.get("guest_name") ?? params.get("gn") ?? undefined;
-  const guestCompany = params.get("guest_company") ?? params.get("gc") ?? undefined;
+  const guestName = params.get("guest_name") ?? params.get("gn") ?? undefined;
   const isPersonalized = !!guestName;
 
   return (
-    <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
-        style={{ background: "var(--teal)", color: "#111010" }}
-      >
-        {isPersonalized ? "Accept invitation" : "Reserve your seat"}
-        <span className="text-[13px]">→</span>
-      </button>
-
-      {showModal && (
-        <RegisterModal
-          cityKey={slug!}
-          cityName={city.city}
-          eventMonth={featured.month}
-          prefill={{ name: guestName, company: guestCompany }}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-    </>
+    <button
+      onClick={() => document.getElementById("city-register-btn")?.click()}
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
+      style={{ background: "var(--teal)", color: "#111010" }}
+    >
+      {isPersonalized ? "Accept invitation" : "Reserve your seat"}
+      <span className="text-[13px]">→</span>
+    </button>
   );
 }
 
