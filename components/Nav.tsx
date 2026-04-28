@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import WorkatoLogo from "./WorkatoLogo";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -46,7 +45,6 @@ export default function Nav() {
 
       <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <WorkatoLogo className="w-8 h-8 transition-transform duration-200 group-hover:scale-105" />
           <span
             className="text-[11px] tracking-[0.22em] uppercase"
             style={{ color: "var(--text-muted)" }}
