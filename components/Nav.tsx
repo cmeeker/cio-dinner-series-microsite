@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function Nav() {
@@ -45,12 +46,14 @@ export default function Nav() {
 
       <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <span
-            className="text-[11px] tracking-[0.22em] uppercase"
-            style={{ color: "var(--text-muted)" }}
-          >
-            CIO Dinner Series
-          </span>
+          <Image
+            src="/workato-logo.webp"
+            alt="Workato"
+            width={120}
+            height={36}
+            className="h-8 w-auto transition-opacity duration-200 group-hover:opacity-80"
+            priority
+          />
         </Link>
 
         <div className="flex items-center gap-6">

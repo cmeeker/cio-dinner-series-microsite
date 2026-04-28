@@ -8,6 +8,7 @@ interface RegisterModalProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
+  prefill?: { name?: string; company?: string };
   onClose: () => void;
 }
 
@@ -26,17 +27,22 @@ export default function RegisterModal({
   cityKey,
   cityName,
   eventMonth,
+  prefill,
   onClose,
 }: RegisterModalProps) {
   const [step, setStep] = useState<Step>(1);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const prefillFirst = prefill?.name?.split(" ")[0] ?? "";
+  const prefillLast  = prefill?.name?.split(" ").slice(1).join(" ") ?? "";
+
   const [form, setForm] = useState<FormData>({
-    firstName: "",
-    lastName: "",
+    firstName: prefillFirst,
+    lastName:  prefillLast,
     email: "",
-    company: "",
+    company: prefill?.company ?? "",
     title: "",
     message: "",
   });
@@ -152,7 +158,7 @@ export default function RegisterModal({
                       className="text-[10px] tracking-[0.22em] uppercase mb-2"
                       style={{ color: "var(--teal)" }}
                     >
-                      Request an invitation
+                      {prefill?.name ? "Accept your invitation" : "Request an invitation"}
                     </p>
                     <h2
                       className="text-[22px] font-light leading-tight"

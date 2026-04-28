@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER } from "@/data/events";
 import EventTimeline from "@/components/EventTimeline";
 import CityPageClient from "@/components/CityPageClient";
+import InvitationBanner from "@/components/InvitationBanner";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export async function generateStaticParams() {
@@ -24,10 +26,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CityPage({ params }: PageProps) {
+export default async function CityPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const sp = await searchParams;
   const city = CITIES[slug];
   if (!city) notFound();
+
+  const str = (v: string | string[] | undefined) =>
+    Array.isArray(v) ? v[0] : v;
+
+  const guestName    = str(sp.guest_name ?? sp.gn);
+  const guestCompany = str(sp.guest_company ?? sp.gc);
+  const repName      = str(sp.rep_name ?? sp.rn);
+  const repCompany   = str(sp.rep_company ?? sp.rc);
+  const isPersonalized = !!(guestName || repName);
 
   const featured = city.events[0];
   const copy = CITY_COPY[slug] ?? DEFAULT_COPY;
@@ -76,6 +88,16 @@ export default async function CityPage({ params }: PageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+          {isPersonalized && (
+            <InvitationBanner
+              guestName={guestName}
+              guestCompany={guestCompany}
+              repName={repName}
+              repCompany={repCompany}
+              cityName={city.city}
+              eventMonth={featured.month}
+            />
+          )}
           <div className="grid lg:grid-cols-[1fr_380px] gap-10">
             {/* Main featured card */}
             <div>
@@ -182,6 +204,10 @@ export default async function CityPage({ params }: PageProps) {
                     cityKey={slug}
                     cityName={city.city}
                     eventMonth={featured.month}
+                    prefill={{
+                      name: guestName,
+                      company: guestCompany,
+                    }}
                   />
                 </div>
               </div>

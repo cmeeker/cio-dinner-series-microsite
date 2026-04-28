@@ -9,12 +9,14 @@ interface CityPageClientProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
+  prefill?: { name?: string; company?: string };
 }
 
 export default function CityPageClient({
   cityKey,
   cityName,
   eventMonth,
+  prefill,
 }: CityPageClientProps) {
   const [showModal, setShowModal] = useState(false);
 
@@ -28,8 +30,7 @@ export default function CityPageClient({
           color: "#111010",
         }}
       >
-        Request an invitation
-        <span className="text-[16px]">→</span>
+        {prefill?.name ? `Accept invitation →` : "Request an invitation →"}
       </button>
 
       {showModal && (
@@ -37,6 +38,7 @@ export default function CityPageClient({
           cityKey={cityKey}
           cityName={cityName}
           eventMonth={eventMonth}
+          prefill={prefill}
           onClose={() => setShowModal(false)}
         />
       )}
