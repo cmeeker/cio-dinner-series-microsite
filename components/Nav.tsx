@@ -51,17 +51,13 @@ function NavCTA() {
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const isCityPage = pathname.startsWith("/city/");
 
   if (pathname === "/login") return null;
 
   useEffect(() => {
     const handleScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 20);
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? (y / docHeight) * 100 : 0);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -77,16 +73,6 @@ export default function Nav() {
         borderBottom: `1px solid ${scrolled ? "rgba(103,234,221,0.12)" : "rgba(103,234,221,0.06)"}`,
       }}
     >
-      {/* Scroll progress bar */}
-      <div
-        className="absolute bottom-0 left-0 h-[2px] transition-all duration-100"
-        style={{
-          width: `${scrollProgress}%`,
-          background: "linear-gradient(to right, var(--teal-mid), var(--teal))",
-          opacity: scrollProgress > 1 ? 1 : 0,
-        }}
-      />
-
       <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <Image
