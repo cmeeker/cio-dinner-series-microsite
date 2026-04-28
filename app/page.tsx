@@ -6,8 +6,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <section className="pt-4">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-10">
+      <section className="pt-2">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-8">
           <div className="flex items-center gap-4">
             <span
               className="text-[10px] tracking-[0.28em] uppercase"

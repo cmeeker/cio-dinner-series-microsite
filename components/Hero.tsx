@@ -36,7 +36,7 @@ function AnimatedStat({
   return (
     <div
       ref={ref}
-      className="px-8 py-5 text-center"
+      className="px-8 py-4 text-center"
       style={{ borderRight: "1px solid var(--teal-line-dark)" }}
     >
       <span
@@ -60,7 +60,7 @@ function AnimatedStat({
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center px-6 pt-20 pb-16 overflow-hidden">
+    <section className="relative flex items-center justify-center px-6 pt-24 pb-10 overflow-hidden">
       {/* Gradient mesh background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -81,7 +81,7 @@ export default function Hero() {
       >
         {/* Pre-title */}
         <div
-          className="inline-flex items-center gap-4 mb-8 text-[11px] tracking-[0.28em] uppercase"
+          className="inline-flex items-center gap-4 mb-5 text-[11px] tracking-[0.28em] uppercase"
           style={{ color: "var(--teal)" }}
         >
           <span
@@ -101,7 +101,7 @@ export default function Hero() {
 
         {/* Main title */}
         <h1
-          className="text-[clamp(52px,8vw,88px)] font-light leading-[1.02] tracking-[-0.01em] mb-3"
+          className="text-[clamp(44px,7vw,78px)] font-light leading-[1.02] tracking-[-0.01em] mb-2"
           style={{ fontFamily: "var(--font-cormorant)" }}
         >
           CIO
@@ -113,7 +113,7 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className="text-[clamp(16px,2vw,21px)] font-light italic leading-relaxed mb-10"
+          className="text-[clamp(15px,1.8vw,19px)] font-light italic leading-relaxed mb-6"
           style={{
             fontFamily: "var(--font-cormorant)",
             color: "var(--text-ter)",
@@ -126,7 +126,7 @@ export default function Hero() {
 
         {/* Theme pill */}
         <motion.div
-          className="inline-block mb-8 px-6 py-3 rounded-full text-[clamp(15px,1.8vw,20px)] italic font-normal"
+          className="inline-block mb-6 px-6 py-2.5 rounded-full text-[clamp(14px,1.6vw,18px)] italic font-normal"
           style={{
             fontFamily: "var(--font-cormorant)",
             color: "var(--teal-mid)",
@@ -143,7 +143,7 @@ export default function Hero() {
 
         {/* Stats strip */}
         <motion.div
-          className="inline-flex overflow-hidden mb-8 rounded-lg"
+          className="inline-flex overflow-hidden mb-5 rounded-lg"
           style={{ border: "1px solid var(--teal-line-dark)" }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ export default function Hero() {
         >
           <AnimatedStat target={70} label="Dinners" delay={600} />
           <AnimatedStat target={10} label="Markets" delay={750} />
-          <div className="px-8 py-5 text-center">
+          <div className="px-8 py-4 text-center">
             <span
               className="block text-[36px] leading-none font-light"
               style={{
@@ -179,21 +179,6 @@ export default function Hero() {
         </p>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <span
-          className="text-[10px] tracking-[0.16em] uppercase"
-          style={{ color: "var(--text-muted)" }}
-        >
-          Explore
-        </span>
-        <div
-          className="w-px h-9 origin-top animate-[caretPulse_2.2s_ease-in-out_infinite]"
-          style={{
-            background: "linear-gradient(to bottom, var(--teal-mid), transparent)",
-          }}
-        />
-      </div>
     </section>
   );
 }
