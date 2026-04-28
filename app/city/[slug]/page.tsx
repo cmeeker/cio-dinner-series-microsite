@@ -135,15 +135,15 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               className="relative rounded-2xl overflow-hidden"
                 style={{
                   background: "var(--card)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  border: "1px solid rgba(103,234,221,0.14)",
                 }}
               >
                 {/* Top bar */}
                 <div
-                  className="h-[3px]"
+                  className="h-[2px]"
                   style={{
                     background:
-                      "linear-gradient(to right, var(--teal-deep), var(--teal), var(--teal-mid))",
+                      "linear-gradient(to right, transparent, var(--teal), transparent)",
                   }}
                 />
                 <div className="p-8">
