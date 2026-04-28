@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-cormorant);
+
+  /* Workato brand palette */
+  --color-teal:        #67EADD;
+  --color-teal-mid:    #22DBC8;
+  --color-teal-deep:   #3EA2A8;
+
+  /* Surfaces */
+  --color-bg:          #111010;
+  --color-bg2:         #151414;
+  --color-card:        #1A1717;
+  --color-surface:     #282525;
+
+  /* Text */
+  --color-text:        #FFFFFF;
+  --color-text-sec:    rgba(255, 255, 255, 0.85);
+  --color-text-ter:    rgba(255, 255, 255, 0.65);
+  --color-text-muted:  rgba(255, 255, 255, 0.40);
+
+  /* Lines */
+  --color-line:        rgba(103, 234, 221, 0.22);
+  --color-line-dark:   rgba(103, 234, 221, 0.10);
+  --color-teal-dim:    rgba(103, 234, 221, 0.10);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --teal:        #67EADD;
+  --teal-mid:    #22DBC8;
+  --teal-deep:   #3EA2A8;
+  --teal-dim:    rgba(103, 234, 221, 0.10);
+  --teal-line:   rgba(103, 234, 221, 0.22);
+  --teal-line-dark: rgba(103, 234, 221, 0.10);
+  --bg:          #111010;
+  --bg2:         #151414;
+  --card:        #1A1717;
+  --surface:     #282525;
+  --text:        #FFFFFF;
+  --text-sec:    rgba(255, 255, 255, 0.85);
+  --text-ter:    rgba(255, 255, 255, 0.65);
+  --text-muted:  rgba(255, 255, 255, 0.40);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans, "Geist", sans-serif);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Caret pulse animation */
+@keyframes caretPulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.9); }
+  50%       { opacity: 1;   transform: scaleY(1.1); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--teal-line); border-radius: 2px; }
+
+/* Grid background helper */
+.grid-bg {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 63px, rgba(103, 234, 221, 0.022) 64px),
+    repeating-linear-gradient(90deg, transparent, transparent 63px, rgba(103, 234, 221, 0.022) 64px);
 }
