@@ -87,14 +87,8 @@ function LoginForm() {
             className="text-[28px] font-light text-center"
             style={{ fontFamily: "var(--font-cormorant)" }}
           >
-            CIO Dinner Series
+            CIO Dinner Series Microsite Demo
           </h1>
-          <p
-            className="text-[12px] tracking-[0.14em] uppercase mt-1"
-            style={{ color: "var(--text-muted)" }}
-          >
-            North America · FY27
-          </p>
         </div>
 
         {/* Form card */}
