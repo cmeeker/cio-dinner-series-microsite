@@ -75,57 +75,62 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             className="absolute inset-0 pointer-events-none grid-bg"
             aria-hidden
           />
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-10">
-            <h1
-              className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              {isPersonalized && guestName ? (
-                <>
-                  <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
-                    Your invitation — {city.city}
-                  </span>
-                  <em className="italic" style={{ color: "var(--teal-mid)" }}>
-                    {guestName.split(" ")[0]},
-                  </em>{" "}
-                  you&apos;re invited.
-                </>
-              ) : (
-                city.city
-              )}
-            </h1>
-            <p
-              className="text-[13px] tracking-[0.06em]"
-              style={{ color: "var(--text-muted)" }}
-            >
-              {city.state}
-              {city.country === "CA" ? " · Canada" : ""}
-              &nbsp;·&nbsp;CIO Dinner Series&nbsp;·&nbsp;
-              {city.events.length} dinner{city.events.length > 1 ? "s" : ""}
-            </p>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-6">
+            <div className="flex items-end justify-between gap-6">
+              <div>
+                <h1
+                  className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  {isPersonalized && guestName ? (
+                    <>
+                      <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
+                        Your invitation — {city.city}
+                      </span>
+                      <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                        {guestName.split(" ")[0]},
+                      </em>{" "}
+                      you&apos;re invited.
+                    </>
+                  ) : (
+                    city.city
+                  )}
+                </h1>
+                <p
+                  className="text-[13px] tracking-[0.06em]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {city.state}
+                  {city.country === "CA" ? " · Canada" : ""}
+                  &nbsp;·&nbsp;CIO Dinner Series&nbsp;·&nbsp;
+                  {city.events.length} dinner{city.events.length > 1 ? "s" : ""}
+                </p>
+              </div>
+
+              {/* Landmark — aligned right, bottom-anchored to city subtitle */}
+              <div
+                className="shrink-0 pointer-events-none select-none"
+                style={{ color: "var(--teal)", opacity: 0.22, width: "160px" }}
+                aria-hidden
+              >
+                <CityLandmark cityKey={slug} className="w-full h-auto" />
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-          <div className="grid lg:grid-cols-[1fr_380px] lg:grid-rows-[auto_1fr] gap-x-10 gap-y-0">
-            {/* Row 1 left — section label */}
-            <p
-              className="text-[10px] tracking-[0.22em] uppercase mb-4"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Next upcoming dinner
-            </p>
+          <div className="grid lg:grid-cols-[1fr_380px] gap-10">
+            {/* Left — featured card */}
+            <div>
+              <p
+                className="text-[10px] tracking-[0.22em] uppercase mb-4"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Next upcoming dinner
+              </p>
 
-            {/* Row 1 right — landmark centered, hidden on mobile */}
-            <div
-              className="hidden lg:flex justify-center items-end pb-4 pointer-events-none select-none"
-              style={{ color: "var(--teal)", opacity: 0.2 }}
-              aria-hidden
-            >
-              <CityLandmark cityKey={slug} className="h-36 w-auto" />
-            </div>
-
-            {/* Row 2 left — featured card */}
+            {/* Featured card */}
             <div
               className="relative rounded-2xl overflow-hidden"
                 style={{
@@ -229,8 +234,9 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   />
                 </div>
               </div>
+            </div>
 
-            {/* Row 2 right — timeline card */}
+            {/* Right — timeline card */}
             <div
               className="rounded-xl p-6"
               style={{
