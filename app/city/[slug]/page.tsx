@@ -236,15 +236,23 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* Right — timeline card */}
-            <div
-              className="rounded-xl p-6"
-              style={{
-                background: "var(--card)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <EventTimeline events={city.events} cityName={city.city} />
+            {/* Right — timeline */}
+            <div>
+              <p
+                className="text-[10px] tracking-[0.22em] uppercase mb-4"
+                style={{ color: "var(--text-muted)" }}
+              >
+                All evenings in {city.city}
+              </p>
+              <div
+                className="rounded-xl p-6"
+                style={{
+                  background: "var(--card)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                <EventTimeline events={city.events} cityName={city.city} />
+              </div>
             </div>
           </div>
         </div>

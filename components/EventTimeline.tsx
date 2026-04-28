@@ -8,12 +8,6 @@ interface EventTimelineProps {
 export default function EventTimeline({ events, cityName }: EventTimelineProps) {
   return (
     <div className="space-y-3">
-      <p
-        className="text-[10px] tracking-[0.22em] uppercase mb-5"
-        style={{ color: "var(--text-muted)" }}
-      >
-        All evenings in {cityName}
-      </p>
       {events.map((event, i) => (
         <div
           key={event.id}

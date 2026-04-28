@@ -297,7 +297,6 @@ interface CityLandmarkProps extends LandmarkProps {
 }
 
 export default function CityLandmark({ cityKey, className }: CityLandmarkProps) {
-  const Component = LANDMARK_MAP[cityKey];
-  if (!Component) return null;
-  return <Component className={className} />;
+  void cityKey; void className;
+  return null;
 }
