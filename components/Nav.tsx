@@ -54,8 +54,9 @@ function NavCTA() {
   const city = slug ? CITIES[slug] : null;
   if (!city) return null;
 
-  const guestName = params.get("guest_name") ?? params.get("gn") ?? undefined;
-  const isPersonalized = !!guestName;
+  const guestName  = params.get("guest_name")  ?? params.get("gn")  ?? undefined;
+  const referredBy = params.get("referred_by") ?? params.get("rb")  ?? undefined;
+  const isPersonalized = !!(guestName || referredBy);
 
   return (
     <button

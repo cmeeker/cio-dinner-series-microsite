@@ -127,7 +127,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
-                  {isPersonalized && guestName ? (
+                  {guestName ? (
                     <>
                       <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
                         Your invitation — {city.city}
@@ -136,6 +136,13 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                         {guestName.split(" ")[0]},
                       </em>{" "}
                       you&apos;re invited.
+                    </>
+                  ) : referredBy ? (
+                    <>
+                      <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
+                        {referredBy} thought of you — {city.city}
+                      </span>
+                      You&apos;re invited.
                     </>
                   ) : (
                     city.city
@@ -257,6 +264,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                       cityKey={slug}
                       cityName={city.city}
                       eventMonth={featured.month}
+                      isPersonalized={isPersonalized}
                       prefill={{
                         name: guestName,
                         company: guestCompany,

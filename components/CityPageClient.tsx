@@ -10,6 +10,7 @@ interface CityPageClientProps {
   cityName: string;
   eventMonth: string;
   prefill?: { name?: string; company?: string };
+  isPersonalized?: boolean;
 }
 
 export default function CityPageClient({
@@ -17,6 +18,7 @@ export default function CityPageClient({
   cityName,
   eventMonth,
   prefill,
+  isPersonalized,
 }: CityPageClientProps) {
   const [showModal, setShowModal] = useState(false);
 
@@ -31,7 +33,7 @@ export default function CityPageClient({
           color: "#111010",
         }}
       >
-        {prefill?.name ? "Accept invitation →" : "Reserve your seat →"}
+        {(prefill?.name || isPersonalized) ? "Accept invitation →" : "Reserve your seat →"}
       </button>
 
       {showModal && (
