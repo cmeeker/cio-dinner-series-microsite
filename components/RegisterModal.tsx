@@ -3,6 +3,56 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+function FloatingInput({
+  label,
+  value,
+  onChange,
+  type = "text",
+  inputMode,
+  autoComplete,
+  autoCapitalize,
+  autoCorrect,
+}: {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  autoComplete?: string;
+  autoCapitalize?: string;
+  autoCorrect?: string;
+}) {
+  const filled = value.length > 0;
+  return (
+    <div className="relative">
+      <label
+        className="absolute left-4 pointer-events-none transition-all duration-200 select-none"
+        style={{
+          top: filled ? "6px" : "50%",
+          transform: filled ? "none" : "translateY(-50%)",
+          fontSize: filled ? "10px" : "16px",
+          letterSpacing: filled ? "0.12em" : "0",
+          textTransform: filled ? "uppercase" : "none",
+          color: filled ? "rgba(103,234,221,0.5)" : "rgba(255,255,255,0.25)",
+        }}
+      >
+        {label}
+      </label>
+      <input
+        type={type}
+        inputMode={inputMode}
+        value={value}
+        onChange={onChange}
+        autoComplete={autoComplete}
+        autoCapitalize={autoCapitalize}
+        autoCorrect={autoCorrect}
+        className="w-full px-4 pb-3 rounded-lg text-[16px] outline-none transition-all duration-200 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)] focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)] text-[var(--text)]"
+        style={{ paddingTop: filled ? "22px" : "12px" }}
+      />
+    </div>
+  );
+}
+
 interface RegisterModalProps {
   cityKey: string;
   cityName: string;
@@ -240,11 +290,11 @@ export default function RegisterModal({
 
                 <div className="space-y-3 mb-7">
                   <div className="grid grid-cols-2 gap-3">
-                    <input className={inputClass} placeholder="First name" value={form.firstName} onChange={update("firstName")} autoComplete="given-name" autoCapitalize="words" />
-                    <input className={inputClass} placeholder="Last name" value={form.lastName} onChange={update("lastName")} autoComplete="family-name" autoCapitalize="words" />
+                    <FloatingInput label="First name" value={form.firstName} onChange={update("firstName")} autoComplete="given-name" autoCapitalize="words" />
+                    <FloatingInput label="Last name"  value={form.lastName}  onChange={update("lastName")}  autoComplete="family-name" autoCapitalize="words" />
                   </div>
-                  <input className={inputClass} type="email" inputMode="email" placeholder="Work email" value={form.email} onChange={update("email")} autoComplete="email" autoCapitalize="none" autoCorrect="off" />
-                  <input className={inputClass} placeholder="Company" value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
+                  <FloatingInput label="Work email" value={form.email}   onChange={update("email")}   type="email" inputMode="email" autoComplete="email" autoCapitalize="none" autoCorrect="off" />
+                  <FloatingInput label="Company"    value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
                 </div>
 
                 {error && <p className="mb-4 text-[12px]" style={{ color: "#FF6B6B" }}>{error}</p>}
