@@ -196,22 +196,6 @@ export default async function CityPage({ params, searchParams }: PageProps) {
 
                   {/* Left — editorial */}
                   <div className="p-8 flex-1">
-                    {/* Month pill */}
-                    <div
-                      className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-[12px]"
-                      style={{
-                        background: "var(--teal-dim)",
-                        border: "1px solid var(--teal-line-dark)",
-                        color: "var(--teal)",
-                      }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full animate-pulse"
-                        style={{ background: "var(--teal)" }}
-                      />
-                      {featured.month}
-                    </div>
-
                     <h2
                       className="text-[clamp(22px,2.8vw,34px)] font-light leading-snug mb-5"
                       style={{ fontFamily: "var(--font-cormorant)" }}
