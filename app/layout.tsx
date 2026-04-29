@@ -17,10 +17,16 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+const siteUrl = "https://cio-dinner-series-microsite.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Workato CIO Dinner Series — North America FY27",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Workato CIO Dinner Series — North America FY27",
+    template: "%s | Workato CIO Dinner Series",
+  },
   description:
-    "An intimate gathering of enterprise leaders across North America's most dynamic markets. By invitation only. May 2026 – January 2027.",
+    "An intimate gathering of enterprise leaders across North America's most dynamic markets. 70 dinners across 10 cities. By invitation only.",
   robots: {
     index: false,
     follow: false,
@@ -29,8 +35,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Workato CIO Dinner Series — North America FY27",
     description:
-      "An intimate gathering of enterprise leaders across North America's most dynamic markets.",
+      "An intimate gathering of enterprise leaders across North America's most dynamic markets. 70 dinners · 10 cities · May 2026 – January 2027.",
     type: "website",
+    siteName: "Workato CIO Dinner Series",
+    images: [{ url: "/api/og?city=CIO+Dinner+Series", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Workato CIO Dinner Series — North America FY27",
+    description:
+      "An intimate gathering of enterprise leaders across North America's most dynamic markets.",
+    images: ["/api/og?city=CIO+Dinner+Series"],
   },
 };
 

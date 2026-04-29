@@ -17,13 +17,58 @@ export async function generateStaticParams() {
   return CITY_ORDER.map((key) => ({ slug: key }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const sp = await searchParams;
   const city = CITIES[slug];
   if (!city) return {};
+
+  const str = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  const guestName  = str(sp.guest_name ?? sp.gn);
+  const repName    = str(sp.rep_name ?? sp.rn);
+  const referredBy = str(sp.referred_by ?? sp.rb);
+  const featured   = city.events[0];
+
+  const base = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://cio-dinner-series-microsite.vercel.app";
+
+  // Build OG image URL
+  const ogParams = new URLSearchParams({ city: city.city, month: featured.month });
+  if (guestName)  ogParams.set("guest_name", guestName);
+  if (repName)    ogParams.set("rep_name", repName);
+  if (referredBy) ogParams.set("referred_by", referredBy);
+  const ogImage = `${base}/api/og?${ogParams.toString()}`;
+
+  // Personalised title
+  const firstName = guestName?.split(" ")[0];
+  const title = firstName
+    ? `${firstName}, you're invited — ${city.city} | Workato CIO Dinner Series`
+    : referredBy
+    ? `You're invited to the ${city.city} dinner | Workato CIO Dinner Series`
+    : `${city.city} — Workato CIO Dinner Series`;
+
+  const description = guestName
+    ? `${guestName}, you've been personally invited to an intimate dinner with enterprise leaders in ${city.city} this ${featured.month}.`
+    : referredBy
+    ? `${referredBy} thought you'd belong at this dinner. Join enterprise leaders in ${city.city} this ${featured.month}.`
+    : CITY_COPY[slug] ?? DEFAULT_COPY;
+
   return {
-    title: `${city.city} — Workato CIO Dinner Series`,
-    description: CITY_COPY[slug] ?? DEFAULT_COPY,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
   };
 }
 
