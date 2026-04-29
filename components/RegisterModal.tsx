@@ -31,6 +31,7 @@ export default function RegisterModal({
   isPersonalized,
   onClose,
 }: RegisterModalProps) {
+  const isFullPrefill = !!(prefill?.name && prefill?.email && prefill?.company);
   const [step, setStep] = useState<Step>(1);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -85,9 +86,10 @@ export default function RegisterModal({
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") { onClose(); return; }
       if (e.key === "Enter") {
-        if (submitted) return;
+        if (submitted || loading) return;
+        if (isFullPrefill) { handleSubmit(); return; }
         if (step === 1 && canProceed1) setStep(2);
-        else if (step === 2 && canProceed2 && !loading) handleSubmit();
+        else if (step === 2 && canProceed2) handleSubmit();
       }
     };
     window.addEventListener("keydown", handler);
@@ -220,6 +222,50 @@ export default function RegisterModal({
                     Close
                   </button>
                 </div>
+              </motion.div>
+            ) : isFullPrefill ? (
+              /* ── Single-step confirmation for fully pre-filled invites ── */
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <p className="text-[10px] tracking-[0.22em] uppercase mb-2" style={{ color: "var(--teal)" }}>
+                      Your invitation
+                    </p>
+                    <h2 className="text-[22px] font-light leading-tight" style={{ fontFamily: "var(--font-cormorant)", color: "var(--text)" }}>
+                      {cityName} · {eventMonth}
+                    </h2>
+                  </div>
+                  <button onClick={onClose} className="text-[18px] leading-none transition-colors duration-200 mt-1" style={{ color: "var(--text-muted)" }}>×</button>
+                </div>
+
+                {/* Pre-filled summary */}
+                <div className="rounded-xl p-5 mb-6 space-y-3" style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                  {[
+                    { label: "Name",    value: prefill!.name! },
+                    { label: "Email",   value: prefill!.email! },
+                    { label: "Company", value: prefill!.company! },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="flex justify-between items-baseline gap-4">
+                      <span className="text-[10px] tracking-[0.14em] uppercase shrink-0" style={{ color: "var(--text-muted)" }}>{label}</span>
+                      <span className="text-[13px] text-right" style={{ color: "var(--text-sec)" }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {error && <p className="mb-4 text-[12px]" style={{ color: "#FF6B6B" }}>{error}</p>}
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_24px_rgba(103,234,221,0.25)] active:scale-[0.98] cursor-pointer disabled:opacity-60"
+                  style={{ background: "var(--teal)", color: "#111010" }}
+                >
+                  {loading ? "Sending…" : "Accept invitation →"}
+                </button>
               </motion.div>
             ) : (
               <>
