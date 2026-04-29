@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const { firstName, lastName, email, company, title, message, cityKey, eventMonth } =
       body as Record<string, string>;
 
-    if (!firstName || !lastName || !email || !company || !title || !cityKey || !eventMonth) {
+    if (!firstName || !lastName || !email || !company || !cityKey || !eventMonth) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
