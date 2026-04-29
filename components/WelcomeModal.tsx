@@ -22,14 +22,9 @@ export default function WelcomeModal({
   cityName,
   eventMonth,
 }: WelcomeModalProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const firstName = guestName?.split(" ")[0];
   const isReferral = !!referredBy && !repName;
-
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 200);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setVisible(false); };
