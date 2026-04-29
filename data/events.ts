@@ -109,29 +109,29 @@ export const EVENTS: Event[] = [
 
 export const CITY_COPY: Record<string, string> = {
   "bay-area":
-    "The Bay Area built the tools now running through every enterprise on the planet. The organizations winning here didn't just deploy AI first — they figured out how to own it across teams, vendors, and workflows. Join Workato leadership for an off-the-record dinner on what deliberate AI governance looks like in practice, and how the leaders pulling ahead got there.",
+    "The Bay Area built the infrastructure running through every enterprise on the planet. The organizations winning here didn't just move fast on AI — they built the governance layer to own it. Join Workato leadership for an off-the-record dinner on what deliberate AI governance looks like in practice.",
   "new-york":
-    "Financial services moved faster than any sector when AI promised an edge. The firms that are ahead now aren't just the ones that moved first — they're the ones that built the governance layer to match the pace. Join Workato leadership for an off-the-record dinner on how enterprise leaders are making deliberate decisions about how AI moves through their organizations.",
+    "The firms pulling ahead in financial services aren't just the ones that moved first on AI — they're the ones that built the accountability layer to match. Join Workato leadership for an off-the-record dinner on how enterprise leaders are governing AI before the complexity demands it.",
   "chicago":
-    "Across financial services, professional services, and manufacturing, the enterprises pulling ahead aren't just deploying more AI — they're the ones who decided early how to govern it across systems, teams, and vendors. Join Workato leadership for an off-the-record dinner on what those decisions look like, and how to get ahead of the question before it gets ahead of you.",
+    "Across financial services, professional services, and manufacturing, the enterprises ahead aren't deploying more AI — they decided early how to govern it. Join Workato leadership for an off-the-record dinner on what that looks like in practice.",
   "boston":
-    "Life sciences and enterprise tech share a common reality: the margin for error is low, and the pace of AI adoption isn't slowing down. The organizations pulling ahead built their governance posture deliberately, not reactively. Join Workato leadership for an off-the-record dinner on how enterprise leaders are making those decisions now.",
+    "In life sciences and enterprise tech, the margin for error is low and AI adoption isn't slowing. The organizations ahead built their governance posture deliberately. Join Workato leadership for an off-the-record dinner on how enterprise leaders are making those decisions now.",
   "austin":
-    "Austin's enterprise scene is one of the fastest-moving in the country. The companies that will define the next few years aren't just the ones deploying AI most aggressively — they're the ones who paired that speed with a clear answer to who owns it. Join Workato leadership for an off-the-record dinner on how the leaders pulling ahead got there.",
+    "The companies defining Austin's next chapter aren't just the fastest to deploy AI — they paired that speed with a clear answer to who owns it. Join Workato leadership for an off-the-record dinner on how the leaders pulling ahead got there.",
   "seattle-bellevue":
-    "Cloud-native organizations understand better than most that the right infrastructure decision, made early, compounds over years. How you govern AI across your organization is that kind of decision. Join Workato leadership for an off-the-record dinner on what the enterprises pulling ahead chose, and how they made it work.",
+    "Cloud-native organizations understand that the right infrastructure decision, made early, compounds over years. AI governance is that kind of decision. Join Workato leadership for an off-the-record dinner on what the enterprises pulling ahead chose.",
   "atlanta":
-    "The Southeast is moving fast, and the gap between enterprises that have a deliberate AI posture and those still figuring it out is starting to show. Join Workato leadership for an off-the-record dinner on how enterprise leaders across the region are making proactive decisions about how AI moves through their organizations — and what separates the ones pulling ahead.",
+    "The gap between enterprises with a deliberate AI posture and those still figuring it out is starting to show across the Southeast. Join Workato leadership for an off-the-record dinner on the decisions that separate them.",
   "washington-dc":
-    "In the DC corridor, the enterprises pulling ahead aren't just deploying AI — they built the governance, auditability, and accountability layer to go with it. That's not a coincidence. Join Workato leadership for an off-the-record dinner on the deliberate decisions enterprise leaders in regulated and government-adjacent markets are making about how their organizations use AI.",
+    "In the DC corridor, the enterprises ahead didn't just deploy AI — they built the governance, auditability, and accountability layer alongside it. Join Workato leadership for an off-the-record dinner on how leaders in regulated markets are making those decisions.",
   "dallas":
-    "DFW's enterprise market spans some of the most operationally complex organizations anywhere. The ones pulling ahead share something in common: they made intentional decisions about how AI moves through the enterprise, before the complexity made it harder. Join Workato leadership for an off-the-record dinner on what those decisions look like.",
+    "The organizations pulling ahead in DFW made intentional decisions about how AI moves through the enterprise — before the operational complexity made it harder. Join Workato leadership for an off-the-record dinner on what that looks like.",
   "toronto":
-    "Canadian enterprises are navigating AI adoption under a shifting regulatory environment — and the organizations pulling ahead aren't waiting for the rules to finalize. They're building governance posture now. Join Workato leadership for an off-the-record dinner on the deliberate decisions enterprise leaders are making about how their companies use AI.",
+    "Canadian enterprises aren't waiting for the regulatory environment to finalize before building their AI governance posture. Join Workato leadership for an off-the-record dinner on the deliberate decisions enterprise leaders are making now.",
 };
 
 export const DEFAULT_COPY =
-  "They made deliberate decisions about how AI moves through their organization — who owns it, how it's governed, where it's trusted. Most enterprises are still catching up. Join Workato leadership for an off-the-record dinner on what those decisions look like in practice, and how enterprise leaders are getting ahead of the governance question before it gets ahead of them.";
+  "The enterprises pulling ahead made deliberate decisions about how AI moves through their organization — who owns it, how it's governed, where it's trusted. Join Workato leadership for an off-the-record dinner on what those decisions look like in practice.";
 
 export const REGIONS: Record<string, string[]> = {
   "West Coast & Pacific Northwest": ["bay-area", "seattle-bellevue"],

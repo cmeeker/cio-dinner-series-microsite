@@ -6,6 +6,32 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { CITIES } from "@/data/events";
 
+function NavCityMeta() {
+  const pathname = usePathname();
+  const slug = pathname.startsWith("/city/") ? pathname.replace("/city/", "") : null;
+  const city = slug ? CITIES[slug] : null;
+  if (!city) return null;
+
+  const featured = city.events[0];
+
+  return (
+    <div className="hidden lg:flex flex-col items-center gap-0.5">
+      <span
+        className="text-[14px] font-light leading-tight"
+        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)" }}
+      >
+        {city.city}
+      </span>
+      <span
+        className="text-[10px] tracking-[0.14em] uppercase"
+        style={{ color: "var(--text-muted)" }}
+      >
+        {featured.month} · By invitation only
+      </span>
+    </div>
+  );
+}
+
 function NavCTA() {
   const pathname = usePathname();
   const params = useSearchParams();
@@ -38,7 +64,7 @@ export default function Nav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 80);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,7 +81,8 @@ export default function Nav() {
       }}
     >
       <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
+        {/* Left — logo */}
+        <Link href="/" className="flex items-center gap-3 group shrink-0">
           <Image
             src="/workato-logo.webp"
             alt="Workato"
@@ -66,7 +93,20 @@ export default function Nav() {
           />
         </Link>
 
-        <div className="flex items-center gap-5">
+        {/* Centre — city details, fades in on scroll */}
+        {isCityPage && (
+          <div
+            className="absolute left-1/2 -translate-x-1/2 transition-all duration-500"
+            style={{ opacity: scrolled ? 1 : 0, transform: `translateX(-50%) translateY(${scrolled ? 0 : 6}px)` }}
+          >
+            <Suspense>
+              <NavCityMeta />
+            </Suspense>
+          </div>
+        )}
+
+        {/* Right — CTA or tagline */}
+        <div className="flex items-center gap-5 shrink-0">
           {isCityPage ? (
             <Suspense>
               <NavCTA />
