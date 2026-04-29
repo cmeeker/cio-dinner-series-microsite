@@ -146,9 +146,9 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   <p className="mt-2 text-[11px] tracking-[0.08em]" style={{ color: "rgba(103,234,221,0.45)" }}>
                     Personal invitation for {guestName}{guestCompany ? ` · ${guestCompany}` : ""}
                     {repName && (
-                      <em className="not-italic ml-1" style={{ color: "rgba(103,234,221,0.3)", fontStyle: "italic" }}>
-                        {" "}— prepared by <span style={{ fontStyle: "italic" }}>{repName}</span>
-                      </em>
+                      <span style={{ color: "rgba(255,255,255,0.2)", fontFamily: "var(--font-cormorant)", fontStyle: "normal" }}>
+                        {" "}— prepared by {repName}
+                      </span>
                     )}
                   </p>
                 )}
