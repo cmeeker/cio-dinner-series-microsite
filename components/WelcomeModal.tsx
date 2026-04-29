@@ -33,30 +33,28 @@ export default function WelcomeModal({
   }, []);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       {visible && (
         <motion.div
           className="fixed inset-0 z-[200] flex items-center justify-center px-6"
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.3 } }}
           onClick={() => setVisible(false)}
         >
-          {/* Backdrop */}
-          <motion.div
+          {/* Backdrop — immediately opaque, no enter animation */}
+          <div
             className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
             style={{ background: "rgba(17,16,16,0.92)", backdropFilter: "blur(12px)" }}
           />
 
-          {/* Card */}
+          {/* Card — subtle enter animation only */}
           <motion.div
             className="relative z-10 w-full max-w-md text-center"
-            initial={{ opacity: 0, scale: 0.94, y: 20 }}
+            initial={{ scale: 0.97, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 10 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Glow */}
