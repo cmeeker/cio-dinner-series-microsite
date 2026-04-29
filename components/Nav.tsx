@@ -15,7 +15,7 @@ function NavCityMeta() {
   const featured = city.events[0];
 
   return (
-    <div className="hidden lg:flex items-center gap-3">
+    <div className="hidden lg:flex items-center gap-3 pr-6 border-r" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
       <span
         className="text-[15px] font-light"
         style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)" }}
@@ -94,9 +94,9 @@ export default function Nav() {
         borderBottom: `1px solid ${scrolled ? "rgba(103,234,221,0.12)" : "rgba(103,234,221,0.06)"}`,
       }}
     >
-      <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-[1fr_auto_1fr] items-center">
+      <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
         {/* Left — logo */}
-        <Link href="/" className="flex items-center group justify-self-start">
+        <Link href="/" className="flex items-center group shrink-0">
           <Image
             src="/workato-logo.webp"
             alt="Workato"
@@ -107,18 +107,19 @@ export default function Nav() {
           />
         </Link>
 
-        {/* Centre — city details, fades in on scroll */}
-        <div
-          className="transition-all duration-500"
-          style={{ opacity: scrolled && isCityPage ? 1 : 0, transform: `translateY(${scrolled && isCityPage ? 0 : 6}px)`, pointerEvents: scrolled && isCityPage ? "auto" : "none" }}
-        >
-          <Suspense>
-            <NavCityMeta />
-          </Suspense>
-        </div>
+        {/* Right — city meta + CTA */}
+        <div className="flex items-center gap-6">
+          {isCityPage && (
+            <div
+              className="transition-all duration-500"
+              style={{ opacity: scrolled ? 1 : 0, transform: `translateY(${scrolled ? 0 : 5}px)`, pointerEvents: scrolled ? "auto" : "none" }}
+            >
+              <Suspense>
+                <NavCityMeta />
+              </Suspense>
+            </div>
+          )}
 
-        {/* Right — CTA or tagline */}
-        <div className="flex items-center gap-5 justify-self-end">
           {isCityPage ? (
             <Suspense>
               <NavCTA />
