@@ -70,8 +70,6 @@ export default function Hero() {
             "radial-gradient(ellipse 70% 60% at 12% 50%, rgba(103,234,221,0.055) 0%, transparent 65%), radial-gradient(ellipse 45% 42% at 88% 50%, rgba(62,162,168,0.04) 0%, transparent 60%)",
         }}
       />
-      {/* Grid overlay */}
-      <div className="absolute inset-0 grid-bg pointer-events-none" aria-hidden />
 
       <motion.div
         className="relative z-10 max-w-3xl w-full text-center"
