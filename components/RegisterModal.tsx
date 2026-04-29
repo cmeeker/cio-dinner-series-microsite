@@ -155,7 +155,7 @@ export default function RegisterModal({
                     Know someone who should join?
                   </p>
                   <p className="text-[13px] mb-4" style={{ color: "var(--text-ter)" }}>
-                    Share this dinner with a colleague — they&apos;ll see you referred them when they open the link.
+                    Share this dinner with a colleague.
                   </p>
                   <button
                     onClick={() => {
