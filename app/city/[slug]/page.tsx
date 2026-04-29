@@ -117,7 +117,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
           }}
         >
           <div
-            className="absolute inset-0 pointer-events-none grid-bg"
+            className="absolute inset-0 pointer-events-none"
             aria-hidden
           />
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10 pb-6">
@@ -316,7 +316,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(103,234,221,0.04) 0%, transparent 65%)",
             }}
           />
-          <div className="absolute inset-0 grid-bg pointer-events-none opacity-50" />
+          <div className="absolute inset-0 pointer-events-none opacity-50" />
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-16">
             {/* Header */}
