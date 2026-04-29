@@ -31,7 +31,7 @@ export default function CityPageClient({
           color: "#111010",
         }}
       >
-        {prefill?.name ? `Accept invitation →` : "Request an invitation →"}
+        {prefill?.name ? "Accept invitation →" : "Reserve your seat →"}
       </button>
 
       {showModal && (
