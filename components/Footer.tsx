@@ -24,6 +24,20 @@ export default function Footer() {
           />
         </svg>
       </a>
+
+      <div className="flex flex-wrap items-center gap-4 text-[10px] tracking-[0.08em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+        <span>© Workato 2026</span>
+        <a
+          href="https://www.workato.com/legal/privacy-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="transition-colors duration-200 hover:text-white"
+          style={{ color: "rgba(255,255,255,0.2)" }}
+        >
+          Privacy
+        </a>
+        <span>(844) 469-6752</span>
+      </div>
     </footer>
   );
 }
