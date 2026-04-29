@@ -22,6 +22,12 @@ function NavCityMeta() {
       >
         {city.city}
       </span>
+      <span
+        className="text-[15px] font-light"
+        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-muted)" }}
+      >
+        CIO Dinner Series
+      </span>
       <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
       <span
         className="text-[11px] tracking-[0.1em]"
