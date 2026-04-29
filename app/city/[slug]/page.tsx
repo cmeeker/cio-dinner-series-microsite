@@ -164,9 +164,9 @@ export default async function CityPage({ params, searchParams }: PageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-          <div className="grid lg:grid-cols-[1fr_380px] gap-10 lg:items-stretch">
+          <div className="grid lg:grid-cols-[1fr_380px] gap-10 lg:items-start">
             {/* Left — featured card */}
-            <div className="flex flex-col">
+            <div>
               <p
                 className="text-[10px] tracking-[0.22em] uppercase mb-4"
                 style={{ color: "var(--text-muted)" }}
@@ -176,7 +176,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
 
             {/* Featured card */}
             <div
-              className="relative rounded-2xl overflow-hidden flex-1"
+              className="relative rounded-2xl overflow-hidden"
                 style={{
                   background: "var(--card)",
                   border: "1px solid rgba(103,234,221,0.14)",
@@ -268,7 +268,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             </div>
 
             {/* Right — timeline */}
-            <div className="flex flex-col">
+            <div>
               <p
                 className="text-[10px] tracking-[0.22em] uppercase mb-4"
                 style={{ color: "var(--text-muted)" }}
@@ -276,7 +276,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 All evenings in {city.city}
               </p>
               <div
-                className="relative rounded-xl p-6 flex-1 overflow-hidden"
+                className="relative rounded-xl p-6 overflow-hidden"
                 style={{
                   background: "var(--card)",
                   border: "1px solid rgba(255,255,255,0.06)",
