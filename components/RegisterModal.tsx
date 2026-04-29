@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface RegisterModalProps {
@@ -30,20 +30,6 @@ export default function RegisterModal({
   onClose,
 }: RegisterModalProps) {
   const [step, setStep] = useState<Step>(1);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { onClose(); return; }
-      if (e.key === "Enter") {
-        if (submitted) return;
-        if (step === 1 && canProceed1) setStep(2);
-        else if (step === 2 && canProceed2 && !loading) handleSubmit();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onClose, step, canProceed1, canProceed2, loading, submitted]);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +53,7 @@ export default function RegisterModal({
   const canProceed1 = form.firstName.trim() && form.lastName.trim() && form.email.includes("@");
   const canProceed2 = form.company.trim() && form.title.trim();
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -90,7 +76,21 @@ export default function RegisterModal({
     } finally {
       setLoading(false);
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, cityKey, eventMonth]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key === "Enter") {
+        if (submitted) return;
+        if (step === 1 && canProceed1) setStep(2);
+        else if (step === 2 && canProceed2 && !loading) handleSubmit();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose, step, canProceed1, canProceed2, loading, submitted, handleSubmit]);
 
   const inputClass = `
     w-full px-4 py-3 rounded-lg text-[16px] outline-none transition-all duration-200
