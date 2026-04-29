@@ -191,92 +191,94 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                       "linear-gradient(to right, transparent, var(--teal), transparent)",
                   }}
                 />
-                <div className="p-8">
-                  {/* Month pill */}
-                  <div
-                    className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full text-[12px]"
-                    style={{
-                      background: "var(--teal-dim)",
-                      border: "1px solid var(--teal-line-dark)",
-                      color: "var(--teal)",
-                    }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full animate-pulse"
-                      style={{ background: "var(--teal)" }}
-                    />
-                    {featured.month}
+                {/* Desktop: 2-col split. Mobile: stacked */}
+                <div className="flex flex-col lg:flex-row lg:divide-x divide-[rgba(255,255,255,0.05)]">
+
+                  {/* Left — editorial */}
+                  <div className="p-8 flex-1">
+                    {/* Month pill */}
+                    <div
+                      className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-[12px]"
+                      style={{
+                        background: "var(--teal-dim)",
+                        border: "1px solid var(--teal-line-dark)",
+                        color: "var(--teal)",
+                      }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ background: "var(--teal)" }}
+                      />
+                      {featured.month}
+                    </div>
+
+                    <h2
+                      className="text-[clamp(22px,2.8vw,34px)] font-light leading-snug mb-5"
+                      style={{ fontFamily: "var(--font-cormorant)" }}
+                    >
+                      The organizations pulling ahead
+                      <br />
+                      <em className="italic" style={{ color: "var(--teal-mid)" }}>
+                        didn&apos;t get there by accident.
+                      </em>
+                    </h2>
+
+                    <p
+                      className="text-[14px] leading-relaxed"
+                      style={{ color: "var(--text-ter)" }}
+                    >
+                      {copy}
+                    </p>
                   </div>
 
-                  <h2
-                    className="text-[clamp(22px,3vw,32px)] font-light leading-snug mb-4"
-                    style={{ fontFamily: "var(--font-cormorant)" }}
-                  >
-                    The organizations pulling ahead
-                    <br />
-                    <em className="italic" style={{ color: "var(--teal-mid)" }}>
-                      didn&apos;t get there by accident.
-                    </em>
-                  </h2>
-
-                  <p
-                    className="text-[14px] leading-relaxed mb-8"
-                    style={{ color: "var(--text-ter)", maxWidth: "560px" }}
-                  >
-                    {copy}
-                  </p>
-
-                  {/* Event details */}
-                  <div
-                    className="rounded-xl p-5 mb-8 space-y-4"
-                    style={{
-                      background: "var(--surface)",
-                      border: "1px solid rgba(255,255,255,0.05)",
-                    }}
-                  >
-                    {[
-                      { label: "Date", value: featured.month },
-                      { label: "Time", value: "Details to follow", muted: true },
-                      { label: "Location", value: featured.venue },
-                      { label: "Speaker", value: "Coming soon", muted: true },
-                    ].map(({ label, value, muted }) => (
-                      <div
-                        key={label}
-                        className="flex items-baseline justify-between gap-6"
-                        style={{
-                          paddingBottom: "12px",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <span
-                          className="text-[11px] tracking-[0.1em] uppercase shrink-0"
-                          style={{ color: "var(--text-muted)" }}
-                        >
-                          {label}
-                        </span>
-                        <span
-                          className="text-[13px] text-right"
+                  {/* Right — details + CTA */}
+                  <div className="p-8 flex flex-col justify-between gap-8 lg:w-72 shrink-0">
+                    {/* Event details */}
+                    <div className="space-y-4">
+                      {[
+                        { label: "Date", value: featured.month },
+                        { label: "Time", value: "Details to follow", muted: true },
+                        { label: "Location", value: featured.venue },
+                        { label: "Speaker", value: "Coming soon", muted: true },
+                      ].map(({ label, value, muted }) => (
+                        <div
+                          key={label}
+                          className="flex flex-col gap-1"
                           style={{
-                            color: muted ? "var(--text-muted)" : "var(--text-sec)",
-                            fontStyle: muted ? "italic" : "normal",
+                            paddingBottom: "14px",
+                            borderBottom: "1px solid rgba(255,255,255,0.05)",
                           }}
                         >
-                          {value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                          <span
+                            className="text-[10px] tracking-[0.14em] uppercase"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {label}
+                          </span>
+                          <span
+                            className="text-[13px]"
+                            style={{
+                              color: muted ? "var(--text-muted)" : "var(--text-sec)",
+                              fontStyle: muted ? "italic" : "normal",
+                            }}
+                          >
+                            {value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
 
-                  {/* CTA — client component for modal */}
-                  <CityPageClient
-                    cityKey={slug}
-                    cityName={city.city}
-                    eventMonth={featured.month}
-                    prefill={{
-                      name: guestName,
-                      company: guestCompany,
-                    }}
-                  />
+                    {/* CTA */}
+                    <CityPageClient
+                      cityKey={slug}
+                      cityName={city.city}
+                      eventMonth={featured.month}
+                      prefill={{
+                        name: guestName,
+                        company: guestCompany,
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
