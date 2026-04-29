@@ -60,7 +60,7 @@ function NavCTA() {
   return (
     <button
       onClick={() => document.getElementById("city-register-btn")?.click()}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98]"
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[12px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_16px_rgba(103,234,221,0.2)] active:scale-[0.98] cursor-pointer"
       style={{ background: "var(--teal)", color: "#111010" }}
     >
       {isPersonalized ? "Accept invitation" : "Reserve your seat"}
