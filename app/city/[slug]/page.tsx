@@ -191,7 +191,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   }}
                 />
                 {/* Desktop: 2-col split. Mobile: stacked */}
-                <div className="flex flex-col lg:flex-row lg:divide-x divide-[rgba(255,255,255,0.05)]">
+                <div className="flex flex-col lg:flex-row">
 
                   {/* Left — editorial */}
                   <div className="p-8 flex-1">
@@ -213,6 +213,14 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                       {copy}
                     </p>
                   </div>
+
+                  {/* Fading vertical divider — desktop only */}
+                  <div
+                    className="hidden lg:block self-stretch w-px shrink-0"
+                    style={{
+                      background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.07) 18%, rgba(255,255,255,0.07) 82%, transparent 100%)",
+                    }}
+                  />
 
                   {/* Right — details + CTA */}
                   <div className="p-8 flex flex-col justify-between gap-8 lg:w-72 shrink-0">
