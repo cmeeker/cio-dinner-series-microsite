@@ -73,9 +73,9 @@ export default function Hero() {
 
       <motion.div
         className="relative z-10 max-w-3xl w-full text-center"
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* Pre-title */}
         <div
@@ -126,12 +126,12 @@ export default function Hero() {
         <motion.div
           className="inline-flex overflow-hidden mb-5 rounded-lg"
           style={{ border: "1px solid var(--teal-line-dark)" }}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
+          transition={{ delay: 0.1, duration: 0.35 }}
         >
-          <AnimatedStat target={70} label="Dinners" delay={600} />
-          <AnimatedStat target={10} label="Markets" delay={750} />
+          <AnimatedStat target={70} label="Dinners" delay={120} />
+          <AnimatedStat target={10} label="Markets" delay={200} />
           <div className="px-8 py-4 text-center">
             <span
               className="block text-[36px] leading-none font-light"
@@ -162,9 +162,9 @@ export default function Hero() {
             background: "var(--teal-dim)",
             letterSpacing: "0.01em",
           }}
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
+          transition={{ delay: 0.15, duration: 0.35 }}
         >
           Claw back your control.
         </motion.div>
