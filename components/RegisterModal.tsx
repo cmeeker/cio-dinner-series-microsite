@@ -245,7 +245,6 @@ export default function RegisterModal({
                   </div>
                   <input className={inputClass} type="email" inputMode="email" placeholder="Work email" value={form.email} onChange={update("email")} autoComplete="email" autoCapitalize="none" autoCorrect="off" />
                   <input className={inputClass} placeholder="Company" value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
-                  <input className={inputClass} placeholder="Title / Role (optional)" value={form.title} onChange={update("title")} autoComplete="organization-title" autoCapitalize="words" />
                 </div>
 
                 {error && <p className="mb-4 text-[12px]" style={{ color: "#FF6B6B" }}>{error}</p>}
