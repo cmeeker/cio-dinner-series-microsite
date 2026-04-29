@@ -31,6 +31,12 @@ export default function WelcomeModal({
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setVisible(false); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
   return (
     <AnimatePresence>
       {visible && (
