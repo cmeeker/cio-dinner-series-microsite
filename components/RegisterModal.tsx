@@ -85,7 +85,7 @@ export default function RegisterModal({
   };
 
   const inputClass = `
-    w-full px-4 py-3 rounded-lg text-[14px] outline-none transition-all duration-200
+    w-full px-4 py-3 rounded-lg text-[16px] outline-none transition-all duration-200
     placeholder:opacity-40 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)]
     focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)]
     text-[var(--text)]
@@ -95,6 +95,7 @@ export default function RegisterModal({
     <AnimatePresence>
       <motion.div
         className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
+        style={{ height: "100dvh" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -109,10 +110,11 @@ export default function RegisterModal({
 
         {/* Modal */}
         <motion.div
-          className="relative w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl overflow-hidden"
+          className="relative w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl flex flex-col"
           style={{
             background: "var(--card)",
             border: "1px solid var(--teal-line-dark)",
+            maxHeight: "90dvh",
           }}
           initial={{ y: 60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -121,14 +123,21 @@ export default function RegisterModal({
         >
           {/* Top accent */}
           <div
-            className="h-[2px] w-full"
+            className="h-[2px] w-full shrink-0"
             style={{
               background:
                 "linear-gradient(to right, transparent, var(--teal), transparent)",
             }}
           />
+          {/* Drag handle — mobile only */}
+          <div className="flex justify-center pt-3 pb-1 sm:hidden shrink-0">
+            <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
+          </div>
 
-          <div className="px-7 pt-6 pb-8">
+          <div
+            className="px-7 pt-4 pb-8 overflow-y-auto"
+            style={{ overscrollBehavior: "contain", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+          >
             {submitted ? (
               <motion.div
                 className="py-8"
@@ -271,20 +280,31 @@ export default function RegisterModal({
                           placeholder="First name"
                           value={form.firstName}
                           onChange={update("firstName")}
+                          autoComplete="given-name"
+                          autoCapitalize="words"
+                          enterKeyHint="next"
                         />
                         <input
                           className={inputClass}
                           placeholder="Last name"
                           value={form.lastName}
                           onChange={update("lastName")}
+                          autoComplete="family-name"
+                          autoCapitalize="words"
+                          enterKeyHint="next"
                         />
                       </div>
                       <input
                         className={inputClass}
                         type="email"
+                        inputMode="email"
                         placeholder="Work email"
                         value={form.email}
                         onChange={update("email")}
+                        autoComplete="email"
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        enterKeyHint="done"
                       />
                     </motion.div>
                   )}
@@ -309,12 +329,18 @@ export default function RegisterModal({
                         placeholder="Company"
                         value={form.company}
                         onChange={update("company")}
+                        autoComplete="organization"
+                        autoCapitalize="words"
+                        enterKeyHint="next"
                       />
                       <input
                         className={inputClass}
                         placeholder="Title / Role"
                         value={form.title}
                         onChange={update("title")}
+                        autoComplete="organization-title"
+                        autoCapitalize="words"
+                        enterKeyHint="done"
                       />
                     </motion.div>
                   )}
