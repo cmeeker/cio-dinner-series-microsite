@@ -367,37 +367,10 @@ export default function RegisterModal({
                         Your details
                       </p>
                       <div className="grid grid-cols-2 gap-3">
-                        <input
-                          className={inputClass}
-                          placeholder="First name"
-                          value={form.firstName}
-                          onChange={update("firstName")}
-                          autoComplete="given-name"
-                          autoCapitalize="words"
-                          enterKeyHint="next"
-                        />
-                        <input
-                          className={inputClass}
-                          placeholder="Last name"
-                          value={form.lastName}
-                          onChange={update("lastName")}
-                          autoComplete="family-name"
-                          autoCapitalize="words"
-                          enterKeyHint="next"
-                        />
+                        <FloatingInput label="First name" value={form.firstName} onChange={update("firstName")} autoComplete="given-name" autoCapitalize="words" />
+                        <FloatingInput label="Last name"  value={form.lastName}  onChange={update("lastName")}  autoComplete="family-name" autoCapitalize="words" />
                       </div>
-                      <input
-                        className={inputClass}
-                        type="email"
-                        inputMode="email"
-                        placeholder="Work email"
-                        value={form.email}
-                        onChange={update("email")}
-                        autoComplete="email"
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        enterKeyHint="done"
-                      />
+                      <FloatingInput label="Work email" value={form.email} onChange={update("email")} type="email" inputMode="email" autoComplete="email" autoCapitalize="none" autoCorrect="off" />
                     </motion.div>
                   )}
 
@@ -416,24 +389,8 @@ export default function RegisterModal({
                       >
                         Your organization
                       </p>
-                      <input
-                        className={inputClass}
-                        placeholder="Company"
-                        value={form.company}
-                        onChange={update("company")}
-                        autoComplete="organization"
-                        autoCapitalize="words"
-                        enterKeyHint="next"
-                      />
-                      <input
-                        className={inputClass}
-                        placeholder="Title / Role"
-                        value={form.title}
-                        onChange={update("title")}
-                        autoComplete="organization-title"
-                        autoCapitalize="words"
-                        enterKeyHint="done"
-                      />
+                      <FloatingInput label="Company"         value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
+                      <FloatingInput label="Title / Role (optional)" value={form.title}   onChange={update("title")}   autoComplete="organization-title" autoCapitalize="words" />
                     </motion.div>
                   )}
 
