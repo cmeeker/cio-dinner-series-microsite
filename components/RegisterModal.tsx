@@ -106,7 +106,7 @@ export default function RegisterModal({
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-0 sm:p-6"
+        className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center pt-14 sm:pt-0 px-0 sm:p-6"
         style={{ height: "100dvh" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
