@@ -15,18 +15,26 @@ function NavCityMeta() {
   const featured = city.events[0];
 
   return (
-    <div className="hidden lg:flex flex-col items-center gap-0.5">
+    <div className="hidden lg:flex items-center gap-3">
       <span
-        className="text-[14px] font-light leading-tight"
+        className="text-[15px] font-light"
         style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)" }}
       >
         {city.city}
       </span>
+      <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
       <span
-        className="text-[10px] tracking-[0.14em] uppercase"
+        className="text-[11px] tracking-[0.1em]"
         style={{ color: "var(--text-muted)" }}
       >
-        {featured.month} · By invitation only
+        {featured.month}
+      </span>
+      <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
+      <span
+        className="text-[11px] tracking-[0.06em]"
+        style={{ color: "var(--text-muted)" }}
+      >
+        {featured.venue}
       </span>
     </div>
   );
