@@ -324,7 +324,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   this season.
                 </h2>
               </div>
-              <Link
+              <a
                 href="/#markets"
                 className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1 transition-colors duration-200"
                 style={{
@@ -333,7 +333,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 }}
               >
                 View all cities →
-              </Link>
+              </a>
             </div>
 
             {/* City grid */}
