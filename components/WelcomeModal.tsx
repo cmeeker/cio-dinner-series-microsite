@@ -159,7 +159,7 @@ export default function WelcomeModal({
 
                 <button
                   onClick={() => setVisible(false)}
-                  className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 active:scale-[0.98] mb-4"
+                  className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_24px_rgba(103,234,221,0.25)] active:scale-[0.98] cursor-pointer mb-4"
                   style={{ background: "var(--teal)", color: "#111010" }}
                 >
                   View Your Invitation →

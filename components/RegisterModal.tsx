@@ -7,7 +7,8 @@ interface RegisterModalProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
-  prefill?: { name?: string; company?: string };
+  prefill?: { name?: string; email?: string; company?: string };
+  isPersonalized?: boolean;
   onClose: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function RegisterModal({
   cityName,
   eventMonth,
   prefill,
+  isPersonalized,
   onClose,
 }: RegisterModalProps) {
   const [step, setStep] = useState<Step>(1);
@@ -41,7 +43,7 @@ export default function RegisterModal({
   const [form, setForm] = useState<FormData>({
     firstName: prefillFirst,
     lastName:  prefillLast,
-    email: "",
+    email: prefill?.email ?? "",
     company: prefill?.company ?? "",
     title: "",
     message: "",
@@ -51,7 +53,7 @@ export default function RegisterModal({
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const canProceed1 = form.firstName.trim() && form.lastName.trim() && form.email.includes("@");
-  const canProceed2 = form.company.trim() && form.title.trim();
+  const canProceed2 = form.company.trim(); // title is optional
 
   const handleSubmit = useCallback(async () => {
     setLoading(true);
@@ -385,7 +387,7 @@ export default function RegisterModal({
                       className="px-7 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-60"
                       style={{ background: "var(--teal)", color: "#111010" }}
                     >
-                      {loading ? "Sending…" : "Submit Request"}
+                      {loading ? "Sending…" : (prefill?.name || isPersonalized) ? "Accept invitation →" : "Reserve your seat →"}
                     </button>
                   )}
                 </div>

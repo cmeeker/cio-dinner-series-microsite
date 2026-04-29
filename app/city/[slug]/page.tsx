@@ -82,6 +82,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
     Array.isArray(v) ? v[0] : v;
 
   const guestName          = str(sp.guest_name ?? sp.gn);
+  const guestEmail         = str(sp.guest_email ?? sp.ge);
   const guestCompany       = str(sp.guest_company ?? sp.gc);
   const repName            = str(sp.rep_name ?? sp.rn);
   const repCompany         = str(sp.rep_company ?? sp.rc);
@@ -269,6 +270,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                       isPersonalized={isPersonalized}
                       prefill={{
                         name: guestName,
+                        email: guestEmail,
                         company: guestCompany,
                       }}
                     />

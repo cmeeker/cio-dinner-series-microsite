@@ -9,7 +9,7 @@ interface CityPageClientProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
-  prefill?: { name?: string; company?: string };
+  prefill?: { name?: string; email?: string; company?: string };
   isPersonalized?: boolean;
 }
 
@@ -42,6 +42,7 @@ export default function CityPageClient({
           cityName={cityName}
           eventMonth={eventMonth}
           prefill={prefill}
+          isPersonalized={isPersonalized}
           onClose={() => setShowModal(false)}
         />
       )}
