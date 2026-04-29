@@ -196,7 +196,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   {/* Left — editorial */}
                   <div className="p-8 flex-1">
                     <h2
-                      className="text-[clamp(22px,2.8vw,34px)] font-light leading-snug mb-5"
+                      className="text-[clamp(20px,2.4vw,33px)] font-light leading-snug mb-5"
                       style={{ fontFamily: "var(--font-cormorant)" }}
                     >
                       The organizations pulling ahead
