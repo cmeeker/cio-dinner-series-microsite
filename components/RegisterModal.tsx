@@ -94,7 +94,7 @@ export default function RegisterModal({
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6"
+        className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-0 sm:p-6"
         style={{ height: "100dvh" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -110,15 +110,15 @@ export default function RegisterModal({
 
         {/* Modal */}
         <motion.div
-          className="relative w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl flex flex-col"
+          className="relative w-full sm:max-w-lg rounded-b-2xl sm:rounded-2xl flex flex-col"
           style={{
             background: "var(--card)",
             border: "1px solid var(--teal-line-dark)",
             maxHeight: "90dvh",
           }}
-          initial={{ y: 60, opacity: 0 }}
+          initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 60, opacity: 0 }}
+          exit={{ y: -40, opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Top accent */}
@@ -129,13 +129,8 @@ export default function RegisterModal({
                 "linear-gradient(to right, transparent, var(--teal), transparent)",
             }}
           />
-          {/* Drag handle — mobile only */}
-          <div className="flex justify-center pt-3 pb-1 sm:hidden shrink-0">
-            <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.15)" }} />
-          </div>
-
           <div
-            className="px-7 pt-4 pb-8 overflow-y-auto"
+            className="px-7 pt-6 pb-8 overflow-y-auto"
             style={{ overscrollBehavior: "contain", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
           >
             {submitted ? (
