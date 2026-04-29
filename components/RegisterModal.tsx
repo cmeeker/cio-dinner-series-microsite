@@ -32,10 +32,18 @@ export default function RegisterModal({
   const [step, setStep] = useState<Step>(1);
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key === "Enter") {
+        if (submitted) return;
+        if (step === 1 && canProceed1) setStep(2);
+        else if (step === 2 && canProceed2 && !loading) handleSubmit();
+      }
+    };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onClose, step, canProceed1, canProceed2, loading, submitted]);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
