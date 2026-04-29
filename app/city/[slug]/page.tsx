@@ -172,9 +172,9 @@ export default async function CityPage({ params, searchParams }: PageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-          <div className="grid lg:grid-cols-[1fr_380px] gap-10">
+          <div className="grid lg:grid-cols-[1fr_380px] gap-10 lg:items-stretch">
             {/* Left — featured card */}
-            <div>
+            <div className="flex flex-col">
               <p
                 className="text-[10px] tracking-[0.22em] uppercase mb-4"
                 style={{ color: "var(--text-muted)" }}
@@ -184,7 +184,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
 
             {/* Featured card */}
             <div
-              className="relative rounded-2xl overflow-hidden"
+              className="relative rounded-2xl overflow-hidden flex-1"
                 style={{
                   background: "var(--card)",
                   border: "1px solid rgba(103,234,221,0.14)",
@@ -276,7 +276,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
             </div>
 
             {/* Right — timeline */}
-            <div>
+            <div className="flex flex-col">
               <p
                 className="text-[10px] tracking-[0.22em] uppercase mb-4"
                 style={{ color: "var(--text-muted)" }}
@@ -284,13 +284,20 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 All evenings in {city.city}
               </p>
               <div
-                className="rounded-xl p-6"
+                className="relative rounded-xl p-6 flex-1 overflow-hidden"
                 style={{
                   background: "var(--card)",
                   border: "1px solid rgba(255,255,255,0.06)",
                 }}
               >
                 <EventTimeline events={city.events} cityName={city.city} />
+                {/* Fade-out gradient at bottom */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
+                  style={{
+                    background: "linear-gradient(to bottom, transparent, var(--card))",
+                  }}
+                />
               </div>
             </div>
           </div>
