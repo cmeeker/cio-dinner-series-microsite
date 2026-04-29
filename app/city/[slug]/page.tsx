@@ -129,14 +129,16 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                 >
                   {city.city}
                 </h1>
-                <p
-                  className="text-[13px] tracking-[0.06em]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {city.state}
-                  {city.country === "CA" ? " · Canada" : ""}
-                  &nbsp;·&nbsp;CIO Dinner Series&nbsp;·&nbsp;
-                  {city.events.length} dinner{city.events.length > 1 ? "s" : ""}
+                <p className="flex items-center flex-wrap gap-x-2 mt-1 text-[11px] tracking-[0.18em] uppercase">
+                  <span style={{ color: "var(--text-muted)" }}>
+                    {city.state}{city.country === "CA" ? " · Canada" : ""}
+                  </span>
+                  <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
+                  <span style={{ color: "var(--text-muted)" }}>CIO Dinner Series</span>
+                  <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
+                  <span style={{ color: "rgba(103,234,221,0.55)" }}>
+                    {city.events.length} dinner{city.events.length > 1 ? "s" : ""}
+                  </span>
                 </p>
                 {/* Subtle personalization note */}
                 {guestName && (
