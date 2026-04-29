@@ -70,14 +70,13 @@ export async function GET(req: NextRequest) {
             {/* Headline */}
             <div
               style={{
-                color: "#FFFFFF",
+                color: "#67EADD",
                 fontSize: firstName ? 74 : 66,
                 fontWeight: 300,
                 lineHeight: 1.1,
                 textAlign: "center",
                 marginBottom: 20,
                 fontStyle: "italic",
-                color: "#67EADD",
               }}
             >
               {firstName ? `${firstName}, you're invited.` : "You're invited."}
