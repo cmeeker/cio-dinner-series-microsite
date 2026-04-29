@@ -87,7 +87,7 @@ export default function Nav() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden"
       style={{
         height: "64px",
         background: scrolled ? "rgba(17,16,16,0.96)" : "rgba(17,16,16,0.70)",
@@ -113,7 +113,7 @@ export default function Nav() {
           {isCityPage && (
             <div
               className="transition-all duration-500"
-              style={{ opacity: scrolled ? 1 : 0, transform: `translateY(${scrolled ? 0 : 5}px)`, pointerEvents: scrolled ? "auto" : "none" }}
+              style={{ opacity: scrolled ? 1 : 0, pointerEvents: scrolled ? "auto" : "none" }}
             >
               <Suspense>
                 <NavCityMeta />
