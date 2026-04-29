@@ -224,16 +224,12 @@ export default function RegisterModal({
                 </div>
               </motion.div>
             ) : isFullPrefill ? (
-              /* ── Single-step confirmation for fully pre-filled invites ── */
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="flex items-start justify-between mb-6">
+              /* ── Single-step for fully pre-filled invites — editable fields ── */
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+                <div className="flex items-start justify-between mb-7">
                   <div>
                     <p className="text-[10px] tracking-[0.22em] uppercase mb-2" style={{ color: "var(--teal)" }}>
-                      Your invitation
+                      Accept your invitation
                     </p>
                     <h2 className="text-[22px] font-light leading-tight" style={{ fontFamily: "var(--font-cormorant)", color: "var(--text)" }}>
                       {cityName} · {eventMonth}
@@ -242,25 +238,21 @@ export default function RegisterModal({
                   <button onClick={onClose} className="text-[18px] leading-none transition-colors duration-200 mt-1" style={{ color: "var(--text-muted)" }}>×</button>
                 </div>
 
-                {/* Pre-filled summary */}
-                <div className="rounded-xl p-5 mb-6 space-y-3" style={{ background: "var(--surface)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                  {[
-                    { label: "Name",    value: prefill!.name! },
-                    { label: "Email",   value: prefill!.email! },
-                    { label: "Company", value: prefill!.company! },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="flex justify-between items-baseline gap-4">
-                      <span className="text-[10px] tracking-[0.14em] uppercase shrink-0" style={{ color: "var(--text-muted)" }}>{label}</span>
-                      <span className="text-[13px] text-right" style={{ color: "var(--text-sec)" }}>{value}</span>
-                    </div>
-                  ))}
+                <div className="space-y-3 mb-7">
+                  <div className="grid grid-cols-2 gap-3">
+                    <input className={inputClass} placeholder="First name" value={form.firstName} onChange={update("firstName")} autoComplete="given-name" autoCapitalize="words" />
+                    <input className={inputClass} placeholder="Last name" value={form.lastName} onChange={update("lastName")} autoComplete="family-name" autoCapitalize="words" />
+                  </div>
+                  <input className={inputClass} type="email" inputMode="email" placeholder="Work email" value={form.email} onChange={update("email")} autoComplete="email" autoCapitalize="none" autoCorrect="off" />
+                  <input className={inputClass} placeholder="Company" value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
+                  <input className={inputClass} placeholder="Title / Role (optional)" value={form.title} onChange={update("title")} autoComplete="organization-title" autoCapitalize="words" />
                 </div>
 
                 {error && <p className="mb-4 text-[12px]" style={{ color: "#FF6B6B" }}>{error}</p>}
 
                 <button
                   onClick={handleSubmit}
-                  disabled={loading}
+                  disabled={loading || !canProceed1}
                   className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_24px_rgba(103,234,221,0.25)] active:scale-[0.98] cursor-pointer disabled:opacity-60"
                   style={{ background: "var(--teal)", color: "#111010" }}
                 >
