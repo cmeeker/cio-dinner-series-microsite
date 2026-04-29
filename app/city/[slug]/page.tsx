@@ -127,26 +127,7 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
                   style={{ fontFamily: "var(--font-cormorant)" }}
                 >
-                  {guestName ? (
-                    <>
-                      <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
-                        Your invitation — {city.city}
-                      </span>
-                      <em className="italic" style={{ color: "var(--teal-mid)" }}>
-                        {guestName.split(" ")[0]},
-                      </em>{" "}
-                      you&apos;re invited.
-                    </>
-                  ) : referredBy ? (
-                    <>
-                      <span style={{ color: "var(--text-muted)", fontSize: "0.55em", display: "block", marginBottom: "6px", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-geist-sans)" }}>
-                        {referredBy} thought of you — {city.city}
-                      </span>
-                      You&apos;re invited.
-                    </>
-                  ) : (
-                    city.city
-                  )}
+                  {city.city}
                 </h1>
                 <p
                   className="text-[13px] tracking-[0.06em]"
@@ -157,6 +138,17 @@ export default async function CityPage({ params, searchParams }: PageProps) {
                   &nbsp;·&nbsp;CIO Dinner Series&nbsp;·&nbsp;
                   {city.events.length} dinner{city.events.length > 1 ? "s" : ""}
                 </p>
+                {/* Subtle personalization note */}
+                {guestName && (
+                  <p className="mt-2 text-[11px] tracking-[0.08em]" style={{ color: "rgba(103,234,221,0.45)" }}>
+                    Personal invitation for {guestName}{guestCompany ? ` · ${guestCompany}` : ""}
+                  </p>
+                )}
+                {!guestName && referredBy && (
+                  <p className="mt-2 text-[11px] tracking-[0.08em]" style={{ color: "rgba(103,234,221,0.45)" }}>
+                    Referred by {referredBy}{referredByCompany ? ` · ${referredByCompany}` : ""}
+                  </p>
+                )}
               </div>
 
               {/* Landmark — aligned right, bottom-anchored to city subtitle */}
