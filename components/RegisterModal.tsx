@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { withBasePath } from "@/lib/base-path";
 
 function FloatingInput({
   label,
@@ -110,7 +111,7 @@ export default function RegisterModal({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/register", {
+      const res = await fetch(withBasePath("/api/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

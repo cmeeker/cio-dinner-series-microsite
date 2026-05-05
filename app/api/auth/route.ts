@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getBasePath } from "@/lib/base-path";
 
 const USERNAME = "cio";
 const PASSWORD = "dinner";
@@ -8,11 +9,12 @@ export async function POST(req: NextRequest) {
 
   if (username === USERNAME && password === PASSWORD) {
     const res = NextResponse.json({ ok: true });
+    const basePath = getBasePath();
     res.cookies.set("cio-auth", "authenticated", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      path: "/",
+      path: basePath || "/",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
     return res;

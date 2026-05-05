@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import WorkatoLogo from "@/components/WorkatoLogo";
+import { withBasePath } from "@/lib/base-path";
 
 function LoginForm() {
   const router = useRouter();
@@ -27,7 +28,7 @@ function LoginForm() {
     setError("");
 
     try {
-      const res = await fetch("/api/auth", {
+      const res = await fetch(withBasePath("/api/auth"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
