@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { getPublicAppUrl } from "@/lib/site-origin";
 import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER } from "@/data/events";
 import EventTimeline from "@/components/EventTimeline";
 import CityPageClient from "@/components/CityPageClient";
@@ -29,9 +30,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const referredBy = str(sp.referred_by ?? sp.rb);
   const featured   = city.events[0];
 
-  const base = process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://cio-dinner-series-microsite.vercel.app";
+  const base = getPublicAppUrl();
 
   // Build OG image URL
   const ogParams = new URLSearchParams({ city: city.city, month: featured.month });

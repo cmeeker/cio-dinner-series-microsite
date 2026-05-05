@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import { getPublicAppUrl } from "@/lib/site-origin";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,10 +18,12 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const siteUrl = "https://cio-dinner-series-microsite.vercel.app";
+const appBase = getPublicAppUrl();
+const metadataBase = new URL(`${appBase.endsWith("/") ? appBase.slice(0, -1) : appBase}/`);
+const defaultOg = `${appBase}/api/og?city=CIO+Dinner+Series`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase,
   title: {
     default: "Workato CIO Dinner Series — North America FY27",
     template: "%s | Workato CIO Dinner Series",
@@ -38,14 +41,14 @@ export const metadata: Metadata = {
       "An intimate gathering of enterprise leaders across North America's most dynamic markets. 70 dinners · 10 cities · May 2026 – January 2027.",
     type: "website",
     siteName: "Workato CIO Dinner Series",
-    images: [{ url: "/api/og?city=CIO+Dinner+Series", width: 1200, height: 630 }],
+    images: [{ url: defaultOg, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Workato CIO Dinner Series — North America FY27",
     description:
       "An intimate gathering of enterprise leaders across North America's most dynamic markets.",
-    images: ["/api/og?city=CIO+Dinner+Series"],
+    images: [defaultOg],
   },
 };
 
