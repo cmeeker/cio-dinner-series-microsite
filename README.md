@@ -2,7 +2,7 @@
 
 Next.js (App Router) site for the Workato CIO Dinner Series.
 
-**Production URL shape:** mounted at **`/cio-dinner`** on the main Workato site (e.g. `https://www.workato.com/cio-dinner`). That is the default **`basePath`**; local dev is [http://localhost:3000/cio-dinner](http://localhost:3000/cio-dinner).
+**Production URL shape:** mounted at **`/cio-dinner`** on the main Workato site (e.g. `https://workato.com/cio-dinner` or `https://www.workato.com/cio-dinner`). That is the default **`basePath`**; local dev is [http://localhost:3000/cio-dinner](http://localhost:3000/cio-dinner).
 
 ## Local dev
 
@@ -16,7 +16,7 @@ npm run dev
 | Variable | Notes |
 | -------- | ----- |
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Required for registration writes in prod |
-| `NEXT_PUBLIC_SITE_URL` | Recommended: full app root, e.g. `https://www.workato.com/cio-dinner`, or origin-only `https://www.workato.com` (code appends `basePath`) |
+| `NEXT_PUBLIC_SITE_URL` | Recommended: full app root, e.g. `https://workato.com/cio-dinner`, or origin-only `https://workato.com` (code appends `basePath`) |
 | `NEXT_PUBLIC_BASE_PATH` | Optional. Default `/cio-dinner`. Set to **`""`** for a root-mounted preview (then update **`middleware.ts`** matchers to match — they are compile-time static strings). |
 | `DEPLOY_TARGET` | Optional server env: `cloudflare` or `vercel` if URL auto-detection is wrong |
 
