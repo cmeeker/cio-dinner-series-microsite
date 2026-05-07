@@ -52,12 +52,12 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
         <div className="relative z-10 flex items-start justify-between mb-5">
           <div>
             <h3
-              className="text-[17px] font-medium leading-tight mb-1 transition-colors duration-200 group-hover:text-[var(--teal)]"
-              style={{ color: "var(--text)" }}
+              className="font-medium leading-tight mb-1.5 transition-colors duration-200 group-hover:text-[var(--teal)]"
+              style={{ color: "var(--text)", fontSize: "20px" }}
             >
               {city.city}
             </h3>
-            <p className="text-[12px]" style={{ color: "var(--text-muted)" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "13px" }}>
               {city.state}
               {city.country === "CA" ? " · Canada" : ""}
             </p>
@@ -75,21 +75,10 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
         </div>
 
         <div
-          className="relative z-10 text-[12px] mb-4"
-          style={{ color: "var(--text-muted)" }}
+          className="relative z-10 mb-5 flex-1"
+          style={{ color: "var(--text-muted)", fontSize: "13px" }}
         >
           {first.month} – {last.month}
-        </div>
-
-        <div
-          className="relative z-10 italic leading-snug mb-5 flex-1"
-          style={{
-            fontFamily: "var(--font-cormorant)",
-            color: "var(--text-ter)",
-            fontSize: "17px",
-          }}
-        >
-          Claw back your control.
         </div>
 
         <div className="relative z-10 flex items-center justify-between">
