@@ -19,8 +19,8 @@
   /* Text */
   --color-text:        #FFFFFF;
   --color-text-sec:    rgba(255, 255, 255, 0.85);
-  --color-text-ter:    rgba(255, 255, 255, 0.65);
-  --color-text-muted:  rgba(255, 255, 255, 0.40);
+  --color-text-ter:    rgba(255, 255, 255, 0.75);
+  --color-text-muted:  rgba(255, 255, 255, 0.55);
 
   /* Lines */
   --color-line:        rgba(103, 234, 221, 0.22);
@@ -41,8 +41,8 @@
   --surface:     #282525;
   --text:        #FFFFFF;
   --text-sec:    rgba(255, 255, 255, 0.85);
-  --text-ter:    rgba(255, 255, 255, 0.65);
-  --text-muted:  rgba(255, 255, 255, 0.40);
+  --text-ter:    rgba(255, 255, 255, 0.75);
+  --text-muted:  rgba(255, 255, 255, 0.55);
 }
 
 *,

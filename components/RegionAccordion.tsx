@@ -93,7 +93,7 @@ export default function RegionAccordion() {
                         className="grid gap-4"
                         style={{
                           gridTemplateColumns:
-                            "repeat(auto-fill, minmax(240px, 1fr))",
+                            "repeat(auto-fill, minmax(270px, 1fr))",
                         }}
                       >
                         {validKeys.map((key, i) => (

@@ -1,62 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-
-function AnimatedStat({
-  target,
-  label,
-  delay = 0,
-}: {
-  target: number;
-  label: string;
-  delay?: number;
-}) {
-  const [value, setValue] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!inView) return;
-    const timer = setTimeout(() => {
-      const duration = 1200;
-      const start = performance.now();
-      const animate = (now: number) => {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setValue(Math.round(eased * target));
-        if (progress < 1) requestAnimationFrame(animate);
-      };
-      requestAnimationFrame(animate);
-    }, delay);
-    return () => clearTimeout(timer);
-  }, [inView, target, delay]);
-
-  return (
-    <div
-      ref={ref}
-      className="px-8 py-4 text-center"
-      style={{ borderRight: "1px solid var(--teal-line-dark)" }}
-    >
-      <span
-        className="block text-[36px] leading-none font-light"
-        style={{
-          fontFamily: "var(--font-cormorant)",
-          color: "var(--teal-mid)",
-        }}
-      >
-        {value}
-      </span>
-      <span
-        className="block mt-1.5 text-[10px] tracking-[0.16em] uppercase"
-        style={{ color: "var(--text-muted)" }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
@@ -79,7 +23,7 @@ export default function Hero() {
       >
         {/* Pre-title */}
         <div
-          className="inline-flex items-center gap-4 mb-5 text-[11px] tracking-[0.28em] uppercase"
+          className="inline-flex items-center gap-4 mb-5 text-[14px] tracking-[0.28em] uppercase"
           style={{ color: "var(--teal)" }}
         >
           <span
@@ -111,10 +55,11 @@ export default function Hero() {
 
         {/* Subtitle */}
         <p
-          className="text-[clamp(15px,1.8vw,19px)] font-light italic leading-relaxed mb-6"
+          className="font-light italic leading-relaxed mb-7"
           style={{
             fontFamily: "var(--font-cormorant)",
             color: "var(--text-ter)",
+            fontSize: "clamp(19px,2.4vw,26px)",
           }}
         >
           An intimate gathering of enterprise leaders across
@@ -122,41 +67,12 @@ export default function Hero() {
           North America&apos;s most dynamic markets
         </p>
 
-        {/* Stats strip */}
-        <motion.div
-          className="inline-flex overflow-hidden mb-5 rounded-lg"
-          style={{ border: "1px solid var(--teal-line-dark)" }}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.35 }}
-        >
-          <AnimatedStat target={70} label="Dinners" delay={120} />
-          <AnimatedStat target={10} label="Markets" delay={200} />
-          <div className="px-8 py-4 text-center">
-            <span
-              className="block text-[36px] leading-none font-light"
-              style={{
-                fontFamily: "var(--font-cormorant)",
-                color: "var(--teal-mid)",
-              }}
-            >
-              9
-            </span>
-            <span
-              className="block mt-1.5 text-[10px] tracking-[0.16em] uppercase"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Months
-            </span>
-          </div>
-        </motion.div>
-
         {/* Theme pill */}
-        <br />
         <motion.div
-          className="inline-block mb-6 px-6 py-2.5 rounded-full text-[clamp(14px,1.6vw,18px)] italic font-normal"
+          className="inline-block mb-6 px-6 py-2.5 rounded-full italic font-normal"
           style={{
             fontFamily: "var(--font-cormorant)",
+            fontSize: "clamp(15px,1.8vw,20px)",
             color: "var(--teal-mid)",
             border: "1px solid var(--teal-line)",
             background: "var(--teal-dim)",
@@ -164,7 +80,7 @@ export default function Hero() {
           }}
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.35 }}
+          transition={{ delay: 0.1, duration: 0.35 }}
         >
           Claw back your control.
         </motion.div>
@@ -177,7 +93,6 @@ export default function Hero() {
           May 2026 — January 2027
         </p>
       </motion.div>
-
     </section>
   );
 }
