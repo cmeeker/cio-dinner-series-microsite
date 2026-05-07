@@ -25,15 +25,16 @@ export const EVENTS: Event[] = [
   { id:  1, cityKey: "chicago",         city: "Chicago",             state: "IL", country: "US", month: "April 2026",     sortKey: 202604, venue: "Private dining room, Lake Forest",                         date: "2026-04-30", dateConfirmed: true  },
 
   // May 2026
-  { id:  2, cityKey: "bay-area",        city: "Bay Area",            state: "CA", country: "US", month: "May 2026",       sortKey: 202605, venue: "San Francisco Giants Suite",                               date: "2026-05-04", dateConfirmed: true  },
-  { id:  3, cityKey: "boston",          city: "Boston",              state: "MA", country: "US", month: "May 2026",       sortKey: 202605, venue: "Private venue, Back Bay",                                  date: "2026-05-26" },
-  { id:  4, cityKey: "austin",          city: "Austin",              state: "TX", country: "US", month: "May 2026",       sortKey: 202605, venue: "Private venue, South Congress",                            date: "2026-05-27" },
+  { id:  2, cityKey: "bay-area",        city: "Bay Area",            state: "CA", country: "US", month: "May 2026",       sortKey: 202605, venue: "Oracle Park, 24 Willie Mays Plaza",                          date: "2026-05-04", dateConfirmed: true  },
+  { id:  3, cityKey: "boston",          city: "Boston",              state: "MA", country: "US", month: "May 2026",       sortKey: 202605, venue: "Saltie Girl, 279 Dartmouth St",                             date: "2026-05-26", dateConfirmed: true  },
+  { id:  4, cityKey: "austin",          city: "Austin",              state: "TX", country: "US", month: "May 2026",       sortKey: 202605, venue: "BOA Steakhouse, 300 W 6th St #100",                         date: "2026-05-27", dateConfirmed: true  },
 
   // June 2026
   { id:  5, cityKey: "bay-area",        city: "Bay Area",            state: "CA", country: "US", month: "June 2026",      sortKey: 202606, venue: "San Francisco - Partner",                                  date: "2026-06-02", dateConfirmed: true  },
-  { id:  6, cityKey: "new-york",        city: "New York",            state: "NY", country: "US", month: "June 2026",      sortKey: 202606, venue: "Private dining room, Midtown",                             date: "2026-06-10" },
-  { id:  7, cityKey: "chicago",         city: "Chicago",             state: "IL", country: "US", month: "June 2026",      sortKey: 202606, venue: "Private venue, Fulton Market",                             date: "2026-06-09" },
-  { id:  8, cityKey: "boston",          city: "Boston",              state: "MA", country: "US", month: "June 2026",      sortKey: 202606, venue: "Red Sox Suite",                                            date: "2026-06-29", dateConfirmed: true  },
+  { id: 65, cityKey: "las-vegas",       city: "Las Vegas",           state: "NV", country: "US", month: "June 2026",      sortKey: 202606, venue: "Pinky's by Vanderpump",                                    date: "2026-06-03", dateConfirmed: true  },
+  { id:  6, cityKey: "new-york",        city: "New York",            state: "NY", country: "US", month: "June 2026",      sortKey: 202606, venue: "Saga, 70 Pine St 63rd Floor",                               date: "2026-06-10", dateConfirmed: true  },
+  { id:  7, cityKey: "chicago",         city: "Chicago",             state: "IL", country: "US", month: "June 2026",      sortKey: 202606, venue: "Sepia, 123 N Jefferson St",                                 date: "2026-06-09", dateConfirmed: true  },
+  { id:  8, cityKey: "boston",          city: "Boston",              state: "MA", country: "US", month: "June 2026",      sortKey: 202606, venue: "Fenway Park, 4 Jersey St",                                  date: "2026-06-29", dateConfirmed: true  },
   { id:  9, cityKey: "austin",          city: "Austin",              state: "TX", country: "US", month: "June 2026",      sortKey: 202606, venue: "Private dining room, East Austin",                         date: "2026-06-17" },
   { id: 10, cityKey: "seattle-bellevue",city: "Seattle / Bellevue",  state: "WA", country: "US", month: "June 2026",      sortKey: 202606, venue: "Private dining room, South Lake Union",                    date: "2026-06-16" },
   { id: 11, cityKey: "dallas",          city: "Dallas / Fort Worth", state: "TX", country: "US", month: "June 2026",      sortKey: 202606, venue: "Private dining room, Uptown Dallas",                       date: "2026-06-23" },
@@ -141,6 +142,8 @@ export const CITY_COPY: Record<string, string> = {
     "Arizona's fastest-growing enterprises didn't just adopt AI early — they built the accountability layer to match. Join Workato leadership for an off-the-record dinner on how enterprise leaders in the Southwest are governing AI before the complexity outpaces them.",
   "miami":
     "Miami's rise as a tech and financial hub means enterprise leaders are navigating AI adoption at speed. The organizations ahead built their governance posture deliberately. Join Workato leadership for an off-the-record dinner on what that looks like in practice.",
+  "las-vegas":
+    "Las Vegas moves at a speed most enterprises can't match — and the leaders ahead aren't just embracing AI, they're governing it deliberately. Join Workato leadership for an off-the-record dinner on what enterprise AI governance looks like when the stakes are real.",
 };
 
 export const DEFAULT_COPY =
@@ -152,7 +155,7 @@ export const REGIONS: Record<string, string[]> = {
   "Mid-Atlantic": ["washington-dc", "raleigh-rtp"],
   "Midwest": ["chicago", "minneapolis"],
   "South & Texas": ["austin", "dallas", "houston", "atlanta"],
-  "Mountain West": ["denver", "phoenix"],
+  "Mountain West": ["denver", "phoenix", "las-vegas"],
   "Canada": ["toronto"],
   "Southeast": ["miami"],
 };
