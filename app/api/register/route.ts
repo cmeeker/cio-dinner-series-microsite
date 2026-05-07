@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const MARKETO_FORM_ID    = process.env.NEXT_PUBLIC_MARKETO_FORM_ID;
-const MARKETO_MUNCHKIN   = process.env.NEXT_PUBLIC_MARKETO_MUNCHKIN_ID || "741-DET-352";
-const MARKETO_BASE_URL   = process.env.NEXT_PUBLIC_MARKETO_BASE_URL || `${MARKETO_MUNCHKIN}.mktoweb.com`;
+const MARKETO_FORM_ID  = "8856";
+const MARKETO_MUNCHKIN = "741-DET-352";
+const MARKETO_HOST     = `${MARKETO_MUNCHKIN}.mktoweb.com`;
 
 /** Server-side Marketo form post as a belt-and-suspenders backup when the
  *  client-side Forms 2.0 SDK is unavailable (CSP, ad-blocker, server fallback). */
 async function postToMarketo(fields: Record<string, string>): Promise<void> {
-  if (!MARKETO_FORM_ID) return; // Marketo not configured — skip silently
 
   const params = new URLSearchParams({ ...fields, formid: MARKETO_FORM_ID, munchkinId: MARKETO_MUNCHKIN });
-  const url = `https://${MARKETO_BASE_URL}/index.php/leadCapture/save2`;
+  const url = `https://${MARKETO_HOST}/index.php/leadCapture/save2`;
 
   const res = await fetch(url, {
     method: "POST",

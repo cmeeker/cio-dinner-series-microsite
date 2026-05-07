@@ -1,10 +1,4 @@
-/**
- * Marketo Engage Forms 2.0 — same pattern as a static waitlist embed
- * (script + `MktoForms2.loadForm` + `vals` / `submit` / `onSuccess`).
- *
- * Set **`NEXT_PUBLIC_MARKETO_FORM_ID`** (e.g. `8856`) to enable client-side submit.
- * Optional: `NEXT_PUBLIC_MARKETO_MUNCHKIN_ID`, `NEXT_PUBLIC_MARKETO_BASE_URL` (hostname only).
- */
+/** Marketo Engage Forms 2.0 config — Workato CIO Dinner Series. */
 
 export type MarketoClientConfig = {
   formId: number;
@@ -15,23 +9,15 @@ export type MarketoClientConfig = {
   scriptOrigin: string;
 };
 
-export function getMarketoClientConfig(): MarketoClientConfig | null {
-  const raw = process.env.NEXT_PUBLIC_MARKETO_FORM_ID?.trim();
-  if (!raw) return null;
-  const formId = parseInt(raw, 10);
-  if (Number.isNaN(formId) || formId < 1) return null;
+const MARKETO_FORM_ID   = 8856;
+const MARKETO_MUNCHKIN  = "741-DET-352";
+const MARKETO_HOST      = `${MARKETO_MUNCHKIN}.mktoweb.com`;
 
-  const munchkinId =
-    process.env.NEXT_PUBLIC_MARKETO_MUNCHKIN_ID?.trim() || "741-DET-352";
-
-  const host =
-    process.env.NEXT_PUBLIC_MARKETO_BASE_URL?.trim().replace(/^https?:\/\//, "") ||
-    `${munchkinId}.mktoweb.com`;
-
+export function getMarketoClientConfig(): MarketoClientConfig {
   return {
-    formId,
-    munchkinId,
-    loadFormBase: `//${host}`,
-    scriptOrigin: `https://${host}`,
+    formId:       MARKETO_FORM_ID,
+    munchkinId:   MARKETO_MUNCHKIN,
+    loadFormBase: `//${MARKETO_HOST}`,
+    scriptOrigin: `https://${MARKETO_HOST}`,
   };
 }
