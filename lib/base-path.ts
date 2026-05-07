@@ -2,12 +2,11 @@
  * Path prefix where the app is mounted (e.g. `www.workato.com/cio-dinner`).
  * Must stay in sync with `next.config.ts` `basePath` and `middleware.ts` matchers.
  *
- * Set `NEXT_PUBLIC_BASE_PATH=""` to serve from site root (e.g. standalone preview).
- * Omit env → default `/cio-dinner`.
+ * Omit env (or set to `""`) → no basePath; app is served from root (Vercel preview, dev).
+ * Set `NEXT_PUBLIC_BASE_PATH=/cio-dinner` in production (Cloudflare → Workato proxy).
  */
 export function getBasePath(): string {
-  if (process.env.NEXT_PUBLIC_BASE_PATH === "") return "";
-  const t = (process.env.NEXT_PUBLIC_BASE_PATH ?? "/cio-dinner").trim();
+  const t = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").trim();
   if (t === "" || t === "/") return "";
   return t.startsWith("/") ? t : `/${t}`;
 }

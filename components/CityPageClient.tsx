@@ -9,6 +9,8 @@ interface CityPageClientProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
+  eventDate?: string;
+  eventId?: number;
   prefill?: { name?: string; email?: string; company?: string };
   isPersonalized?: boolean;
 }
@@ -17,6 +19,8 @@ export default function CityPageClient({
   cityKey,
   cityName,
   eventMonth,
+  eventDate,
+  eventId,
   prefill,
   isPersonalized,
 }: CityPageClientProps) {
@@ -41,6 +45,8 @@ export default function CityPageClient({
           cityKey={cityKey}
           cityName={cityName}
           eventMonth={eventMonth}
+          eventDate={eventDate}
+          eventId={eventId}
           prefill={prefill}
           isPersonalized={isPersonalized}
           onClose={() => setShowModal(false)}

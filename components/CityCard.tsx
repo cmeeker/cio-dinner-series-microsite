@@ -25,7 +25,7 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
       }}
     >
       <Link
-        href={`/city/${city.key}`}
+        href={`/${city.key}`}
         className="group relative flex flex-col p-5 rounded-xl overflow-hidden transition-all duration-300 h-full"
         style={{
           background: "var(--card)",

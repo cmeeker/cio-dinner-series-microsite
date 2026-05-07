@@ -20,6 +20,22 @@ npm run dev
 | `NEXT_PUBLIC_BASE_PATH` | Optional. Default `/cio-dinner`. Set to **`""`** for a root-mounted preview (then update **`middleware.ts`** matchers to match — they are compile-time static strings). |
 | `DEPLOY_TARGET` | Optional server env: `cloudflare` or `vercel` if URL auto-detection is wrong |
 
+### Marketo Engage (form `8856`)
+
+Same idea as a static embed (`forms2.min.js` → `MktoForms2.loadForm` → `vals` / `submit` / `onSuccess`).
+
+| Variable | Notes |
+| -------- | ----- |
+| `NEXT_PUBLIC_MARKETO_FORM_ID` | Set to **`8856`** to send registrations to Marketo (required to enable). |
+| `NEXT_PUBLIC_MARKETO_MUNCHKIN_ID` | Default **`741-DET-352`**. |
+| `NEXT_PUBLIC_MARKETO_BASE_URL` | Optional. Hostname only (no protocol), default **`{MUNCHKIN_ID}.mktoweb.com`**. |
+| `NEXT_PUBLIC_MARKETO_NOTES_FIELD` | API name for the combined context block (city, month, message). Default **`personNote`** — change if your form uses another field. |
+| `NEXT_PUBLIC_MARKETO_FIELD_MAP` | Optional JSON map to **rename outgoing keys**, e.g. `{"FirstName":"First_Name__c","personNote":"Program_Notes__c"}`. |
+
+When Marketo is enabled, the modal submits to Marketo first, then best-effort POSTs to **`/api/register`** (Supabase) if configured. With no `NEXT_PUBLIC_MARKETO_FORM_ID`, behavior stays Supabase-only.
+
+Helpers: **`lib/marketo-config.ts`**, **`hooks/useMarketoForm.ts`**.
+
 Canonical URL helpers live in **`lib/site-origin.ts`** (`getPublicAppUrl`, `getDeployRuntime`) and **`lib/base-path.ts`** (`getBasePath`, `withBasePath` for client `fetch`).
 
 ## Deploy

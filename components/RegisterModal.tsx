@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { withBasePath } from "@/lib/base-path";
+import { useMarketoForm } from "@/hooks/useMarketoForm";
 
 function FloatingInput({
   label,
@@ -58,6 +59,8 @@ interface RegisterModalProps {
   cityKey: string;
   cityName: string;
   eventMonth: string;
+  eventDate?: string;
+  eventId?: number;
   prefill?: { name?: string; email?: string; company?: string };
   isPersonalized?: boolean;
   onClose: () => void;
@@ -78,6 +81,8 @@ export default function RegisterModal({
   cityKey,
   cityName,
   eventMonth,
+  eventDate,
+  eventId,
   prefill,
   isPersonalized,
   onClose,
@@ -88,6 +93,8 @@ export default function RegisterModal({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  const { marketoEnabled, marketoReady, marketoInitError, submitToMarketo } = useMarketoForm();
 
   const prefillFirst = prefill?.name?.split(" ")[0] ?? "";
   const prefillLast  = prefill?.name?.split(" ").slice(1).join(" ") ?? "";
@@ -107,11 +114,9 @@ export default function RegisterModal({
   const canProceed1 = form.firstName.trim() && form.lastName.trim() && form.email.includes("@");
   const canProceed2 = form.company.trim(); // title is optional
 
-  const handleSubmit = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const postSupabaseBackup = useCallback(async () => {
     try {
-      const res = await fetch(withBasePath("/api/register"), {
+      await fetch(withBasePath("/api/register"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -120,9 +125,44 @@ export default function RegisterModal({
           eventMonth,
         }),
       });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || "Something went wrong. Please try again.");
+    } catch {
+      /* non-blocking when Marketo is primary */
+    }
+  }, [form, cityKey, eventMonth]);
+
+  const handleSubmit = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (marketoEnabled) {
+        if (marketoInitError) {
+          throw new Error(marketoInitError);
+        }
+        if (!marketoReady) {
+          throw new Error("Registration form is still loading. Please try again in a moment.");
+        }
+        await submitToMarketo({
+          ...form,
+          cityKey,
+          eventMonth,
+          eventDate: eventDate ?? "",
+          eventId: eventId ?? 0,
+        });
+        void postSupabaseBackup();
+      } else {
+        const res = await fetch(withBasePath("/api/register"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            cityKey,
+            eventMonth,
+          }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || "Something went wrong. Please try again.");
+        }
       }
       setSubmitted(true);
     } catch (err) {
@@ -130,8 +170,18 @@ export default function RegisterModal({
     } finally {
       setLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, cityKey, eventMonth]);
+  }, [
+    form,
+    cityKey,
+    eventMonth,
+    eventDate,
+    eventId,
+    marketoEnabled,
+    marketoReady,
+    marketoInitError,
+    submitToMarketo,
+    postSupabaseBackup,
+  ]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -232,7 +282,7 @@ export default function RegisterModal({
                   </p>
                   <button
                     onClick={() => {
-                      const base = `${window.location.origin}/city/${cityKey}`;
+                      const base = `${window.location.origin}/${cityKey}`;
                       const params = new URLSearchParams({
                         referred_by: `${form.firstName} ${form.lastName}`.trim(),
                         ...(form.company ? { referred_by_company: form.company } : {}),

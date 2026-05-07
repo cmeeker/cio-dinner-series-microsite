@@ -4,18 +4,36 @@ import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { CITIES } from "@/data/events";
+import { CITIES, EVENT_BY_DATE_KEY } from "@/data/events";
+import { formatEventDateCompact } from "@/lib/event-utils";
+
+const RESERVED_SLUGS = new Set(["login", "api", "apple-icon.png", "icon.png", "favicon.ico"]);
+
+/** Extract city slug and optional date from `/[slug]` or `/[slug]/[date]` */
+function useCityRoute() {
+  const pathname = usePathname();
+  const parts = pathname.split("/").filter(Boolean);
+  const slug = parts[0];
+  if (!slug || RESERVED_SLUGS.has(slug)) return { slug: null, date: null };
+  if (!CITIES[slug]) return { slug: null, date: null };
+  return { slug, date: parts[1] ?? null };
+}
 
 function NavCityMeta() {
-  const pathname = usePathname();
-  const slug = pathname.startsWith("/city/") ? pathname.replace("/city/", "") : null;
+  const { slug, date } = useCityRoute();
   const city = slug ? CITIES[slug] : null;
   if (!city) return null;
 
-  const featured = city.events[0];
+  const event = date
+    ? EVENT_BY_DATE_KEY[`${slug}::${date}`]
+    : city.events[0];
+  if (!event) return null;
 
   return (
-    <div className="hidden lg:flex items-center gap-3 pr-6 border-r" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="hidden lg:flex items-center gap-3 pr-6 border-r"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <span
         className="text-[15px] font-light"
         style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)" }}
@@ -33,29 +51,29 @@ function NavCityMeta() {
         className="text-[11px] tracking-[0.1em]"
         style={{ color: "var(--text-muted)" }}
       >
-        {featured.month}
+        {date ? formatEventDateCompact(date) : event.month}
       </span>
       <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
       <span
         className="text-[11px] tracking-[0.06em]"
         style={{ color: "var(--text-muted)" }}
       >
-        {featured.venue}
+        {event.venue}
       </span>
     </div>
   );
 }
 
 function NavCTA() {
-  const pathname = usePathname();
+  const { slug, date } = useCityRoute();
   const params = useSearchParams();
 
-  const slug = pathname.startsWith("/city/") ? pathname.replace("/city/", "") : null;
   const city = slug ? CITIES[slug] : null;
-  if (!city) return null;
+  // CTA only shows on individual event pages (date present), not city overview
+  if (!city || !date) return null;
 
-  const guestName  = params.get("guest_name")  ?? params.get("gn")  ?? undefined;
-  const referredBy = params.get("referred_by") ?? params.get("rb")  ?? undefined;
+  const guestName = params.get("guest_name") ?? params.get("gn") ?? undefined;
+  const referredBy = params.get("referred_by") ?? params.get("rb") ?? undefined;
   const isPersonalized = !!(guestName || referredBy);
 
   return (
@@ -73,14 +91,14 @@ function NavCTA() {
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const isCityPage = pathname.startsWith("/city/");
+  const parts = pathname.split("/").filter(Boolean);
+  const isCityRoute = !!parts[0] && !RESERVED_SLUGS.has(parts[0]) && !!CITIES[parts[0]];
+  const isEventPage = isCityRoute && parts.length >= 2;
 
   if (pathname === "/login") return null;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -92,11 +110,12 @@ export default function Nav() {
         height: "64px",
         background: scrolled ? "rgba(17,16,16,0.96)" : "rgba(17,16,16,0.70)",
         backdropFilter: "blur(20px)",
-        borderBottom: `1px solid ${scrolled ? "rgba(103,234,221,0.12)" : "rgba(103,234,221,0.06)"}`,
+        borderBottom: `1px solid ${
+          scrolled ? "rgba(103,234,221,0.12)" : "rgba(103,234,221,0.06)"
+        }`,
       }}
     >
       <div className="h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
-        {/* Left — logo */}
         <Link href="/" className="flex items-center group shrink-0">
           <Image
             src="/workato-logo.webp"
@@ -108,12 +127,14 @@ export default function Nav() {
           />
         </Link>
 
-        {/* Right — city meta + CTA */}
         <div className="flex items-center gap-6">
-          {isCityPage && (
+          {isCityRoute && (
             <div
               className="transition-all duration-500"
-              style={{ opacity: scrolled ? 1 : 0, pointerEvents: scrolled ? "auto" : "none" }}
+              style={{
+                opacity: scrolled ? 1 : 0,
+                pointerEvents: scrolled ? "auto" : "none",
+              }}
             >
               <Suspense>
                 <NavCityMeta />
@@ -121,7 +142,7 @@ export default function Nav() {
             </div>
           )}
 
-          {isCityPage ? (
+          {isEventPage ? (
             <Suspense>
               <NavCTA />
             </Suspense>
