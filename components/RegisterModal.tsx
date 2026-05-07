@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { withBasePath } from "@/lib/base-path";
 import { useMarketoForm } from "@/hooks/useMarketoForm";
 
 function FloatingInput({
@@ -124,7 +123,7 @@ export default function RegisterModal({
 
   const postSupabaseBackup = useCallback(async () => {
     try {
-      await fetch(withBasePath("/api/register"), {
+      await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -158,7 +157,7 @@ export default function RegisterModal({
         });
         void postSupabaseBackup();
       } else {
-        const res = await fetch(withBasePath("/api/register"), {
+        const res = await fetch("/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -293,7 +292,7 @@ export default function RegisterModal({
                       const eventPath = eventDate
                         ? `/${cityKey}/${eventDate}`
                         : `/${cityKey}`;
-                      const base = `${window.location.origin}${withBasePath(eventPath)}`;
+                      const base = `${window.location.origin}${eventPath}`;
                       const shareParams = new URLSearchParams({
                         referred_by: `${form.firstName} ${form.lastName}`.trim(),
                         ...(form.company ? { referred_by_company: form.company } : {}),

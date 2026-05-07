@@ -17,16 +17,6 @@ export function proxy(req: NextRequest) {
   return res;
 }
 
-/**
- * Must be static strings (Next.js parses `matcher` at compile time).
- * Keep the first pattern as the root-mounted catch-all.
- * Second pattern handles the /cio-dinner subdirectory deployment.
- */
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-    "/cio-dinner/((?!_next/static|_next/image|favicon.ico).*)",
-    "/cio-dinner",
-    "/cio-dinner/",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
