@@ -90,10 +90,10 @@ export default function RegionAccordion() {
                   >
                     <div className="px-6 py-5">
                       <div
-                        className="grid gap-4"
+                        className="grid gap-3"
                         style={{
                           gridTemplateColumns:
-                            "repeat(auto-fill, minmax(270px, 1fr))",
+                            "repeat(auto-fill, minmax(240px, 1fr))",
                         }}
                       >
                         {validKeys.map((key, i) => (
