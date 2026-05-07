@@ -35,7 +35,7 @@ export default function RegionAccordion() {
             >
               {/* Region header */}
               <button
-                className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors duration-200"
+                className="w-full flex items-center justify-between px-6 py-5 text-left transition-colors duration-200"
                 style={{
                   background: isOpen ? "rgba(103,234,221,0.04)" : "var(--bg2)",
                   cursor: "pointer",
@@ -52,15 +52,15 @@ export default function RegionAccordion() {
                 }}
                 onClick={() => setOpen(isOpen ? "" : region)}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <span
-                    className="text-[10px] tracking-[0.22em] uppercase"
+                    className="text-[14px] tracking-[0.18em] uppercase font-medium"
                     style={{ color: "var(--teal)" }}
                   >
                     {region}
                   </span>
                   <span
-                    className="text-[11px]"
+                    className="text-[12px]"
                     style={{ color: "var(--text-muted)" }}
                   >
                     {validKeys.length} cit{validKeys.length > 1 ? "ies" : "y"}{" "}
