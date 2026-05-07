@@ -59,12 +59,12 @@ export function getSiteOrigin(): string {
  * Public base URL of this Next app, including **`getBasePath()`**
  * (e.g. `https://www.workato.com/cio-dinner`).
  *
- * 1. **`NEXT_PUBLIC_SITE_URL`** — if it includes a path, that is the app root; if origin-only,
- *    **`getBasePath()`** is appended.
+ * 1. **`SITE_URL`** (server-only) — if it includes a path, that is the app root; if
+ *    origin-only, **`getBasePath()`** is appended.
  * 2. Otherwise auto-detected origin + **`getBasePath()`**.
  */
 export function getPublicAppUrl(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const explicit = process.env.SITE_URL?.trim();
   if (explicit) {
     try {
       const u = new URL(explicit);
