@@ -36,3 +36,35 @@ export function formatEventWeekday(isoDate: string): string {
   const date = new Date(y, m - 1, d);
   return date.toLocaleDateString("en-US", { weekday: "long" });
 }
+
+/**
+ * Returns true when an event's date has passed.
+ * "Passed" = the event date is before today local time.
+ * Events on today's date are still considered upcoming.
+ * Events with no confirmed date (TBD) are never marked past.
+ */
+export function isEventPast(event: { date?: string }): boolean {
+  if (!event.date) return false;
+  const [y, m, d] = event.date.split("-").map(Number);
+  const eventDate = new Date(y, m - 1, d);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return eventDate < today;
+}
+
+/**
+ * Returns the URL date segment for an event:
+ * - Full ISO date "2026-06-09" when the event has a known date
+ * - Year-month "2026-06" (from sortKey) when the date is TBD
+ *
+ * This keeps URLs stable even before dates are confirmed, and avoids
+ * collisions since each city has at most one event per calendar month.
+ */
+export function getEventUrlSlug(event: {
+  date?: string;
+  sortKey: number;
+}): string {
+  if (event.date) return event.date;
+  const s = event.sortKey.toString(); // e.g. "202608"
+  return `${s.slice(0, 4)}-${s.slice(4, 6)}`; // "2026-08"
+}

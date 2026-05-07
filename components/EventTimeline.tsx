@@ -1,60 +1,48 @@
 import Link from "next/link";
 import type { Event } from "@/data/events";
-import { formatEventDateCompact } from "@/lib/event-utils";
+import { formatEventDateCompact, getEventUrlSlug, isEventPast } from "@/lib/event-utils";
 
 interface EventTimelineProps {
   events: Event[];
   cityKey: string;
   activeEventId?: number;
+  /** Referral/personalization params to forward when navigating between events */
+  referralParams?: Record<string, string | undefined>;
 }
 
 export default function EventTimeline({
   events,
   cityKey,
   activeEventId,
+  referralParams,
 }: EventTimelineProps) {
+  const qs = referralParams
+    ? (() => {
+        const p = new URLSearchParams();
+        for (const [k, v] of Object.entries(referralParams)) {
+          if (v) p.set(k, v);
+        }
+        const s = p.toString();
+        return s ? `?${s}` : "";
+      })()
+    : "";
   return (
     <div className="space-y-3">
       {events.map((event, i) => {
         const isActive = event.id === activeEventId;
-        const hasPage = !!event.date;
-        const Wrapper = hasPage
-          ? ({ children }: { children: React.ReactNode }) => (
-              <Link
-                href={`/${cityKey}/${event.date}`}
-                className="flex-1 pb-4 block transition-colors duration-200 group/item"
-                style={{
-                  borderBottom:
-                    i < events.length - 1
-                      ? "1px solid rgba(255,255,255,0.04)"
-                      : "none",
-                }}
-              >
-                {children}
-              </Link>
-            )
-          : ({ children }: { children: React.ReactNode }) => (
-              <div
-                className="flex-1 pb-4"
-                style={{
-                  borderBottom:
-                    i < events.length - 1
-                      ? "1px solid rgba(255,255,255,0.04)"
-                      : "none",
-                }}
-              >
-                {children}
-              </div>
-            );
+        const isPast = isEventPast(event);
+        const isUpcoming = !activeEventId && i === 0 && !isPast;
+        const eventUrlSlug = getEventUrlSlug(event);
 
-        return (
-          <div key={event.id} className="relative flex gap-5 items-start group">
+        const rowContent = (
+          <>
             {i < events.length - 1 && (
               <div
                 className="absolute left-[15px] top-8 bottom-0 w-px"
                 style={{
-                  background:
-                    "linear-gradient(to bottom, var(--teal-line-dark), transparent)",
+                  background: isPast
+                    ? "rgba(255,255,255,0.04)"
+                    : "linear-gradient(to bottom, var(--teal-line-dark), transparent)",
                 }}
               />
             )}
@@ -63,26 +51,33 @@ export default function EventTimeline({
             <div
               className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 group-hover:scale-110"
               style={{
-                background: isActive
+                background: isPast
+                  ? "transparent"
+                  : isActive
                   ? "var(--teal)"
-                  : i === 0
+                  : isUpcoming
                   ? "var(--teal-dim)"
                   : "var(--surface)",
                 border: `1px solid ${
-                  isActive
+                  isPast
+                    ? "rgba(255,255,255,0.06)"
+                    : isActive
                     ? "var(--teal)"
-                    : i === 0
+                    : isUpcoming
                     ? "var(--teal-line)"
                     : "rgba(255,255,255,0.06)"
                 }`,
+                opacity: isPast ? 0.4 : 1,
               }}
             >
               <span
                 className="text-[10px] font-medium"
                 style={{
-                  color: isActive
+                  color: isPast
+                    ? "var(--text-muted)"
+                    : isActive
                     ? "#111010"
-                    : i === 0
+                    : isUpcoming
                     ? "var(--teal)"
                     : "var(--text-muted)",
                 }}
@@ -92,21 +87,30 @@ export default function EventTimeline({
             </div>
 
             {/* Content */}
-            <Wrapper>
+            <div
+              className="flex-1 pb-4"
+              style={{
+                borderBottom:
+                  i < events.length - 1
+                    ? "1px solid rgba(255,255,255,0.04)"
+                    : "none",
+                opacity: isPast ? 0.38 : 1,
+              }}
+            >
               <p
-                className="text-[14px] font-medium mb-0.5"
+                className="mb-0.5 font-medium"
                 style={{
                   fontFamily: "var(--font-cormorant)",
                   fontSize: "17px",
-                  color: isActive
-                    ? "var(--text)"
-                    : i === 0
+                  color: isPast
+                    ? "var(--text-muted)"
+                    : isActive || isUpcoming
                     ? "var(--teal)"
                     : "var(--text-sec)",
                 }}
               >
                 {event.month}
-                {event.date && (
+                {event.dateConfirmed && event.date && (
                   <span
                     className="ml-2 text-[12px] font-normal"
                     style={{ color: "var(--text-muted)", fontFamily: "inherit" }}
@@ -118,45 +122,45 @@ export default function EventTimeline({
               <p className="text-[12px]" style={{ color: "var(--text-muted)" }}>
                 {event.venue}
               </p>
-              <div className="flex items-center gap-3 mt-2">
-                {isActive && (
+              <div className="flex items-center gap-3 mt-1.5">
+                {!isActive && !isPast && (
                   <span
-                    className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.1em] uppercase"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
-                  >
-                    You are here
-                  </span>
-                )}
-                {!isActive && i === 0 && !activeEventId && (
-                  <span
-                    className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.1em] uppercase"
+                    className="text-[10px] tracking-[0.06em] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ color: "var(--teal)" }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full animate-pulse"
-                      style={{ background: "var(--teal)" }}
-                    />
-                    Next upcoming
-                  </span>
-                )}
-                {hasPage && !isActive && (
-                  <span
-                    className="text-[10px] tracking-[0.08em] uppercase opacity-0 group-hover/item:opacity-100 transition-opacity duration-200"
-                    style={{ color: "var(--teal)" }}
-                  >
-                    View dinner →
-                  </span>
-                )}
-                {event.dateConfirmed && (
-                  <span
-                    className="text-[9px] tracking-[0.1em] uppercase"
-                    style={{ color: "rgba(103,234,221,0.45)" }}
-                  >
-                    · confirmed
+                    View this evening →
                   </span>
                 )}
               </div>
-            </Wrapper>
+            </div>
+          </>
+        );
+
+        if (isPast) {
+          return (
+            <div
+              key={event.id}
+              className="relative flex gap-5 items-start cursor-default"
+            >
+              {rowContent}
+            </div>
+          );
+        }
+
+        return !isActive ? (
+          <Link
+            key={event.id}
+            href={`/${cityKey}/${eventUrlSlug}${qs}`}
+            className="relative flex gap-5 items-start group cursor-pointer"
+          >
+            {rowContent}
+          </Link>
+        ) : (
+          <div
+            key={event.id}
+            className="relative flex gap-5 items-start group"
+          >
+            {rowContent}
           </div>
         );
       })}

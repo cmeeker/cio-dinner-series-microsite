@@ -7,6 +7,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { CITIES, EVENT_BY_DATE_KEY } from "@/data/events";
 import { formatEventDateCompact } from "@/lib/event-utils";
 
+/** Only return a compact date label when the event is confirmed, otherwise empty string */
+function formatDateSlug(slug: string, confirmed?: boolean): string {
+  return confirmed && slug.length > 7 ? formatEventDateCompact(slug) : "";
+}
+
 const RESERVED_SLUGS = new Set(["login", "api", "apple-icon.png", "icon.png", "favicon.ico"]);
 
 /** Extract city slug and optional date from `/[slug]` or `/[slug]/[date]` */
@@ -36,27 +41,27 @@ function NavCityMeta() {
     >
       <span
         className="text-[15px] font-light"
-        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)" }}
+        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-sec)", lineHeight: 1 }}
       >
         {city.city}
       </span>
       <span
         className="text-[15px] font-light"
-        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-muted)" }}
+        style={{ fontFamily: "var(--font-cormorant)", color: "var(--text-muted)", lineHeight: 1 }}
       >
         CIO Dinner Series
       </span>
-      <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
+      <span style={{ color: "rgba(103,234,221,0.25)", lineHeight: 1 }}>·</span>
       <span
         className="text-[11px] tracking-[0.1em]"
-        style={{ color: "var(--text-muted)" }}
+        style={{ color: "var(--text-muted)", lineHeight: 1 }}
       >
-        {date ? formatEventDateCompact(date) : event.month}
+        {date ? (formatDateSlug(date, event.dateConfirmed) || event.month) : event.month}
       </span>
-      <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
+      <span style={{ color: "rgba(103,234,221,0.25)", lineHeight: 1 }}>·</span>
       <span
         className="text-[11px] tracking-[0.06em]"
-        style={{ color: "var(--text-muted)" }}
+        style={{ color: "var(--text-muted)", lineHeight: 1 }}
       >
         {event.venue}
       </span>

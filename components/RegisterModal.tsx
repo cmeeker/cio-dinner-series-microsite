@@ -26,16 +26,25 @@ function FloatingInput({
 }) {
   const filled = value.length > 0;
   return (
-    <div className="relative">
+    /* mt-3 gives room for the lifted label to breathe above the border */
+    <div className="relative mt-3">
       <label
-        className="absolute left-4 pointer-events-none transition-all duration-200 select-none"
+        className="absolute pointer-events-none transition-all duration-200 select-none"
         style={{
-          top: filled ? "6px" : "50%",
+          left: filled ? "10px" : "16px",
+          /* lifted: sits on the top border; placeholder: vertically centered */
+          top: filled ? "-9px" : "50%",
           transform: filled ? "none" : "translateY(-50%)",
-          fontSize: filled ? "10px" : "16px",
-          letterSpacing: filled ? "0.12em" : "0",
+          fontSize: filled ? "10px" : "14px",
+          letterSpacing: filled ? "0.12em" : "0.01em",
           textTransform: filled ? "uppercase" : "none",
-          color: filled ? "rgba(103,234,221,0.5)" : "rgba(255,255,255,0.25)",
+          color: filled ? "rgba(103,234,221,0.65)" : "rgba(255,255,255,0.28)",
+          /* mask the border behind the label text */
+          background: filled ? "var(--card)" : "transparent",
+          padding: filled ? "0 4px" : "0",
+          borderRadius: "2px",
+          lineHeight: "18px",
+          zIndex: 1,
         }}
       >
         {label}
@@ -48,8 +57,7 @@ function FloatingInput({
         autoComplete={autoComplete}
         autoCapitalize={autoCapitalize}
         autoCorrect={autoCorrect}
-        className="w-full px-4 pb-3 rounded-lg text-[16px] outline-none transition-all duration-200 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)] focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)] text-[var(--text)]"
-        style={{ paddingTop: filled ? "22px" : "12px" }}
+        className="w-full px-4 py-3 rounded-lg text-[14px] outline-none transition-all duration-200 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)] focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)] text-[var(--text)]"
       />
     </div>
   );
@@ -282,12 +290,15 @@ export default function RegisterModal({
                   </p>
                   <button
                     onClick={() => {
-                      const base = `${window.location.origin}/${cityKey}`;
-                      const params = new URLSearchParams({
+                      const eventPath = eventDate
+                        ? `/${cityKey}/${eventDate}`
+                        : `/${cityKey}`;
+                      const base = `${window.location.origin}${withBasePath(eventPath)}`;
+                      const shareParams = new URLSearchParams({
                         referred_by: `${form.firstName} ${form.lastName}`.trim(),
                         ...(form.company ? { referred_by_company: form.company } : {}),
                       });
-                      navigator.clipboard.writeText(`${base}?${params.toString()}`).then(() => {
+                      navigator.clipboard.writeText(`${base}?${shareParams.toString()}`).then(() => {
                         setCopied(true);
                         setTimeout(() => setCopied(false), 2500);
                       });

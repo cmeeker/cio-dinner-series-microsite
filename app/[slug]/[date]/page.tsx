@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPublicAppUrl } from "@/lib/site-origin";
-import { formatEventDate, formatEventWeekday } from "@/lib/event-utils";
+import { formatEventDate, getEventUrlSlug } from "@/lib/event-utils";
 import {
   CITIES,
   EVENTS,
@@ -21,9 +22,9 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return EVENTS.filter((e) => e.date).map((e) => ({
+  return EVENTS.map((e) => ({
     slug: e.cityKey,
-    date: e.date!,
+    date: getEventUrlSlug(e),
   }));
 }
 
@@ -45,7 +46,7 @@ export async function generateMetadata({
   const referredBy = str(sp.referred_by ?? sp.rb);
 
   const base = getPublicAppUrl();
-  const dateLabel = formatEventDate(date);
+  const dateLabel = event.dateConfirmed && event.date ? formatEventDate(event.date) : event.month;
 
   const ogParams = new URLSearchParams({ city: city.city, month: event.month });
   if (guestName) ogParams.set("guest_name", guestName);
@@ -103,8 +104,8 @@ export default async function EventPage({ params, searchParams }: PageProps) {
   const isPersonalized = !!(guestName || repName || referredBy);
 
   const copy = CITY_COPY[slug] ?? DEFAULT_COPY;
-  const dateLabel = formatEventDate(date);
-  const weekday = formatEventWeekday(date);
+  const hasConfirmedDate = !!event.dateConfirmed;
+  const dateLabel = hasConfirmedDate ? formatEventDate(event.date!) : event.month;
 
   const otherCityEvents = city.events.filter((e) => e.id !== event.id);
 
@@ -138,7 +139,7 @@ export default async function EventPage({ params, searchParams }: PageProps) {
                   className="text-[10px] tracking-[0.22em] uppercase mb-3"
                   style={{ color: "var(--teal)" }}
                 >
-                  {weekday} · {event.month}
+                  {event.month}
                 </p>
                 <h1
                   className="text-[clamp(40px,6vw,72px)] font-light leading-tight mb-3"
@@ -155,14 +156,6 @@ export default async function EventPage({ params, searchParams }: PageProps) {
                   <span style={{ color: "var(--text-muted)" }}>
                     CIO Dinner Series
                   </span>
-                  {event.dateConfirmed && (
-                    <>
-                      <span style={{ color: "rgba(103,234,221,0.25)" }}>·</span>
-                      <span style={{ color: "rgba(103,234,221,0.55)" }}>
-                        Date confirmed
-                      </span>
-                    </>
-                  )}
                 </p>
                 {guestName && (
                   <p
@@ -265,16 +258,16 @@ export default async function EventPage({ params, searchParams }: PageProps) {
                   {/* Details + CTA */}
                   <div className="p-8 flex flex-col justify-between gap-8 lg:w-72 shrink-0">
                     <div className="space-y-4">
-                      {[
+                        {[
                         {
                           label: "Date",
                           value: dateLabel,
-                          accent: event.dateConfirmed,
+                          muted: !hasConfirmedDate,
                         },
                         { label: "Time", value: "Details to follow", muted: true },
                         { label: "Location", value: event.venue },
                         { label: "Speaker", value: "Coming soon", muted: true },
-                      ].map(({ label, value, muted, accent }) => (
+                      ].map(({ label, value, muted }) => (
                         <div
                           key={label}
                           className="flex flex-col gap-1"
@@ -288,14 +281,6 @@ export default async function EventPage({ params, searchParams }: PageProps) {
                             style={{ color: "var(--text-muted)" }}
                           >
                             {label}
-                            {accent && (
-                              <span
-                                className="ml-2 text-[9px] tracking-[0.1em]"
-                                style={{ color: "var(--teal)" }}
-                              >
-                                · confirmed
-                              </span>
-                            )}
                           </span>
                           <span
                             className="text-[13px]"
@@ -349,6 +334,12 @@ export default async function EventPage({ params, searchParams }: PageProps) {
                     events={city.events}
                     cityKey={slug}
                     activeEventId={event.id}
+                    referralParams={isPersonalized ? {
+                      guest_name: guestName,
+                      rep_name: repName,
+                      referred_by: referredBy,
+                      referred_by_company: referredByCompany,
+                    } : undefined}
                   />
                   <div
                     className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
@@ -416,7 +407,7 @@ function OtherCitiesBand({ excludeKey }: { excludeKey: string }) {
               this season.
             </h2>
           </div>
-          <a
+          <Link
             href="/#markets"
             className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1 transition-colors duration-200"
             style={{
@@ -425,7 +416,7 @@ function OtherCitiesBand({ excludeKey }: { excludeKey: string }) {
             }}
           >
             View all cities →
-          </a>
+          </Link>
         </div>
         <div
           className="grid gap-3"
@@ -436,7 +427,7 @@ function OtherCitiesBand({ excludeKey }: { excludeKey: string }) {
             const first = c.events[0];
             const last = c.events[c.events.length - 1];
             return (
-              <a
+              <Link
                 key={c.key}
                 href={`/${c.key}`}
                 className="group relative flex flex-col justify-between p-5 rounded-xl overflow-hidden transition-all duration-250"
@@ -487,10 +478,10 @@ function OtherCitiesBand({ excludeKey }: { excludeKey: string }) {
                       border: "1px solid var(--teal-line-dark)",
                     }}
                   >
-                    {c.events.length}×
-                  </span>
+                  {c.events.length}×
+                </span>
                 </div>
-              </a>
+              </Link>
             );
           })}
         </div>

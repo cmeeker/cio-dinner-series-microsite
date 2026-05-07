@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPublicAppUrl } from "@/lib/site-origin";
-import { formatEventDate, formatEventDateCompact } from "@/lib/event-utils";
+import { formatEventDate, formatEventDateCompact, getEventUrlSlug, isEventPast } from "@/lib/event-utils";
 import { CITIES, CITY_COPY, DEFAULT_COPY, CITY_ORDER, EVENTS } from "@/data/events";
 import CityLandmark from "@/components/CityLandmark";
 import Footer from "@/components/Footer";
@@ -122,21 +122,24 @@ export default async function CityOverviewPage({ params }: PageProps) {
 
           <div className="space-y-3">
             {city.events.map((event, i) => {
-              const hasPage = !!event.date;
+              const isPast = isEventPast(event);
+              const isFirst = i === 0 && !isPast;
+
               const cardContent = (
                 <div
                   className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-xl overflow-hidden transition-all duration-200"
                   style={{
                     background: "var(--card)",
                     border: `1px solid ${
-                      hasPage
-                        ? "rgba(103,234,221,0.10)"
-                        : "rgba(255,255,255,0.05)"
+                      isPast
+                        ? "rgba(255,255,255,0.04)"
+                        : "rgba(103,234,221,0.10)"
                     }`,
+                    opacity: isPast ? 0.4 : 1,
                   }}
                 >
-                  {/* Top accent on hover (only for linked events) */}
-                  {hasPage && (
+                  {/* Top accent on hover (only for non-past events) */}
+                  {!isPast && (
                     <div
                       className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       style={{
@@ -152,20 +155,16 @@ export default async function CityOverviewPage({ params }: PageProps) {
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5"
                       style={{
-                        background:
-                          i === 0 ? "var(--teal-dim)" : "var(--surface)",
+                        background: isFirst ? "var(--teal-dim)" : "var(--surface)",
                         border: `1px solid ${
-                          i === 0
-                            ? "var(--teal-line)"
-                            : "rgba(255,255,255,0.06)"
+                          isFirst ? "var(--teal-line)" : "rgba(255,255,255,0.06)"
                         }`,
                       }}
                     >
                       <span
                         className="text-[10px] font-medium"
                         style={{
-                          color:
-                            i === 0 ? "var(--teal)" : "var(--text-muted)",
+                          color: isFirst ? "var(--teal)" : "var(--text-muted)",
                         }}
                       >
                         {i + 1}
@@ -181,10 +180,10 @@ export default async function CityOverviewPage({ params }: PageProps) {
                         }}
                       >
                         {event.month}
-                        {event.date && (
+                        {event.dateConfirmed && event.date && (
                           <span
                             className="ml-2 text-[13px]"
-                            style={{ color: "var(--teal-mid)" }}
+                            style={{ color: isPast ? "var(--text-muted)" : "var(--teal-mid)" }}
                           >
                             · {formatEventDate(event.date, { weekday: true, year: false })}
                           </span>
@@ -199,63 +198,40 @@ export default async function CityOverviewPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  {/* Right — badges + CTA */}
+                  {/* Right — CTA (hidden for past events) */}
                   <div className="flex items-center gap-3 sm:shrink-0 pl-13 sm:pl-0">
-                    {event.dateConfirmed && (
+                    {!isPast && (
                       <span
-                        className="text-[9px] tracking-[0.12em] uppercase px-2 py-1 rounded-md"
-                        style={{
-                          background: "rgba(103,234,221,0.08)",
-                          color: "var(--teal)",
-                          border: "1px solid var(--teal-line-dark)",
-                        }}
-                      >
-                        Confirmed
-                      </span>
-                    )}
-
-                    {hasPage ? (
-                      <span
-                        className="inline-flex items-center gap-1.5 text-[12px] tracking-wide font-medium transition-colors duration-200"
+                        className="inline-flex items-center gap-1.5 text-[12px] tracking-wide font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                         style={{ color: "var(--teal)" }}
                       >
                         View dinner →
-                      </span>
-                    ) : (
-                      <span
-                        className="text-[11px] tracking-[0.08em] uppercase"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        Date TBD
                       </span>
                     )}
                   </div>
                 </div>
               );
 
-              return hasPage ? (
+              if (isPast) {
+                return (
+                  <div key={event.id} className="block cursor-default">
+                    {cardContent}
+                  </div>
+                );
+              }
+
+              return (
                 <Link
                   key={event.id}
-                  href={`/${slug}/${event.date}`}
+                  href={`/${slug}/${getEventUrlSlug(event)}`}
                   className="block group"
                 >
                   {cardContent}
                 </Link>
-              ) : (
-                <div key={event.id}>{cardContent}</div>
               );
             })}
           </div>
 
-          {undatedEvents.length > 0 && (
-            <p
-              className="mt-4 text-[11px]"
-              style={{ color: "var(--text-muted)" }}
-            >
-              {undatedEvents.length} dinner
-              {undatedEvents.length > 1 ? "s" : ""} pending date confirmation.
-            </p>
-          )}
         </div>
 
         {/* Other cities */}
@@ -293,7 +269,7 @@ export default async function CityOverviewPage({ params }: PageProps) {
                   this season.
                 </h2>
               </div>
-              <a
+              <Link
                 href="/#markets"
                 className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1"
                 style={{
@@ -302,7 +278,7 @@ export default async function CityOverviewPage({ params }: PageProps) {
                 }}
               >
                 View all cities →
-              </a>
+              </Link>
             </div>
             <div
               className="grid gap-3"
