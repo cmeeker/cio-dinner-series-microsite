@@ -100,8 +100,6 @@ export default function Nav() {
   const isCityRoute = !!parts[0] && !RESERVED_SLUGS.has(parts[0]) && !!CITIES[parts[0]];
   const isEventPage = isCityRoute && parts.length >= 2;
 
-  if (pathname === "/login") return null;
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll, { passive: true });
