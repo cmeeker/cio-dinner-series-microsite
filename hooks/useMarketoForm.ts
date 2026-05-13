@@ -178,7 +178,7 @@ export function useMarketoForm() {
             pendingRef.current.reject(new Error("Marketo submit timed out."));
             pendingRef.current = null;
           }
-        }, 20000);
+        }, 6000);
 
         pendingRef.current = {
           resolve: () => {

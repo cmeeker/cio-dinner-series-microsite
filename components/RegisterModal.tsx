@@ -157,17 +157,21 @@ export default function RegisterModal({
       const marketoAvailable = marketoEnabled && marketoReady && !marketoInitError;
 
       if (marketoAvailable) {
-        await submitToMarketo({
-          ...form,
-          cityKey,
-          eventMonth,
-          eventDate: eventDate ?? "",
-          eventId: eventId ?? 0,
-        });
-        void postSupabaseBackup();
+        try {
+          await submitToMarketo({
+            ...form,
+            cityKey,
+            eventMonth,
+            eventDate: eventDate ?? "",
+            eventId: eventId ?? 0,
+          });
+          void postSupabaseBackup();
+        } catch {
+          // Marketo submit failed (domain not allowlisted, network issue, timeout, etc.)
+          // Always fall back to API route so submissions never get stuck.
+          await submitViaApi();
+        }
       } else {
-        // Marketo unavailable (domain not allowlisted, timed out, blocked, etc.)
-        // Fall back to API route so submissions always work.
         await submitViaApi();
       }
       setSubmitted(true);
