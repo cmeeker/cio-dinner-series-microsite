@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMarketoForm } from "@/hooks/useMarketoForm";
+import type { MarketoRegistrationPayload } from "@/hooks/useMarketoForm";
 
 function FloatingInput({
   label,
@@ -71,6 +71,10 @@ interface RegisterModalProps {
   prefill?: { name?: string; email?: string; company?: string };
   isPersonalized?: boolean;
   onClose: () => void;
+  marketoEnabled: boolean;
+  marketoReady: boolean;
+  marketoInitError: string | null;
+  submitToMarketo: (payload: MarketoRegistrationPayload) => Promise<void>;
 }
 
 interface FormData {
@@ -93,6 +97,10 @@ export default function RegisterModal({
   prefill,
   isPersonalized,
   onClose,
+  marketoEnabled,
+  marketoReady,
+  marketoInitError,
+  submitToMarketo,
 }: RegisterModalProps) {
   const isFullPrefill = !!(prefill?.name && prefill?.email && prefill?.company);
   const [step, setStep] = useState<Step>(1);
@@ -100,8 +108,6 @@ export default function RegisterModal({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-
-  const { marketoEnabled, marketoReady, marketoInitError, submitToMarketo } = useMarketoForm();
 
   const prefillFirst = prefill?.name?.split(" ")[0] ?? "";
   const prefillLast  = prefill?.name?.split(" ").slice(1).join(" ") ?? "";
