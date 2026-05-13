@@ -322,8 +322,9 @@ export default function RegisterModal({
 
                 <button
                   onClick={handleSubmit}
-                  disabled={loading || !canProceed1}
-                  className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_24px_rgba(103,234,221,0.25)] active:scale-[0.98] cursor-pointer disabled:opacity-60"
+                  disabled={loading || !canProceed1 || isPreview}
+                  title={isPreview ? "Submissions are disabled on the preview site — works on the live site" : undefined}
+                  className="w-full py-4 rounded-xl text-[14px] font-medium tracking-wide transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_24px_rgba(103,234,221,0.25)] active:scale-[0.98] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ background: "var(--teal)", color: "#111010" }}
                 >
                   {loading ? "Sending…" : "Accept invitation →"}
@@ -450,8 +451,9 @@ export default function RegisterModal({
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      disabled={loading || !canProceed2}
-                      className="px-7 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-60"
+                      disabled={loading || !canProceed2 || isPreview}
+                      title={isPreview ? "Submissions are disabled on the preview site — works on the live site" : undefined}
+                      className="px-7 py-3 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                       style={{ background: "var(--teal)", color: "#111010" }}
                     >
                       {loading ? "Sending…" : (prefill?.name || isPersonalized) ? "Accept invitation →" : "Reserve your seat →"}
