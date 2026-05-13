@@ -4,6 +4,7 @@ import { getPublicAppUrl } from "@/lib/site-origin";
 import { formatEventDate, getEventUrlSlug } from "@/lib/event-utils";
 import {
   CITIES,
+  EVENTS,
   CITY_COPY,
   DEFAULT_COPY,
   EVENT_BY_DATE_KEY,
