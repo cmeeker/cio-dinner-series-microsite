@@ -45,7 +45,7 @@ export default function WelcomeModal({
           {/* Backdrop — immediately opaque, no enter animation */}
           <div
             className="absolute inset-0"
-            style={{ background: "rgba(17,16,16,0.92)", backdropFilter: "blur(12px)" }}
+            style={{ background: "rgba(17,16,16,0.95)" }}
           />
 
           {/* Card — subtle enter animation only */}

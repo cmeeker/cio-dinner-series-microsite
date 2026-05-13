@@ -216,15 +216,14 @@ export default function RegisterModal({
       <motion.div
         className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center pt-14 sm:pt-0 px-0 sm:p-6"
         style={{ height: "100dvh" }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
         onClick={(e) => e.target === e.currentTarget && onClose()}
       >
-        {/* Backdrop */}
-        <motion.div
+        {/* Backdrop — appears instantly so page text never visually dims on open */}
+        <div
           className="absolute inset-0"
-          style={{ background: "rgba(17,16,16,0.85)", backdropFilter: "blur(8px)" }}
+          style={{ background: "rgba(17,16,16,0.90)" }}
           onClick={onClose}
         />
 
