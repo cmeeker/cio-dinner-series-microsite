@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { useMarketoForm } from "@/hooks/useMarketoForm";
 
 const RegisterModal = dynamic(() => import("./RegisterModal"), { ssr: false });
 
@@ -43,10 +42,6 @@ export default function CityPageClient({
   isPersonalized,
 }: CityPageClientProps) {
   const [showModal, setShowModal] = useState(false);
-
-  // Initialize Marketo on page mount — not on modal open — so the form is
-  // ready before the user finishes filling it out.
-  const { marketoEnabled, marketoReady, marketoInitError, submitToMarketo } = useMarketoForm();
 
   // Start watching for Marketo style injection as soon as this page mounts,
   // not just when the modal opens.
@@ -92,10 +87,6 @@ export default function CityPageClient({
           prefill={prefill}
           isPersonalized={isPersonalized}
           onClose={() => setShowModal(false)}
-          marketoEnabled={marketoEnabled}
-          marketoReady={marketoReady}
-          marketoInitError={marketoInitError}
-          submitToMarketo={submitToMarketo}
         />
       )}
     </>

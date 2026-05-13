@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import type { MarketoRegistrationPayload } from "@/hooks/useMarketoForm";
 
 function FloatingInput({
   label,
@@ -71,10 +70,6 @@ interface RegisterModalProps {
   prefill?: { name?: string; email?: string; company?: string };
   isPersonalized?: boolean;
   onClose: () => void;
-  marketoEnabled: boolean;
-  marketoReady: boolean;
-  marketoInitError: string | null;
-  submitToMarketo: (payload: MarketoRegistrationPayload) => Promise<void>;
 }
 
 interface FormData {
@@ -97,10 +92,6 @@ export default function RegisterModal({
   prefill,
   isPersonalized,
   onClose,
-  marketoEnabled,
-  marketoReady,
-  marketoInitError,
-  submitToMarketo,
 }: RegisterModalProps) {
   const isFullPrefill = !!(prefill?.name && prefill?.email && prefill?.company);
   const [step, setStep] = useState<Step>(1);
@@ -127,58 +118,18 @@ export default function RegisterModal({
   const canProceed1 = form.firstName.trim() && form.lastName.trim() && form.email.includes("@");
   const canProceed2 = form.company.trim(); // title is optional
 
-  const postSupabaseBackup = useCallback(async () => {
-    try {
-      await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          cityKey,
-          eventMonth,
-        }),
-      });
-    } catch {
-      /* non-blocking when Marketo is primary */
-    }
-  }, [form, cityKey, eventMonth]);
-
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     setError(null);
-    // Helper: submit via API route as primary or fallback
-    const submitViaApi = async () => {
+    try {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, cityKey, eventMonth }),
+        body: JSON.stringify({ ...form, cityKey, eventMonth, eventDate, eventId }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Something went wrong. Please try again.");
-      }
-    };
-
-    try {
-      const marketoAvailable = marketoEnabled && marketoReady && !marketoInitError;
-
-      if (marketoAvailable) {
-        try {
-          await submitToMarketo({
-            ...form,
-            cityKey,
-            eventMonth,
-            eventDate: eventDate ?? "",
-            eventId: eventId ?? 0,
-          });
-          void postSupabaseBackup();
-        } catch {
-          // Marketo submit failed (domain not allowlisted, network issue, timeout, etc.)
-          // Always fall back to API route so submissions never get stuck.
-          await submitViaApi();
-        }
-      } else {
-        await submitViaApi();
       }
       setSubmitted(true);
     } catch (err) {
@@ -186,18 +137,7 @@ export default function RegisterModal({
     } finally {
       setLoading(false);
     }
-  }, [
-    form,
-    cityKey,
-    eventMonth,
-    eventDate,
-    eventId,
-    marketoEnabled,
-    marketoReady,
-    marketoInitError,
-    submitToMarketo,
-    postSupabaseBackup,
-  ]);
+  }, [form, cityKey, eventMonth, eventDate, eventId]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
