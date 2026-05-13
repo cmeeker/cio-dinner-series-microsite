@@ -1,11 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getPublicAppUrl } from "@/lib/site-origin";
 import { formatEventDate, getEventUrlSlug } from "@/lib/event-utils";
 import {
   CITIES,
-  EVENTS,
   CITY_COPY,
   DEFAULT_COPY,
   EVENT_BY_DATE_KEY,
@@ -14,6 +12,7 @@ import CityPageClient from "@/components/CityPageClient";
 import WelcomeModal from "@/components/WelcomeModal";
 import CityLandmark from "@/components/CityLandmark";
 import EventTimeline from "@/components/EventTimeline";
+import RegionAccordion from "@/components/RegionAccordion";
 import Footer from "@/components/Footer";
 
 interface PageProps {
@@ -354,138 +353,38 @@ export default async function EventPage({ params, searchParams }: PageProps) {
           </div>
         </div>
 
-        {/* Other cities band */}
-        <OtherCitiesBand excludeKey={slug} />
+        {/* Browse all markets */}
+        <section
+          className="mt-16"
+          style={{ borderTop: "1px solid var(--teal-line-dark)" }}
+        >
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-12 mb-8">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p
+                  className="text-[11px] tracking-[0.22em] uppercase mb-1.5"
+                  style={{ color: "var(--teal)" }}
+                >
+                  Browse by city
+                </p>
+                <h2
+                  className="font-semibold leading-tight"
+                  style={{ color: "var(--text)", fontSize: "24px" }}
+                >
+                  Select a market
+                </h2>
+              </div>
+              <div
+                className="flex-1 h-px mb-1.5"
+                style={{ background: "var(--teal-line-dark)" }}
+              />
+            </div>
+          </div>
+          <RegionAccordion activeCityKey={slug} />
+        </section>
       </div>
       <Footer />
     </>
   );
 }
 
-function OtherCitiesBand({ excludeKey }: { excludeKey: string }) {
-  const seen = new Set<string>();
-  const cities = EVENTS.filter((e) => {
-    if (e.cityKey === excludeKey || seen.has(e.cityKey)) return false;
-    seen.add(e.cityKey);
-    return true;
-  }).map((e) => CITIES[e.cityKey]);
-
-  if (!cities.length) return null;
-
-  return (
-    <div
-      className="relative overflow-hidden mt-10"
-      style={{
-        background: "var(--bg2)",
-        borderTop: "1px solid var(--teal-line-dark)",
-      }}
-    >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 50% 100%, rgba(103,234,221,0.04) 0%, transparent 65%)",
-        }}
-      />
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-16">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <div>
-            <p
-              className="text-[10px] tracking-[0.28em] uppercase mb-3"
-              style={{ color: "var(--teal)" }}
-            >
-              Also running across North America
-            </p>
-            <h2
-              className="text-[clamp(28px,4vw,44px)] font-light leading-tight"
-              style={{ fontFamily: "var(--font-cormorant)" }}
-            >
-              {cities.length} more{" "}
-              <em className="italic" style={{ color: "var(--teal-mid)" }}>
-                markets
-              </em>{" "}
-              this season.
-            </h2>
-          </div>
-          <Link
-            href="/#markets"
-            className="shrink-0 inline-flex items-center gap-2 text-[12px] tracking-[0.1em] uppercase pb-1 transition-colors duration-200"
-            style={{
-              color: "var(--text-muted)",
-              borderBottom: "1px solid rgba(255,255,255,0.12)",
-            }}
-          >
-            View all cities →
-          </Link>
-        </div>
-        <div
-          className="grid gap-3"
-          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}
-        >
-          {cities.map((c) => {
-            if (!c) return null;
-            const first = c.events[0];
-            const last = c.events[c.events.length - 1];
-            return (
-              <Link
-                key={c.key}
-                href={`/${c.key}`}
-                className="group relative flex flex-col justify-between p-5 rounded-xl overflow-hidden transition-all duration-250"
-                style={{
-                  background: "var(--card)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  minHeight: "120px",
-                }}
-              >
-                <div
-                  className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  style={{
-                    background:
-                      "linear-gradient(to right, transparent, var(--teal), transparent)",
-                  }}
-                />
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-xl"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(103,234,221,0.06) 0%, transparent 70%)",
-                  }}
-                />
-                <div className="relative z-10">
-                  <p
-                    className="text-[15px] font-medium mb-0.5 transition-colors duration-200 group-hover:text-[var(--teal)]"
-                    style={{ color: "var(--text)" }}
-                  >
-                    {c.city}
-                  </p>
-                  <p className="text-[11px]" style={{ color: "var(--text-muted)" }}>
-                    {c.state}
-                    {c.country === "CA" ? " · Canada" : ""}
-                  </p>
-                </div>
-                <div className="relative z-10 flex items-end justify-between mt-4">
-                  <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>
-                    {first.month.split(" ")[0]}
-                    {first.month !== last.month
-                      ? ` – ${last.month.split(" ")[0]} ${last.month.split(" ")[1]}`
-                      : ` ${first.month.split(" ")[1]}`}
-                  </p>
-                  <span
-                    className="text-[11px] px-2 py-0.5 rounded-md"
-                    style={{
-                      background: "var(--teal-dim)",
-                      color: "var(--teal)",
-                      border: "1px solid var(--teal-line-dark)",
-                    }}
-                  >
-                  {c.events.length}×
-                </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}

@@ -140,14 +140,23 @@ export default function RegisterModal({
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     setError(null);
+    // Helper: submit via API route as primary or fallback
+    const submitViaApi = async () => {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, cityKey, eventMonth }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Something went wrong. Please try again.");
+      }
+    };
+
     try {
-      if (marketoEnabled) {
-        if (marketoInitError) {
-          throw new Error(marketoInitError);
-        }
-        if (!marketoReady) {
-          throw new Error("Registration form is still loading. Please try again in a moment.");
-        }
+      const marketoAvailable = marketoEnabled && marketoReady && !marketoInitError;
+
+      if (marketoAvailable) {
         await submitToMarketo({
           ...form,
           cityKey,
@@ -157,19 +166,9 @@ export default function RegisterModal({
         });
         void postSupabaseBackup();
       } else {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...form,
-            cityKey,
-            eventMonth,
-          }),
-        });
-        if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          throw new Error(body.error || "Something went wrong. Please try again.");
-        }
+        // Marketo unavailable (domain not allowlisted, timed out, blocked, etc.)
+        // Fall back to API route so submissions always work.
+        await submitViaApi();
       }
       setSubmitted(true);
     } catch (err) {

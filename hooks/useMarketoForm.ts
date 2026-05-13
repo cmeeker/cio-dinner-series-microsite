@@ -116,13 +116,22 @@ export function useMarketoForm() {
 
     let cancelled = false;
 
+    // If loadForm callback never fires (domain not allowlisted, blocked, etc.)
+    // treat Marketo as unavailable after 8 s so we can fall back to the API route.
+    const loadFormTimeout = window.setTimeout(() => {
+      if (!cancelled && !formRef.current) {
+        setInitError("marketo_unavailable");
+      }
+    }, 8000);
+
     (async () => {
       try {
         await loadScript(`${config.scriptOrigin}/js/forms2/js/forms2.min.js`);
-        const mkto = await waitForMktoForms2(15000);
+        const mkto = await waitForMktoForms2(8000);
         if (cancelled) return;
         mkto.loadForm(config.loadFormBase, config.munchkinId, config.formId, (form) => {
           if (cancelled) return;
+          window.clearTimeout(loadFormTimeout);
           form.onSuccess(() => {
             const pending = pendingRef.current;
             if (pending) {
@@ -136,13 +145,15 @@ export function useMarketoForm() {
         });
       } catch (e) {
         if (!cancelled) {
-          setInitError(e instanceof Error ? e.message : "Marketo failed to initialize.");
+          window.clearTimeout(loadFormTimeout);
+          setInitError("marketo_unavailable");
         }
       }
     })();
 
     return () => {
       cancelled = true;
+      window.clearTimeout(loadFormTimeout);
     };
   }, [config]);
 

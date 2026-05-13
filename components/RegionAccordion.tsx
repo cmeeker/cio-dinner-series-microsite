@@ -5,8 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import CityCard from "./CityCard";
 import { CITIES, REGIONS } from "@/data/events";
 
-export default function RegionAccordion() {
-  const [open, setOpen] = useState<string>(Object.keys(REGIONS)[0]);
+function findRegionForCity(cityKey: string): string {
+  for (const [region, keys] of Object.entries(REGIONS)) {
+    if (keys.includes(cityKey)) return region;
+  }
+  return Object.keys(REGIONS)[0];
+}
+
+interface RegionAccordionProps {
+  activeCityKey?: string;
+}
+
+export default function RegionAccordion({ activeCityKey }: RegionAccordionProps) {
+  const [open, setOpen] = useState<string>(
+    activeCityKey ? findRegionForCity(activeCityKey) : Object.keys(REGIONS)[0]
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-6 lg:px-12 pb-24">
@@ -101,6 +114,7 @@ export default function RegionAccordion() {
                             key={key}
                             city={CITIES[key]}
                             index={i}
+                            active={key === activeCityKey}
                           />
                         ))}
                       </div>

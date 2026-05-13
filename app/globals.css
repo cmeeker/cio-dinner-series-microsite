@@ -89,6 +89,16 @@ input:-webkit-autofill:active {
   transition: background-color 9999s ease-in-out 0s;
 }
 
+/* Neutralise Marketo forms2.min.js global style injection */
+.mktoForm,
+.mktoForm * {
+  display: none !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
 /* Grid background helper */
 .grid-bg {
   background-image:

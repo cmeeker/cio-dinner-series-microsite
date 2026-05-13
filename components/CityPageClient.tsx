@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const RegisterModal = dynamic(() => import("./RegisterModal"), { ssr: false });
@@ -15,6 +15,23 @@ interface CityPageClientProps {
   isPersonalized?: boolean;
 }
 
+const isMarketoEl = (el: Element): boolean => {
+  if (el.tagName === "LINK") {
+    const href = (el as HTMLLinkElement).href || "";
+    return href.includes("mkto") || href.includes("marketo") || href.includes("mktoweb");
+  }
+  if (el.tagName === "STYLE") {
+    const text = (el as HTMLStyleElement).textContent || "";
+    return (
+      text.includes("mktoForm") || text.includes(".mkto") ||
+      text.includes("mktoModal") || text.includes("mktoButton") ||
+      text.includes("mktoAsterix") || text.includes("mktoOffset") ||
+      text.includes("mktoGutter") || text.includes("mktoFieldWrap")
+    );
+  }
+  return false;
+};
+
 export default function CityPageClient({
   cityKey,
   cityName,
@@ -25,6 +42,26 @@ export default function CityPageClient({
   isPersonalized,
 }: CityPageClientProps) {
   const [showModal, setShowModal] = useState(false);
+
+  // Start watching for Marketo style injection as soon as this page mounts,
+  // not just when the modal opens.
+  useEffect(() => {
+    const killMarketoStyles = () => {
+      document.querySelectorAll("style, link[rel='stylesheet']").forEach((el) => {
+        if (isMarketoEl(el)) el.remove();
+      });
+      document.querySelectorAll<HTMLElement>(".mktoForm, form[id*='mkto']").forEach((el) => {
+        el.style.cssText =
+          "display:none!important;position:absolute!important;" +
+          "width:0!important;height:0!important;overflow:hidden!important;";
+      });
+    };
+    killMarketoStyles();
+    const observer = new MutationObserver(killMarketoStyles);
+    observer.observe(document.head, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>

@@ -8,9 +8,10 @@ import { isEventPast, formatEventDateCompact } from "@/lib/event-utils";
 interface CityCardProps {
   city: City;
   index?: number;
+  active?: boolean;
 }
 
-export default function CityCard({ city, index = 0 }: CityCardProps) {
+export default function CityCard({ city, index = 0, active = false }: CityCardProps) {
   const n = city.events.length;
   const upcoming = city.events.find((e) => !isEventPast(e));
   const allPast = !upcoming;
@@ -41,8 +42,10 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
         href={`/${city.key}`}
         className="group relative flex flex-col rounded-xl overflow-hidden h-full transition-all duration-300"
         style={{
-          background: "var(--card)",
-          border: "1px solid rgba(255,255,255,0.07)",
+          background: active ? "rgba(103,234,221,0.06)" : "var(--card)",
+          border: active
+            ? "1px solid rgba(103,234,221,0.30)"
+            : "1px solid rgba(255,255,255,0.07)",
         }}
       >
         {/* Hover top glow */}
@@ -66,7 +69,7 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
             <div>
               <h3
                 className="font-semibold leading-tight transition-colors duration-200 group-hover:text-[var(--teal)]"
-                style={{ color: "var(--text)", fontSize: "19px" }}
+                style={{ color: active ? "var(--teal)" : "var(--text)", fontSize: "19px" }}
               >
                 {city.city}
               </h3>
@@ -74,16 +77,31 @@ export default function CityCard({ city, index = 0 }: CityCardProps) {
                 {city.state}{city.country === "CA" ? " · Canada" : ""}
               </p>
             </div>
-            <span
-              className="text-[11px] font-medium px-2 py-0.5 rounded-md shrink-0 mt-0.5 tabular-nums"
-              style={{
-                background: "rgba(103,234,221,0.10)",
-                color: "var(--teal)",
-                border: "1px solid rgba(103,234,221,0.20)",
-              }}
-            >
-              {n} {n === 1 ? "event" : "events"}
-            </span>
+            <div className="flex flex-col items-end gap-1 shrink-0 mt-0.5">
+              {active && (
+                <span
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-md tabular-nums"
+                  style={{
+                    background: "rgba(103,234,221,0.15)",
+                    color: "var(--teal)",
+                    border: "1px solid rgba(103,234,221,0.35)",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Current
+                </span>
+              )}
+              <span
+                className="text-[11px] font-medium px-2 py-0.5 rounded-md tabular-nums"
+                style={{
+                  background: "rgba(103,234,221,0.10)",
+                  color: "var(--teal)",
+                  border: "1px solid rgba(103,234,221,0.20)",
+                }}
+              >
+                {n} {n === 1 ? "event" : "events"}
+              </span>
+            </div>
           </div>
 
           {/* Divider */}
