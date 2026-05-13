@@ -24,12 +24,14 @@ async function postToMarketo(fields: Record<string, string>): Promise<void> {
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
+  if (process.env.NODE_ENV === "development") return true;
+  // Allow all Vercel preview/production deployments for this project
+  if (origin.includes("cio-dinner-series-microsite") && origin.endsWith(".vercel.app")) return true;
   const allowed = [
     "https://cio-dinner-series-microsite.vercel.app",
     "https://workato.com",
     "https://www.workato.com",
   ];
-  if (process.env.NODE_ENV === "development") return true;
   const extra = process.env.ALLOWED_ORIGINS?.split(",").map((s) => s.trim()) ?? [];
   return [...allowed, ...extra].some((o) => origin.startsWith(o));
 }

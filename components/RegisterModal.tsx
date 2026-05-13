@@ -118,6 +118,8 @@ export default function RegisterModal({
   const canProceed1 = form.firstName.trim() && form.lastName.trim() && form.email.includes("@");
   const canProceed2 = form.company.trim(); // title is optional
 
+  const isPreview = typeof window !== "undefined" && window.location.hostname.endsWith(".vercel.app");
+
   const handleSubmit = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -129,15 +131,19 @@ export default function RegisterModal({
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || "Something went wrong. Please try again.");
+        throw new Error(body.error || "submission_failed");
       }
       setSubmitted(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } catch {
+      if (isPreview) {
+        setError("preview_env");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
-  }, [form, cityKey, eventMonth, eventDate, eventId]);
+  }, [form, cityKey, eventMonth, eventDate, eventId, isPreview]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -306,7 +312,13 @@ export default function RegisterModal({
                   <FloatingInput label="Company"    value={form.company} onChange={update("company")} autoComplete="organization" autoCapitalize="words" />
                 </div>
 
-                {error && <p className="mb-4 text-[12px]" style={{ color: "#FF6B6B" }}>{error}</p>}
+                {error && (
+                  <p className="mb-4 text-[12px]" style={{ color: error === "preview_env" ? "rgba(103,234,221,0.7)" : "#FF6B6B" }}>
+                    {error === "preview_env"
+                      ? "This is a preview site — submissions are disabled here. Your request will go through normally on the live site."
+                      : error}
+                  </p>
+                )}
 
                 <button
                   onClick={handleSubmit}
@@ -406,8 +418,10 @@ export default function RegisterModal({
                 </AnimatePresence>
 
                 {error && (
-                  <p className="mt-4 text-[12px]" style={{ color: "#FF6B6B" }}>
-                    {error}
+                  <p className="mt-4 text-[12px]" style={{ color: error === "preview_env" ? "rgba(103,234,221,0.7)" : "#FF6B6B" }}>
+                    {error === "preview_env"
+                      ? "This is a preview site — submissions are disabled here. Your request will go through normally on the live site."
+                      : error}
                   </p>
                 )}
 
