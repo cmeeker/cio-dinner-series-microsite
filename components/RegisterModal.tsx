@@ -56,7 +56,7 @@ function FloatingInput({
         autoComplete={autoComplete}
         autoCapitalize={autoCapitalize}
         autoCorrect={autoCorrect}
-        className="w-full px-4 py-3 rounded-lg text-[14px] outline-none transition-all duration-200 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)] focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)] text-[var(--text)]"
+        className="w-full px-4 py-3 rounded-lg text-[14px] outline-none transition-all duration-200 bg-[var(--surface)] border border-[rgba(255,255,255,0.14)] focus:border-[var(--teal-line)] text-[var(--text)]"
       />
     </div>
   );
@@ -206,8 +206,8 @@ export default function RegisterModal({
 
   const inputClass = `
     w-full px-4 py-3 rounded-lg text-[16px] outline-none transition-all duration-200
-    placeholder:opacity-40 bg-[var(--surface)] border border-[rgba(255,255,255,0.08)]
-    focus:border-[var(--teal-line)] focus:bg-[rgba(103,234,221,0.03)]
+    placeholder:opacity-40 bg-[var(--surface)] border border-[rgba(255,255,255,0.14)]
+    focus:border-[var(--teal-line)]
     text-[var(--text)]
   `;
 
