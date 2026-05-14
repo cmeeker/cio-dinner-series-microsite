@@ -28,6 +28,7 @@ function isAllowedOrigin(origin: string | null): boolean {
   // Allow all Vercel preview/production deployments for this project
   if (origin.includes("cio-dinner-series-microsite") && origin.endsWith(".vercel.app")) return true;
   const allowed = [
+    "https://cio-dinner.workato.com",
     "https://cio-dinner-series-microsite.vercel.app",
     "https://workato.com",
     "https://www.workato.com",
