@@ -58,7 +58,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Version Helper
         # is used for automatic versioning
         # https://github.com/workato-devops/github-actions/blob/master/version-helper/README.md
