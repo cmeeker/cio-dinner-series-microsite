@@ -1,16 +1,17 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare 
 
 on:
   push:
     branches:
       - main
       - preview
+      - github-action-deploy-cf-pages
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Cloudflare Pages
+    name: Deploy to Cloudflare 
     environment:
       name: cf-cio-dinner
     permissions:
@@ -32,12 +33,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js static export
-        run: npm run build
+      - name: Build for Cloudflare
+        run: npx opennextjs-cloudflare build
         env:
           NODE_ENV: production
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare 
         id: deploy-to-cf
         uses: cloudflare/wrangler-action@v3.14.1
         with:
