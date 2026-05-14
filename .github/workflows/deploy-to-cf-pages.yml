@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build for Cloudflare
-        run: npm cf:deploy
+        run: npm run uf:deploy
         env:
           NODE_ENV: production
 
