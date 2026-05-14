@@ -202,7 +202,7 @@ export default async function CityOverviewPage({ params }: PageProps) {
                   <div className="flex items-center gap-3 sm:shrink-0 pl-13 sm:pl-0">
                     {!isPast && (
                       <span
-                        className="inline-flex items-center gap-1.5 text-[12px] tracking-wide font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        className="inline-flex items-center gap-1.5 text-[12px] tracking-wide font-medium opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200"
                         style={{ color: "var(--teal)" }}
                       >
                         View dinner →
