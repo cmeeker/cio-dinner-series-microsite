@@ -34,20 +34,10 @@ jobs:
         run: npm ci
 
       - name: Build for Cloudflare
-        run: npx opennextjs-cloudflare build
+        run: npm cf:deploy
         env:
           NODE_ENV: production
 
-      - name: Deploy to Cloudflare 
-        id: deploy-to-cf
-        uses: cloudflare/wrangler-action@v3.14.1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 2e623754f3a4858cd058e5980c704374
-          command: deploy
-           # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-      
       - name: print deployment-url
         env:
           DEPLOYMENT_URL: ${{ steps.deploy-to-cf.outputs.deployment-url }}
