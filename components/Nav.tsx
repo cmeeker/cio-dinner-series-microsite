@@ -14,10 +14,12 @@ function formatDateSlug(slug: string, confirmed?: boolean): string {
 
 const RESERVED_SLUGS = new Set(["login", "api", "apple-icon.png", "icon.png", "favicon.ico"]);
 
-/** Extract city slug and optional date from `/[slug]` or `/[slug]/[date]` */
+/** Extract city slug and optional date from `/[slug]` or `/cio-dinner/[slug]/[date]` */
 function useCityRoute() {
   const pathname = usePathname();
-  const parts = pathname.split("/").filter(Boolean);
+  let parts = pathname.split("/").filter(Boolean);
+  // Strip the /cio-dinner/ prefix if present
+  if (parts[0] === "cio-dinner") parts = parts.slice(1);
   const slug = parts[0];
   if (!slug || RESERVED_SLUGS.has(slug)) return { slug: null, date: null };
   if (!CITIES[slug]) return { slug: null, date: null };
@@ -96,7 +98,8 @@ function NavCTA() {
 export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const parts = pathname.split("/").filter(Boolean);
+  let parts = pathname.split("/").filter(Boolean);
+  if (parts[0] === "cio-dinner") parts = parts.slice(1);
   const isCityRoute = !!parts[0] && !RESERVED_SLUGS.has(parts[0]) && !!CITIES[parts[0]];
   const isEventPage = isCityRoute && parts.length >= 2;
 
