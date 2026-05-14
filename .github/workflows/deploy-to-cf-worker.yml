@@ -11,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Cloudflare 
+    name: Deploy to Cloudflare Worker
     environment:
       name: cf-cio-dinner
     permissions:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all commits so "last updated" timestamp on each page is accurate
+          fetch-depth: 1 # Fetch all commits so "last updated" timestamp on each page is accurate
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,11 +33,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and Deploy for Cloudflare
-        run: npm run cf:deploy
+      - name: Build for Cloudflare
+        run: npm run cf:build
         env:
           NODE_ENV: production
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    
+      - name: Deploy to Cloudflare
+        id: deploy-to-cf
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2e623754f3a4858cd058e5980c704374
+          command: deploy
 
   create-tag:
     permissions:
@@ -46,11 +53,13 @@ jobs:
       contents: write # is required for Checkout and Bump tag steps
       security-events: write # is required for Trivy Report Upoad step
     runs-on: ubuntu-latest
+    name: Create tag
+    if: github.ref == 'refs/heads/main'
     needs: deploy # run only if the build job is successful
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Version Helper
         # is used for automatic versioning
         # https://github.com/workato-devops/github-actions/blob/master/version-helper/README.md
