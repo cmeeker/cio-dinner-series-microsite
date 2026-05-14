@@ -223,7 +223,7 @@ export default async function CityOverviewPage({ params }: PageProps) {
               return (
                 <Link
                   key={event.id}
-                  href={`/${slug}/${getEventUrlSlug(event)}`}
+                  href={`/cio-dinner/${slug}/${getEventUrlSlug(event)}`}
                   className="block group"
                 >
                   {cardContent}
@@ -293,7 +293,7 @@ export default async function CityOverviewPage({ params }: PageProps) {
                 return (
                   <Link
                     key={c.key}
-                    href={`/${c.key}`}
+                    href={`/cio-dinner/${c.key}`}
                     className="group relative flex flex-col justify-between p-5 rounded-xl overflow-hidden transition-all duration-250"
                     style={{
                       background: "var(--card)",

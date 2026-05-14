@@ -150,7 +150,7 @@ export default function EventTimeline({
         return !isActive ? (
           <Link
             key={event.id}
-            href={`/${cityKey}/${eventUrlSlug}${qs}`}
+            href={`/cio-dinner/${cityKey}/${eventUrlSlug}${qs}`}
             className="relative flex gap-5 items-start group cursor-pointer"
           >
             {rowContent}

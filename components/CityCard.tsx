@@ -39,7 +39,7 @@ export default function CityCard({ city, index = 0, active = false }: CityCardPr
       className="h-full"
     >
       <Link
-        href={`/${city.key}`}
+        href={`/cio-dinner/${city.key}`}
         className="group relative flex flex-col rounded-xl overflow-hidden h-full transition-all duration-300"
         style={{
           background: active ? "rgba(103,234,221,0.06)" : "var(--card)",
