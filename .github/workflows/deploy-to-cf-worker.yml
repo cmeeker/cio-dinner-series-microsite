@@ -36,6 +36,8 @@ jobs:
         run: npm run cf:build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     
       - name: Deploy to Cloudflare
         id: deploy-to-cf
@@ -43,7 +45,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 2e623754f3a4858cd058e5980c704374
-          command: deploy
+          command: deploy --var NEXT_PUBLIC_SUPABASE_URL:${{ vars.NEXT_PUBLIC_SUPABASE_URL }} --var NEXT_PUBLIC_SUPABASE_ANON_KEY:${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
   create-tag:
     permissions:
