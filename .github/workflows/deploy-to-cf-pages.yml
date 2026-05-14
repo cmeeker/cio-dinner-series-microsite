@@ -37,11 +37,7 @@ jobs:
         run: npm run cf:deploy
         env:
           NODE_ENV: production
-
-      - name: print deployment-url
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy-to-cf.outputs.deployment-url }}
-        run: echo $DEPLOYMENT_URL
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   create-tag:
     permissions:
