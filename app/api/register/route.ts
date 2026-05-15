@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { firstName, lastName, email, company, title, message, cityKey, eventMonth, eventDate } = body;
+  const { firstName, lastName, email, company, title, message, cityKey, eventMonth, eventDate, pageUrl, referrer } = body;
 
   if (!firstName?.trim() || !lastName?.trim() || !company?.trim() || !cityKey?.trim() || !eventMonth?.trim()) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
@@ -76,6 +76,10 @@ export async function POST(req: NextRequest) {
       ...(title?.trim() ? { Title: title.trim() } : {}),
       personNote: notesParts.join("\n"),
       ...(eventDate ? { CIO_Event_Date__c: eventDate } : {}),
+      // Pass the browser page URL and referrer so Marketo's referrer-based
+      // Smart List filters work correctly on server-side submissions.
+      ...(pageUrl ? { pageURL: pageUrl } : {}),
+      ...(referrer ? { referrer } : {}),
     });
   } catch (err) {
     console.error("[register] Marketo post error:", err);
