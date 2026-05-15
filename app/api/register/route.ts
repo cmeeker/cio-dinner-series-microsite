@@ -13,7 +13,13 @@ async function postToMarketo(fields: Record<string, string>): Promise<void> {
 
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      // Set Referer to the actual page URL so Marketo's built-in
+      // "Referrer" field on the Fills Out Form activity is populated
+      // correctly for Smart List filtering.
+      ...(fields.pageURL ? { "Referer": fields.pageURL } : {}),
+    },
     body: params.toString(),
   });
 
