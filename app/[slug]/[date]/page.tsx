@@ -49,6 +49,10 @@ export async function generateMetadata({
   const dateLabel = event.dateConfirmed && event.date ? formatEventDate(event.date) : event.month;
 
   const ogParams = new URLSearchParams({ city: city.city, month: event.month });
+  if (event.dateConfirmed && event.date) {
+    ogParams.set("date", formatEventDate(event.date, { weekday: true, year: true }));
+  }
+  if (event.venue) ogParams.set("venue", event.venue);
   if (guestName) ogParams.set("guest_name", guestName);
   if (repName) ogParams.set("rep_name", repName);
   if (referredBy) ogParams.set("referred_by", referredBy);

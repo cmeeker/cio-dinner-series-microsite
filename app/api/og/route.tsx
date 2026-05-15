@@ -1,19 +1,37 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+
+async function loadFonts() {
+  const [light, italic] = await Promise.all([
+    readFile(join(process.cwd(), "public/fonts/CormorantGaramond-Light.ttf")),
+    readFile(join(process.cwd(), "public/fonts/CormorantGaramond-LightItalic.ttf")),
+  ]);
+  return [
+    { name: "Cormorant", data: light,  weight: 300 as const, style: "normal"  as const },
+    { name: "Cormorant", data: italic, weight: 300 as const, style: "italic"  as const },
+  ];
+}
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 
-  const city       = searchParams.get("city") ?? "";
-  const month      = searchParams.get("month") ?? "";
-  const guestName  = searchParams.get("guest_name") ?? "";
-  const repName    = searchParams.get("rep_name") ?? "";
-  const referredBy = searchParams.get("referred_by") ?? "";
+  const city        = searchParams.get("city")        ?? "";
+  const month       = searchParams.get("month")       ?? "";
+  const date        = searchParams.get("date")        ?? ""; // e.g. "Monday, June 29"
+  const venue       = searchParams.get("venue")       ?? "";
+  const guestName   = searchParams.get("guest_name")  ?? "";
+  const repName     = searchParams.get("rep_name")    ?? "";
+  const referredBy  = searchParams.get("referred_by") ?? "";
 
   const isPersonalized = !!(guestName || repName || referredBy);
-  const firstName = guestName ? guestName.split(" ")[0] : "";
+  const isEventPage    = !!(date || venue);
+  const firstName      = guestName ? guestName.split(" ")[0] : "";
+
+  const fonts = await loadFonts();
 
   return new ImageResponse(
     (
@@ -24,19 +42,20 @@ export async function GET(req: NextRequest) {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: "flex-start",
+          justifyContent: "flex-end",
           position: "relative",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: "Cormorant",
+          padding: "64px 80px",
         }}
       >
-        {/* Radial glow */}
+        {/* Radial glow — top right */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 80% 55% at 50% 45%, rgba(103,234,221,0.08) 0%, transparent 65%)",
+              "radial-gradient(ellipse 70% 60% at 70% 20%, rgba(103,234,221,0.07) 0%, transparent 65%)",
           }}
         />
         {/* Top accent */}
@@ -46,133 +65,172 @@ export async function GET(req: NextRequest) {
             top: 0,
             left: 0,
             right: 0,
-            height: 3,
-            background: "linear-gradient(to right, transparent, #67EADD, transparent)",
+            height: 2,
+            background: "linear-gradient(to right, #67EADD, transparent 60%)",
           }}
         />
 
         {isPersonalized ? (
           /* ── Personalized layout ── */
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {/* Label */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 0,
+              width: "100%",
+            }}
+          >
             <div
               style={{
-                color: "#67EADD",
-                fontSize: 13,
+                color: "rgba(103,234,221,0.65)",
+                fontSize: 14,
                 letterSpacing: "0.28em",
+                fontFamily: "sans-serif",
                 textTransform: "uppercase",
-                marginBottom: 32,
+                marginBottom: 28,
               }}
             >
               {referredBy ? "A COLLEAGUE THOUGHT OF YOU" : "PERSONAL INVITATION"}
             </div>
 
-            {/* Headline */}
             <div
               style={{
                 color: "#67EADD",
-                fontSize: firstName ? 74 : 66,
+                fontSize: firstName ? 80 : 72,
                 fontWeight: 300,
-                lineHeight: 1.1,
-                textAlign: "center",
-                marginBottom: 20,
                 fontStyle: "italic",
+                lineHeight: 1.05,
+                marginBottom: 20,
+                fontFamily: "Cormorant",
               }}
             >
               {firstName ? `${firstName}, you're invited.` : "You're invited."}
             </div>
 
-            {/* City + month */}
-            {city && (
-              <div
-                style={{
-                  color: "rgba(255,255,255,0.6)",
-                  fontSize: 24,
-                  fontStyle: "italic",
-                  marginBottom: 40,
-                }}
-              >
-                {city}{month ? ` · ${month}` : ""}
-              </div>
-            )}
+            <div
+              style={{
+                color: "rgba(255,255,255,0.45)",
+                fontSize: 28,
+                fontStyle: "italic",
+                fontFamily: "Cormorant",
+                marginBottom: (repName || referredBy) ? 36 : 0,
+              }}
+            >
+              {city}{date ? ` · ${date}` : month ? ` · ${month}` : ""}
+            </div>
 
-            {/* Attribution pill */}
             {(repName || referredBy) && (
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
-                  padding: "12px 28px",
-                  border: "1px solid rgba(103,234,221,0.2)",
+                  padding: "12px 24px",
+                  border: "1px solid rgba(103,234,221,0.18)",
                   borderRadius: 8,
-                  background: "rgba(103,234,221,0.05)",
-                  color: "rgba(255,255,255,0.5)",
+                  background: "rgba(103,234,221,0.04)",
+                  color: "rgba(255,255,255,0.45)",
                   fontSize: 14,
                   letterSpacing: "0.05em",
+                  fontFamily: "sans-serif",
+                  alignSelf: "flex-start",
                 }}
               >
-                {referredBy ? "Referred by" : "Invited by"}{" "}
-                <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                {referredBy ? "Referred by " : "Invited by "}
+                <span style={{ color: "rgba(255,255,255,0.85)", marginLeft: 4 }}>
                   {referredBy || repName}
                 </span>
               </div>
             )}
           </div>
         ) : (
-          /* ── City layout ── */
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          /* ── City / Event layout ── */
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 0,
+              width: "100%",
+            }}
+          >
             {/* Eyebrow */}
             <div
               style={{
-                color: "#67EADD",
+                color: "rgba(103,234,221,0.6)",
                 fontSize: 13,
-                letterSpacing: "0.28em",
+                letterSpacing: "0.3em",
+                fontFamily: "sans-serif",
                 textTransform: "uppercase",
-                marginBottom: 28,
+                marginBottom: 24,
               }}
             >
               WORKATO CIO DINNER SERIES
             </div>
 
-            {/* City name */}
+            {/* City name — large */}
             <div
               style={{
                 color: "#FFFFFF",
-                fontSize: 80,
+                fontSize: isEventPage ? 90 : 104,
                 fontWeight: 300,
-                lineHeight: 1,
-                letterSpacing: "-0.01em",
+                lineHeight: 0.95,
+                letterSpacing: "0.01em",
+                fontFamily: "Cormorant",
                 marginBottom: 16,
-                textAlign: "center",
               }}
             >
               {city}
             </div>
 
-            {/* Italic sub */}
+            {/* Date / month line */}
             <div
               style={{
-                color: "#67EADD",
-                fontSize: 28,
-                fontStyle: "italic",
-                fontWeight: 300,
-                marginBottom: 48,
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                marginBottom: venue ? 12 : 36,
               }}
             >
-              {month ? `${month}` : "An evening with enterprise leaders"}
+              <div
+                style={{
+                  color: "#67EADD",
+                  fontSize: 30,
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  fontFamily: "Cormorant",
+                }}
+              >
+                {date || month || "An evening with enterprise leaders"}
+              </div>
             </div>
 
-            {/* Pill */}
+            {/* Venue line */}
+            {venue && (
+              <div
+                style={{
+                  color: "rgba(255,255,255,0.3)",
+                  fontSize: 20,
+                  fontStyle: "italic",
+                  fontFamily: "Cormorant",
+                  marginBottom: 36,
+                }}
+              >
+                {venue}
+              </div>
+            )}
+
+            {/* Invite pill */}
             <div
               style={{
-                padding: "12px 32px",
-                border: "1px solid rgba(103,234,221,0.2)",
+                padding: "10px 24px",
+                border: "1px solid rgba(103,234,221,0.18)",
                 borderRadius: 100,
-                color: "rgba(255,255,255,0.45)",
-                fontSize: 14,
-                letterSpacing: "0.08em",
+                color: "rgba(255,255,255,0.35)",
+                fontSize: 12,
+                letterSpacing: "0.1em",
                 textTransform: "uppercase",
+                fontFamily: "sans-serif",
+                alignSelf: "flex-start",
               }}
             >
               By invitation only
@@ -180,21 +238,23 @@ export async function GET(req: NextRequest) {
           </div>
         )}
 
-        {/* Bottom wordmark */}
+        {/* Workato wordmark — top right */}
         <div
           style={{
             position: "absolute",
-            bottom: 32,
-            color: "rgba(255,255,255,0.2)",
-            fontSize: 12,
+            top: 32,
+            right: 80,
+            color: "rgba(255,255,255,0.18)",
+            fontSize: 13,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
+            fontFamily: "sans-serif",
           }}
         >
           Workato
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    { width: 1200, height: 630, fonts }
   );
 }
