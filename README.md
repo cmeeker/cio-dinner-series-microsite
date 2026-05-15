@@ -28,7 +28,7 @@ Same idea as a static embed (`forms2.min.js` → `MktoForms2.loadForm` → `vals
 | -------- | ----- |
 | `NEXT_PUBLIC_MARKETO_FORM_ID` | Set to **`8856`** to send registrations to Marketo (required to enable). |
 | `NEXT_PUBLIC_MARKETO_MUNCHKIN_ID` | Default **`741-DET-352`**. |
-| `NEXT_PUBLIC_MARKETO_BASE_URL` | Optional. Hostname only (no protocol), default **`{MUNCHKIN_ID}.mktoweb.com`**. |
+| `NEXT_PUBLIC_MARKETO_BASE_URL` | Optional. Hostname only (no protocol). Default **`mktg.workato.com`** (same branded host as `workato.com` Forms2 embeds). Set to **`741-DET-352.mktoweb.com`** only if you need the raw Marketo host. |
 | `NEXT_PUBLIC_MARKETO_NOTES_FIELD` | API name for the combined context block (city, month, message). Default **`personNote`** — change if your form uses another field. |
 | `NEXT_PUBLIC_MARKETO_FIELD_MAP` | Optional JSON map to **rename outgoing keys**, e.g. `{"FirstName":"First_Name__c","personNote":"Program_Notes__c"}`. |
 
