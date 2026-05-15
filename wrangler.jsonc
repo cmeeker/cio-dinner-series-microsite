@@ -23,7 +23,13 @@
   "images": {
     // Enables Cloudflare's built-in image optimization
     "binding": "IMAGES"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "cio-dinner.workato.com",
+      "custom_domain": true
+    }
+  ]
   // Uncomment to enable ISR/SSG caching via R2 (create bucket first via Cloudflare dashboard)
   // "r2_buckets": [
   //   {
