@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getMarketoClientConfig } from "@/lib/marketo-config";
 import { getMarketoHostname } from "@/lib/marketo-host";
-
-const MARKETO_FORM_ID  = "8856";
-const MARKETO_MUNCHKIN = "741-DET-352";
 
 /** Server-side Marketo form post as a belt-and-suspenders backup when the
  *  client-side Forms 2.0 SDK is unavailable (CSP, ad-blocker, server fallback). */
 async function postToMarketo(fields: Record<string, string>): Promise<void> {
-
-  const params = new URLSearchParams({ ...fields, formid: MARKETO_FORM_ID, munchkinId: MARKETO_MUNCHKIN });
+  const { formId, munchkinId } = getMarketoClientConfig();
+  const params = new URLSearchParams({
+    ...fields,
+    formid: String(formId),
+    munchkinId,
+  });
   const host = getMarketoHostname();
   const url = `https://${host}/index.php/leadCapture/save2`;
 
